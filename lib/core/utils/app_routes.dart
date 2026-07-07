@@ -1,0 +1,29 @@
+
+import 'package:flutter/material.dart';
+
+import '../../features/on_boarding/presentation/screens/on_boarding.dart';
+import '../../features/splash/presentation/screens/splash_screen.dart';
+import '../values/app_routs_name.dart';
+import '../values/app_strings.dart';
+
+class AppRoutes {
+  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case AppRoutsName.splashScreen:
+        return MaterialPageRoute(
+          builder: (_) => const SplashScreen(),
+        );
+      case AppRoutsName.onBoarding:
+        return MaterialPageRoute(
+          builder: (_) => const OnBoarding(),
+        );
+
+
+      default:
+        return MaterialPageRoute(
+          builder: (_) =>
+              Scaffold(body: Center(child: Text(AppStrings.routeNotFound))),
+        );
+    }
+  }
+}
