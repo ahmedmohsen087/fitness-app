@@ -1,0 +1,28 @@
+name: PR Title Validation
+
+on:
+  pull_request:
+    types: [ opened, edited, synchronize, reopened, ready_for_review ]
+
+jobs:
+  validate-pr:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Check PR Title
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          echo "PR Title: $PR_TITLE"
+          
+          TITLE_REGEX="^(fix|release|feat|hotfix|build|test|chore|docs|refactor)\([A-Z0-9]+-[0-9]+\): [A-Z0-9]+-[0-9]+-.*$"
+          if [[ ! "$PR_TITLE" =~ $TITLE_REGEX ]]; then
+            echo "❌ Invalid PR Title: $PR_TITLE"
+            echo "PR Title must follow the pattern: type(scope): {TicketNum}-task name"
+            echo "Allowed types: fix, release, feat, hotfix, build, test, chore, docs, refactor"
+            echo "Example: feat(ECOM-27): ECOM-27-Initialize Project"
+            exit 1
+          fi
+          
+          echo "✅ PR Title is valid: $PR_TITLE"

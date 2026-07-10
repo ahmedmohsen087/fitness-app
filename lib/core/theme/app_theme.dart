@@ -42,7 +42,7 @@ class AppTheme {
         color: AppColors.orange,
       ),
       unselectedLabelStyle: TextStyles.bodyRegular12.copyWith(
-        color: AppColors.white,
+        color: Colors.transparent
       ),
     ),
   );
