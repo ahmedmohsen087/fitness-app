@@ -10,6 +10,17 @@ class Assets {
   static const String onBoarding3 = "assets/images/onboarding3.png";
   static const String onBoardingBackGround = "assets/images/onboardingbackground.png";
 
+  // section app
+  static const String homeIcon = "assets/icons/home.svg";
+  static const String chatIcon = "assets/icons/chat.svg";
+  static const String workoutsIcon = "assets/icons/workouts.svg";
+  static const String profileIcon = "assets/icons/profile.svg";
+
+  // auth
+  static const String authBackGround = "aassets/images/authpackground.png";
+  static const String authLogo = "assets/images/authlogo.png";
+
+
 
 
 

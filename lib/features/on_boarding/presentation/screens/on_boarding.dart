@@ -145,7 +145,7 @@ class _OnBoardingState extends State<OnBoarding> {
                             if (isLast) {
                               Navigator.pushReplacementNamed(
                                 context,
-                                "/login",
+                                "/sectionApp",
                               );
                             } else {
                               boardController.nextPage(

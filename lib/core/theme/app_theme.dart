@@ -5,7 +5,7 @@ import 'app_colors.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
-
+    primaryColor: AppColors.orange,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
@@ -29,6 +29,20 @@ class AppTheme {
           );
         }),
         textStyle: WidgetStateProperty.all(TextStyles.buttonTextStyle),
+      ),
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: AppColors.lightBlack,
+      showUnselectedLabels: true,
+      showSelectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      selectedIconTheme: IconThemeData(color: AppColors.orange),
+      unselectedIconTheme: IconThemeData(color: AppColors.white),
+      selectedLabelStyle: TextStyles.bodyRegular12.copyWith(
+        color: AppColors.orange,
+      ),
+      unselectedLabelStyle: TextStyles.bodyRegular12.copyWith(
+        color: AppColors.white,
       ),
     ),
   );

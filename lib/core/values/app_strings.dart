@@ -5,6 +5,11 @@ class AppStrings {
   // General
   static String get routeNotFound => 'routeNotFound'.tr();
 
+ // App Section
+  static String get home => 'home'.tr();
+  static String get workouts => 'workouts'.tr();
+  static String get profile => 'profile'.tr();
+  static String get chat => 'chat'.tr();
 
 
 
