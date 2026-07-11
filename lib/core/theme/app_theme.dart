@@ -41,26 +41,26 @@ class AppTheme {
       floatingLabelBehavior: FloatingLabelBehavior.always,
       filled: false,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
         borderSide: BorderSide.none,
       ),
       labelStyle: TextStyles.labelTextFieldStyle,
       errorStyle: TextStyles.errorTextFieldStyle,
       hintStyle: TextStyles.hintTextFieldStyle,
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(20),
         borderSide: BorderSide(color: AppColors.grey, width: 1),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(20),
         borderSide: const BorderSide(color: AppColors.grey, width: 2),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(20),
         borderSide: const BorderSide(color: AppColors.red, width: 1.5),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(20),
         borderSide: const BorderSide(color: AppColors.red, width: 2),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
