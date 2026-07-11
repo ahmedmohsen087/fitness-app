@@ -101,6 +101,11 @@ class AppStrings {
   static String get idNumberRequired => 'idNumberRequired'.tr();
 
 
+ // login
+
+  static String get heyThere => 'heyThere'.tr();
+  static String get welcomeBACK => 'welcomeBACK'.tr();
+  static String get login => 'login'.tr();
 
 
 

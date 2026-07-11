@@ -73,5 +73,8 @@
   "somethingWentWrong": "Something went wrong",
 
   "idNumber": "ID number",
-  "idNumberRequired": "A valid ID number is required"
+  "idNumberRequired": "A valid ID number is required",
+  "heyThere": "Hey there",
+  "welcomeBACK": "Welcome back",
+  "login": "Login"
 }

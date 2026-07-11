@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/on_boarding/presentation/screens/on_boarding.dart';
 import '../../features/section_app/section_app.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
@@ -21,6 +22,10 @@ class AppRoutes {
       case AppRoutsName.sectionApp:
         return MaterialPageRoute(
             builder: (_) => const SectionApp(),
+        );
+      case AppRoutsName.loginScreen:
+        return MaterialPageRoute(
+          builder: (_) => const LoginScreen(),
         );
 
 

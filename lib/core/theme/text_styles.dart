@@ -20,7 +20,6 @@ abstract class TextStyles {
   );
 
 
-
   static final TextStyle buttonTextStyle = GoogleFonts.inter(
     fontSize: 14,
     fontWeight: FontWeight.bold,
@@ -35,6 +34,11 @@ abstract class TextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: AppColors.lightGray,
+  );
+  static final TextStyle bodyRegular20 = GoogleFonts.inter(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: AppColors.white,
   );
 
 
