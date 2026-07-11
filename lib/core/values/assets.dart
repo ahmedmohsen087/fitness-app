@@ -17,7 +17,7 @@ class Assets {
   static const String profileIcon = "assets/icons/profile.svg";
 
   // auth
-  static const String authBackGround = "aassets/images/authpackground.png";
+  static const String authBackGround = "assets/images/authpackground.png";
   static const String authLogo = "assets/images/authlogo.png";
   static const String facebookLogo = "assets/icons/facebook.svg";
   static const String googleLogo = "assets/icons/google.svg";

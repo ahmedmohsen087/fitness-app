@@ -1,3 +1,77 @@
 {
+  "routeNotFound": "الصفحة غير موجودة",
 
+  "home": "الرئيسية",
+  "workouts": "التمارين",
+  "profile": "الملف الشخصي",
+  "chat": "المحادثة",
+
+  "next": "التالي",
+  "back": "رجوع",
+  "getStarted": "ابدأ الآن",
+
+  "ThePriceOfExcellenceIsDiscipline": "ثمن التميز\nهو الانضباط",
+  "fitnessHasNeverBeenSoMuchFun": "لم تكن اللياقة\nممتعة إلى هذا الحد من قبل",
+  "NoMoreExcusesDoItNow": "لا مزيد من الأعذار\nابدأ الآن",
+  "onBoardingDescription": "نص تجريبي بديل يوضح شكل المحتوى في هذا المكان عند إضافة الوصف الفعلي لاحقًا.",
+
+  "tokenEmpty": "الرمز فارغ",
+  "tokenWriteFailed": "فشل حفظ الجلسة",
+  "tokenReadFailed": "فشل قراءة الجلسة",
+  "tokenDeleteFailed": "فشل حذف الجلسة",
+
+  "rememberMeWriteFailed": "فشل حفظ التفضيل",
+  "rememberMeReadFailed": "فشل قراءة التفضيل",
+  "rememberMeDeleteFailed": "فشل حذف التفضيل",
+
+  "seenOnboardingWriteFailed": "فشل حفظ حالة البدء",
+  "seenOnboardingReadFailed": "فشل قراءة حالة البدء",
+
+  "clearStorageFailed": "فشل مسح البيانات المخزنة",
+
+  "firstNameRequired": "الاسم الأول مطلوب",
+  "lastNameRequired": "الاسم الأخير مطلوب",
+  "nameInvalid": "برجاء إدخال اسم صحيح",
+  "nameTooShort": "الاسم قصير جدًا",
+  "nameTooLong": "الاسم طويل جدًا",
+
+  "emailRequired": "البريد الإلكتروني مطلوب",
+  "emailInvalid": "برجاء إدخال بريد إلكتروني صحيح",
+  "email": "البريد الإلكتروني",
+  "enterYourEmail": "أدخل بريدك الإلكتروني",
+  "emailVerification": "تأكيد البريد الإلكتروني",
+  "pleaseEnterYourEmailAssociated": "برجاء إدخال البريد الإلكتروني المرتبط بحسابك",
+  "pleaseEnterYourCode": "برجاء إدخال الرمز",
+  "didntReceiveCode": "لم يصلك الرمز؟",
+  "resend": "إعادة الإرسال",
+
+  "phoneRequired": "رقم الهاتف مطلوب",
+  "phoneInvalid": "برجاء إدخال رقم هاتف صحيح",
+
+  "passwordRequired": "كلمة المرور مطلوبة",
+  "passwordWeak": "كلمة المرور ضعيفة",
+  "confirmPasswordRequired": "برجاء تأكيد كلمة المرور",
+  "passwordDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "password": "كلمة المرور",
+  "forgetPassword": "نسيت كلمة المرور؟",
+  "confirm": "تأكيد",
+  "resetPassword": "إعادة تعيين كلمة المرور",
+  "passwordMustNotBeEmpty": "كلمة المرور يجب ألا تكون فارغة",
+  "newPassword": "كلمة مرور جديدة",
+  "enterYourPassword": "أدخل كلمة المرور",
+  "enterPassword": "أدخل كلمة المرور",
+  "confirmPassword": "تأكيد كلمة المرور",
+
+  "otpEmpty": "برجاء إدخال الرمز",
+  "otpInvalid": "رمز غير صحيح",
+  "otpLength": "الرمز يجب أن يكون 4 أرقام",
+
+  "noInternetConnection": "لا يوجد اتصال بالإنترنت",
+  "connectionTimeout": "انتهت مهلة الاتصال",
+  "requestCancelled": "تم إلغاء الطلب",
+  "badCertificate": "خطأ في شهادة الأمان",
+  "somethingWentWrong": "حدث خطأ ما",
+
+  "idNumber": "الرقم القومي",
+  "idNumberRequired": "برجاء إدخال رقم قومي صحيح"
 }

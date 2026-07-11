@@ -15,6 +15,8 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutsName.splashScreen,
       onGenerateRoute: AppRoutes.onGenerateRoute,
       locale: context.locale,
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
       theme: AppTheme.lightTheme,
 
     );

@@ -4,6 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
+import '../../../../core/values/app_routs_name.dart';
 import '../../../../core/values/app_strings.dart';
 import '../../../../core/values/assets.dart';
 
@@ -17,22 +18,14 @@ class OnBoarding extends StatefulWidget {
 class _OnBoardingState extends State<OnBoarding> {
   final PageController boardController = PageController();
 
-  bool isLast = false;
   int currentIndex = 0;
 
-  final List<Map<String, String>> items = [
-    {
-      "image": Assets.onBoarding1,
-      "title": AppStrings.titleOnBoarding1,
-    },
-    {
-      "image": Assets.onBoarding2,
-      "title": AppStrings.titleOnBoarding2,
-    },
-    {
-      "image": Assets.onBoarding3,
-      "title": AppStrings.titleOnBoarding3,
-    },
+  bool get _isLast => currentIndex == items.length - 1;
+
+  final List<({String image, String title})> items = [
+    (image: Assets.onBoarding1, title: AppStrings.titleOnBoarding1),
+    (image: Assets.onBoarding2, title: AppStrings.titleOnBoarding2),
+    (image: Assets.onBoarding3, title: AppStrings.titleOnBoarding3),
   ];
 
   @override
@@ -50,15 +43,10 @@ class _OnBoardingState extends State<OnBoarding> {
             controller: boardController,
             itemCount: items.length,
             onPageChanged: (index) {
-              setState(() {
-                currentIndex = index;
-                isLast = index == items.length - 1;
-              });
+              setState(() => currentIndex = index);
             },
             itemBuilder: (context, index) {
-              return OnBoardingItem(
-                image: items[index]["image"]!,
-              );
+              return OnBoardingItem(image: items[index].image);
             },
           ),
 
@@ -77,7 +65,7 @@ class _OnBoardingState extends State<OnBoarding> {
               child: Column(
                 children: [
                   Text(
-                    items[currentIndex]["title"]!,
+                    items[currentIndex].title,
                     style: TextStyles.bodyRegular24,
                     textAlign: TextAlign.center,
                   ),
@@ -116,7 +104,7 @@ class _OnBoardingState extends State<OnBoarding> {
                           curve: Curves.easeInOut,
                         );
                       },
-                      child: const Text("Next"),
+                      child: Text(AppStrings.next),
                     ),
                   )
                       : Row(
@@ -133,7 +121,7 @@ class _OnBoardingState extends State<OnBoarding> {
                               curve: Curves.easeInOut,
                             );
                           },
-                          child: const Text("Back"),
+                          child: Text(AppStrings.back),
                         ),
                       ),
 
@@ -142,10 +130,10 @@ class _OnBoardingState extends State<OnBoarding> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            if (isLast) {
+                            if (_isLast) {
                               Navigator.pushReplacementNamed(
                                 context,
-                                "/sectionApp",
+                                AppRoutsName.sectionApp,
                               );
                             } else {
                               boardController.nextPage(
@@ -156,7 +144,7 @@ class _OnBoardingState extends State<OnBoarding> {
                             }
                           },
                           child: Text(
-                            isLast ? "Get Started" : "Next",
+                            _isLast ? AppStrings.getStarted : AppStrings.next,
                           ),
                         ),
                       ),

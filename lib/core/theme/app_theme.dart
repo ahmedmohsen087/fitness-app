@@ -31,20 +31,6 @@ class AppTheme {
         textStyle: WidgetStateProperty.all(TextStyles.buttonTextStyle),
       ),
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: AppColors.lightBlack,
-      showUnselectedLabels: true,
-      showSelectedLabels: true,
-      type: BottomNavigationBarType.fixed,
-      selectedIconTheme: IconThemeData(color: AppColors.orange),
-      unselectedIconTheme: IconThemeData(color: AppColors.white),
-      selectedLabelStyle: TextStyles.bodyRegular12.copyWith(
-        color: AppColors.orange,
-      ),
-      unselectedLabelStyle: TextStyles.bodyRegular12.copyWith(
-        color: Colors.transparent
-      ),
-    ),
     progressIndicatorTheme: ProgressIndicatorThemeData(
       color: AppColors.orange,
       linearTrackColor: AppColors.orange,

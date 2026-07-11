@@ -100,11 +100,11 @@ abstract class AppValidations {
       return AppStrings.otpEmpty;
     }
 
-    if (!RegExp(r'^[0-9]+$').hasMatch(otp)) {
+    if (!AppRegex.hasOnlyDigits(otp)) {
       return AppStrings.otpInvalid;
     }
 
-    if (otp.length != 4) {
+    if (otp.trim().length != AppRegex.otpLength) {
       return AppStrings.otpLength;
     }
 

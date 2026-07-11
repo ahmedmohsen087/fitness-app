@@ -1,5 +1,10 @@
 abstract class AppRegex {
+  static const int otpLength = 4;
+
   static bool isNotEmpty(String value) => value.trim().isNotEmpty;
+
+  static bool hasOnlyDigits(String value) =>
+      RegExp(r'^[0-9]+$').hasMatch(value.trim());
 
   static bool isValidLength(String value, int min, int max) {
     final length = value.trim().length;
@@ -50,7 +55,7 @@ abstract class AppRegex {
   }
 
   static bool isValidOtp(String otp) {
-    return RegExp(r'^[0-9]{6}$').hasMatch(otp);
+    return RegExp('^[0-9]{$otpLength}\$').hasMatch(otp.trim());
   }
 
   static int passwordStrength(String password) {

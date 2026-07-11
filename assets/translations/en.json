@@ -1,10 +1,77 @@
-
 {
-  "ThePriceOfExcellenceIsDiscipline": "the price of excellence\n is discipline",
-  "fitnessHasNeverBeenSoMuchFun": "Fitness has never been so\n much fun",
+  "routeNotFound": "Page not found",
+
+  "home": "Home",
+  "workouts": "Workouts",
+  "profile": "Profile",
+  "chat": "Chat",
+
+  "next": "Next",
+  "back": "Back",
+  "getStarted": "Get Started",
+
+  "ThePriceOfExcellenceIsDiscipline": "The price of excellence\nis discipline",
+  "fitnessHasNeverBeenSoMuchFun": "Fitness has never been so\nmuch fun",
   "NoMoreExcusesDoItNow": "NO MORE EXCUSES\nDo It Now",
-  "LoremIpsumDolorSitAmetConsecteturEuUrnaUtGravidaQuisIdPretiumPurusMaurisMassa": "Lorem ipsum dolor sit amet consectetur. Eu urna ut gravida quis id pretium purus. Mauris massa "
+  "onBoardingDescription": "Lorem ipsum dolor sit amet consectetur. Eu urna ut gravida quis id pretium purus. Mauris massa.",
 
+  "tokenEmpty": "Token is empty",
+  "tokenWriteFailed": "Failed to save your session",
+  "tokenReadFailed": "Failed to read your session",
+  "tokenDeleteFailed": "Failed to delete your session",
 
+  "rememberMeWriteFailed": "Failed to save your preference",
+  "rememberMeReadFailed": "Failed to read your preference",
+  "rememberMeDeleteFailed": "Failed to delete your preference",
 
+  "seenOnboardingWriteFailed": "Failed to save onboarding state",
+  "seenOnboardingReadFailed": "Failed to read onboarding state",
+
+  "clearStorageFailed": "Failed to clear stored data",
+
+  "firstNameRequired": "First name is required",
+  "lastNameRequired": "Last name is required",
+  "nameInvalid": "Please enter a valid name",
+  "nameTooShort": "Name is too short",
+  "nameTooLong": "Name is too long",
+
+  "emailRequired": "Email is required",
+  "emailInvalid": "Please enter a valid email",
+  "email": "Email",
+  "enterYourEmail": "Enter your email",
+  "emailVerification": "Email verification",
+  "pleaseEnterYourEmailAssociated": "Please enter the email associated with your account",
+  "pleaseEnterYourCode": "Please enter your code",
+  "didntReceiveCode": "Didn't receive the code?",
+  "resend": "Resend",
+
+  "phoneRequired": "Phone number is required",
+  "phoneInvalid": "Please enter a valid phone number",
+
+  "passwordRequired": "Password is required",
+  "passwordWeak": "Password is too weak",
+  "confirmPasswordRequired": "Please confirm your password",
+  "passwordDoNotMatch": "Passwords do not match",
+  "password": "Password",
+  "forgetPassword": "Forgot password?",
+  "confirm": "Confirm",
+  "resetPassword": "Reset password",
+  "passwordMustNotBeEmpty": "Password must not be empty",
+  "newPassword": "New password",
+  "enterYourPassword": "Enter your password",
+  "enterPassword": "Enter password",
+  "confirmPassword": "Confirm password",
+
+  "otpEmpty": "Please enter the code",
+  "otpInvalid": "Invalid code",
+  "otpLength": "Code must be 4 digits",
+
+  "noInternetConnection": "No internet connection",
+  "connectionTimeout": "Connection timed out",
+  "requestCancelled": "Request was cancelled",
+  "badCertificate": "Security certificate error",
+  "somethingWentWrong": "Something went wrong",
+
+  "idNumber": "ID number",
+  "idNumberRequired": "A valid ID number is required"
 }

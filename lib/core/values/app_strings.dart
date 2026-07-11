@@ -11,6 +11,11 @@ class AppStrings {
   static String get profile => 'profile'.tr();
   static String get chat => 'chat'.tr();
 
+  // Onboarding actions
+  static String get next => 'next'.tr();
+  static String get back => 'back'.tr();
+  static String get getStarted => 'getStarted'.tr();
+
 
 
   // Splash / onboarding
@@ -31,10 +36,10 @@ class AppStrings {
   static String get seenOnboardingWriteFailed =>
       'seenOnboardingWriteFailed'.tr();
   static String get seenOnboardingReadFailed => 'seenOnboardingReadFailed'.tr();
-  static String get titleOnBoarding1 => 'ThePriceOfExcellence\nIsDiscipline'.tr();
+  static String get titleOnBoarding1 => 'ThePriceOfExcellenceIsDiscipline'.tr();
   static String get titleOnBoarding2 => 'fitnessHasNeverBeenSoMuchFun'.tr();
   static String get titleOnBoarding3 => 'NoMoreExcusesDoItNow'.tr();
-  static String get titleOnBoarding => 'Lorem Ipsum DolorSitAmetConsecteturEuUrna\nUtGravidaQuisIdPretiumPurusMaurisMassa '.tr();
+  static String get titleOnBoarding => 'onBoardingDescription'.tr();
 
   // Secure storage - general
   static String get clearStorageFailed => 'clearStorageFailed'.tr();

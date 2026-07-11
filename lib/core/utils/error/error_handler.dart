@@ -31,10 +31,10 @@ abstract class ErrorHandler {
       case DioExceptionType.badResponse:
         return _extractApiErrorMessage(error.response?.data) ??
             AppStrings.somethingWentWrong;
+      case DioExceptionType.transformTimeout:
+        return AppStrings.connectionTimeout;
       case DioExceptionType.unknown:
         return AppStrings.somethingWentWrong;
-      case DioExceptionType.transformTimeout:
-        throw UnimplementedError();
     }
   }
 
