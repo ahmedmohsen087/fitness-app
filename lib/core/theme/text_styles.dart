@@ -73,4 +73,22 @@ abstract class TextStyles {
     fontWeight: FontWeight.w500,
     color: AppColors.black,
   );
+
+  static final TextStyle labelTextFieldStyle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: AppColors.grey,
+  );
+
+  static final TextStyle hintTextFieldStyle = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.placeHolder,
+    letterSpacing: 0.5,
+  );
+  static final TextStyle errorTextFieldStyle = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: AppColors.red,
+  );
 }

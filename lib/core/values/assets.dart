@@ -19,6 +19,9 @@ class Assets {
   // auth
   static const String authBackGround = "aassets/images/authpackground.png";
   static const String authLogo = "assets/images/authlogo.png";
+  static const String facebookLogo = "assets/icons/facebook.svg";
+  static const String googleLogo = "assets/icons/google.svg";
+  static const String appleLogo = "assets/icons/Apple.svg";
 
 
 
