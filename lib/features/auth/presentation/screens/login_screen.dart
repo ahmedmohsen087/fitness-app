@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/assets.dart';
+import '../widgets/login_widget.dart';
 import 'login_with_google.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -11,31 +12,39 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: Image.asset(
-            Assets.authBackGround,
-            fit: BoxFit.cover,
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              Assets.authBackGround,
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        SafeArea(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topCenter,
-                child: Image.asset(
-                  Assets.authLogo,
-                ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                spacing: 10,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Image.asset(
+                      Assets.authLogo,
+                    ),
+                  ),
+                  Text(AppStrings.heyThere,
+                  style: TextStyles.bodyMedium18.copyWith(color: AppColors.white),),
+                  Text(AppStrings.welcomeBACK,
+                  style: TextStyles.bodyRegular20,),
+                  LoginWidget(),
+                  ]
               ),
-              Text(AppStrings.heyThere,
-              style: TextStyles.bodyMedium18.copyWith(color: AppColors.white),),
-              Text(AppStrings.welcomeBACK,
-              style: TextStyles.bodyRegular20,),
-              ]
-          ),
-        )
-      ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

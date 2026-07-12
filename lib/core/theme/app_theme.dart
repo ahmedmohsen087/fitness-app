@@ -37,7 +37,8 @@ class AppTheme {
       circularTrackColor: AppColors.orange,
     ),
     inputDecorationTheme: InputDecorationTheme(
-      prefixIconConstraints: const BoxConstraints(minHeight: 24, maxHeight: 24),
+      prefixIconConstraints: const BoxConstraints( maxHeight: 24, minWidth: 60,),
+      suffixIconConstraints: const BoxConstraints( maxHeight: 24 ,minWidth: 60,),
       floatingLabelBehavior: FloatingLabelBehavior.always,
       filled: false,
       border: OutlineInputBorder(
@@ -47,13 +48,15 @@ class AppTheme {
       labelStyle: TextStyles.labelTextFieldStyle,
       errorStyle: TextStyles.errorTextFieldStyle,
       hintStyle: TextStyles.hintTextFieldStyle,
+      suffixStyle: TextStyles.hintTextFieldStyle,
+      prefixStyle: TextStyles.hintTextFieldStyle,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(color: AppColors.grey, width: 1),
+        borderSide: BorderSide(color: AppColors.white, width: 1),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),
-        borderSide: const BorderSide(color: AppColors.grey, width: 2),
+        borderSide: const BorderSide(color: AppColors.white, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),

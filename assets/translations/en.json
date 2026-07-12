@@ -76,5 +76,8 @@
   "idNumberRequired": "A valid ID number is required",
   "heyThere": "Hey there",
   "welcomeBACK": "Welcome back",
-  "login": "Login"
+  "login": "Login",
+  "don'tHaveAnAccountYet": "Don't have an account yet?",
+  "register": "Register",
+  "or": "or"
 }
