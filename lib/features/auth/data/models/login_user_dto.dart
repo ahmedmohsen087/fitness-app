@@ -1,3 +1,4 @@
+import 'package:fitness_app/features/auth/domain/entities/login_user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'login_user_dto.g.dart';
 
@@ -46,4 +47,21 @@ class LoginUserDto {
   factory LoginUserDto.fromJson(Map<String, dynamic> json) => _$LoginUserDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$LoginUserDtoToJson(this);
+
+  LoginUserEntity toDomain() {
+    return LoginUserEntity(
+      id: id ?? '',
+      firstName: firstName ?? '',
+      lastName: lastName ?? '',
+      email: email ?? '',
+      gender: gender ?? '',
+      age: age ?? 0,
+      weight: weight ?? 0,
+      height: height ?? 0,
+      activityLevel: activityLevel ?? '',
+      goal: goal ?? '',
+      photo: photo ?? '',
+      createdAt: createdAt ?? DateTime.now(),
+    );
+  }
 }

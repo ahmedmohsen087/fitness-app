@@ -14,7 +14,7 @@ abstract class AuthApiClient {
   @factoryMethod
   factory AuthApiClient(Dio dio) = _AuthApiClient;
 
-  @POST('/login')
+  @POST('signin')
   @Extra({ApiParameters.requiresAuth: false})
   Future<LoginResponse> login(
       @Body() LoginRequestModel  body,

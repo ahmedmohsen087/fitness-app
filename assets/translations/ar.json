@@ -73,5 +73,11 @@
   "somethingWentWrong": "حدث خطأ ما",
 
   "idNumber": "الرقم القومي",
-  "idNumberRequired": "برجاء إدخال رقم قومي صحيح"
+  "idNumberRequired": "برجاء إدخال رقم قومي صحيح",
+  "heyThere": "مرحباً بك",
+  "welcomeBACK": "أهلاً بعودتك",
+  "login": "تسجيل الدخول",
+  "don'tHaveAnAccountYet ": "ليس لديك حساب بعد؟",
+  "register": "إنشاء حساب",
+  "or": "أو"
 }

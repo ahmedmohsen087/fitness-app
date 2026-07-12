@@ -79,5 +79,7 @@
   "login": "Login",
   "don'tHaveAnAccountYet": "Don't have an account yet?",
   "register": "Register",
-  "or": "or"
+  "or": "or",
+  "rememberMe": "Remember Me",
+  "loggedInSuccessfully": "Logged in successfully"
 }

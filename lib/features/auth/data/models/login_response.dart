@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import '../../domain/entities/login_user_entity.dart';
 import 'login_user_dto.dart';
 part 'login_response.g.dart';
 
@@ -20,6 +21,23 @@ class LoginResponse {
   factory LoginResponse.fromJson(Map<String, dynamic> json) => _$LoginResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
+
+  LoginUserEntity toEntity() {
+    return user?.toDomain() ?? LoginUserEntity(
+      id: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      gender: '',
+      age: 0,
+      weight: 0,
+      height: 0,
+      activityLevel: '',
+      goal: '',
+      photo: '',
+      createdAt: DateTime.now(),
+    );
+  }
 }
 
 
