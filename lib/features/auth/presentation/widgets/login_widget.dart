@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../core/reusable_widgets/app_toast.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
@@ -21,21 +22,27 @@ class LoginWidget extends StatefulWidget {
 
 class _LoginWidgetState extends State<LoginWidget> {
   final _formKey = GlobalKey<FormState>();
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _obscurePassword = true;
-  bool _rememberMe = true;
+
+  final ValueNotifier<bool> _obscurePassword = ValueNotifier(true);
+  final ValueNotifier<bool> _rememberMe = ValueNotifier(true);
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _obscurePassword.dispose();
+    _rememberMe.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginViewModel, LoginState>(
+      listenWhen: (previous, current) =>
+      previous.loginState != current.loginState,
       listener: (context, state) {
         if (state.loginState.msg != null) {
           AppToast.error(context, state.loginState.msg!);
@@ -44,10 +51,11 @@ class _LoginWidgetState extends State<LoginWidget> {
             context,
             AppStrings.loggedSuccessfully,
           );
+
           Navigator.pushNamedAndRemoveUntil(
             context,
             AppRoutsName.sectionApp,
-            (route) => false,
+                (route) => false,
           );
         }
       },
@@ -73,6 +81,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                     style: TextStyles.bodyRegular24,
                     textAlign: TextAlign.center,
                   ),
+
+                  /// Email
                   TextFormField(
                     controller: _emailController,
                     validator: (value) =>
@@ -80,51 +90,70 @@ class _LoginWidgetState extends State<LoginWidget> {
                     style: const TextStyle(color: AppColors.white),
                     decoration: InputDecoration(
                       hintText: AppStrings.email,
-                      prefixIcon: const Icon(Icons.email, color: AppColors.placeHolder),
-                    ),
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    validator: (value) =>
-                        AppValidations.validatePassword(value ?? ''),
-                    style: const TextStyle(color: AppColors.white),
-                    decoration: InputDecoration(
-                      hintText: AppStrings.password,
-                      prefixIcon: const Icon(Icons.lock, color: AppColors.placeHolder),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: AppColors.placeHolder,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: AppColors.placeHolder,
                       ),
                     ),
                   ),
+
+                  /// Password
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _obscurePassword,
+                    builder: (context, obscure, _) {
+                      return TextFormField(
+                        controller: _passwordController,
+                        obscureText: obscure,
+                        validator: (value) =>
+                            AppValidations.validatePassword(value ?? ''),
+                        style: const TextStyle(color: AppColors.white),
+                        decoration: InputDecoration(
+                          hintText: AppStrings.password,
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: AppColors.placeHolder,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              obscure
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: AppColors.placeHolder,
+                            ),
+                            onPressed: () {
+                              _obscurePassword.value = !obscure;
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+
+                  /// Remember me
                   Row(
                     children: [
-                      SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: Checkbox(
-                          value: _rememberMe,
-                          activeColor: AppColors.orange,
-                          checkColor: AppColors.white,
-                          onChanged: (value) {
-                            setState(() {
-                              _rememberMe = value ?? true;
-                            });
-                            context.read<LoginViewModel>().doEvent(
-                                  RememberMeEvent(rememberMe: _rememberMe),
+                      ValueListenableBuilder<bool>(
+                        valueListenable: _rememberMe,
+                        builder: (context, rememberMe, _) {
+                          return SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: Checkbox(
+                              value: rememberMe,
+                              activeColor: AppColors.orange,
+                              checkColor: AppColors.white,
+                              onChanged: (value) {
+                                _rememberMe.value = value ?? true;
+
+                                context.read<LoginViewModel>().doEvent(
+                                  RememberMeEvent(
+                                    rememberMe: _rememberMe.value,
+                                  ),
                                 );
-                          },
-                        ),
+                              },
+                            ),
+                          );
+                        },
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -144,6 +173,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                       ),
                     ],
                   ),
+
+                  /// Divider
                   Row(
                     children: [
                       const Expanded(
@@ -166,7 +197,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                       ),
                     ],
                   ),
+
                   const LoginWithGoogle(),
+
+                  /// Login Button
                   SizedBox(
                     width: double.infinity,
                     height: 50,
@@ -174,35 +208,42 @@ class _LoginWidgetState extends State<LoginWidget> {
                       onPressed: isLoading
                           ? null
                           : () {
-                              if (_formKey.currentState!.validate()) {
-                                // Apply rememberMe setting
-                                context.read<LoginViewModel>().doEvent(
-                                      RememberMeEvent(rememberMe: _rememberMe),
-                                    );
-                                // Trigger login
-                                context.read<LoginViewModel>().doEvent(
-                                      LoginRequestEvent(
-                                        requestModel: LoginRequestModel(
-                                          email: _emailController.text.trim(),
-                                          password: _passwordController.text,
-                                        ),
-                                      ),
-                                    );
-                              }
-                            },
+                        if (_formKey.currentState!.validate()) {
+                          context.read<LoginViewModel>().doEvent(
+                            RememberMeEvent(
+                              rememberMe: _rememberMe.value,
+                            ),
+                          );
+
+                          context.read<LoginViewModel>().doEvent(
+                            LoginRequestEvent(
+                              requestModel: LoginRequestModel(
+                                email:
+                                _emailController.text.trim(),
+                                password:
+                                _passwordController.text,
+                              ),
+                            ),
+                          );
+                        }
+                      },
                       child: isLoading
                           ? const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.5,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(AppColors.white),
-                              ),
-                            )
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          valueColor:
+                          AlwaysStoppedAnimation<Color>(
+                            AppColors.white,
+                          ),
+                        ),
+                      )
                           : Text(AppStrings.login),
                     ),
                   ),
+
+                  /// Register
                   RichText(
                     text: TextSpan(
                       text: AppStrings.doNotHaveAnAccountYet,
@@ -216,8 +257,12 @@ class _LoginWidgetState extends State<LoginWidget> {
                             decorationColor: AppColors.orange,
                           ),
                           // recognizer: TapGestureRecognizer()
-                          //   ..onTap = () =>
-                          //       Navigator.pushNamed(context, AppRoutsName.registerScreen),
+                          //   ..onTap = () {
+                          //     Navigator.pushNamed(
+                          //       context,
+                          //       AppRoutsName.registerScreen,
+                          //     );
+                          //   },
                         ),
                       ],
                     ),
