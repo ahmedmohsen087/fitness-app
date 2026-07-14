@@ -12,16 +12,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
   final AuthApiClient _authApiClient;
 
   AuthRemoteDataSourceImpl(this._authApiClient);
+  AuthResponseModel _getMockAuthResponse() {
+    return AuthResponseModel();
+  }
 
   @override
   Future<BaseResponse<AuthResponseModel>> forgetPassword({
     required ForgetPasswordRequestModel forgetPasswordRequestModel,
   }) async {
     try {
-      final response = await _authApiClient.forgetPassword(
-        forgetPasswordRequestModel,
+      // final response = await _authApiClient.forgetPassword(
+      //   forgetPasswordRequestModel,
+      // );
+      // return SuccessBaseResponse<AuthResponseModel>(data: response);
+      return SuccessBaseResponse<AuthResponseModel>(
+        data: _getMockAuthResponse(),
       );
-      return SuccessBaseResponse<AuthResponseModel>(data: response);
     } catch (e) {
       final message = ErrorHandler.handle(e);
       return ErrorBaseResponse<AuthResponseModel>(errorMessage: message);
@@ -33,10 +39,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
     required ForgetPasswordRequestModel forgetPasswordRequestModel,
   }) async {
     try {
-      final response = await _authApiClient.verifyOtp(
-        forgetPasswordRequestModel,
+      // final response = await _authApiClient.verifyOtp(
+      //   forgetPasswordRequestModel,
+      // );
+      // return SuccessBaseResponse<AuthResponseModel>(data: response);
+      return SuccessBaseResponse<AuthResponseModel>(
+        data: _getMockAuthResponse(),
       );
-      return SuccessBaseResponse<AuthResponseModel>(data: response);
     } catch (e) {
       final message = ErrorHandler.handle(e);
       return ErrorBaseResponse<AuthResponseModel>(errorMessage: message);
@@ -48,10 +57,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
     required ForgetPasswordRequestModel forgetPasswordRequestModel,
   }) async {
     try {
-      final response = await _authApiClient.resetPassword(
-        forgetPasswordRequestModel,
+      // final response = await _authApiClient.resetPassword(
+      //   forgetPasswordRequestModel,
+      // );await Future.delayed(const Duration(seconds: 1));
+      // return SuccessBaseResponse<AuthResponseModel>(data: response);
+      return SuccessBaseResponse<AuthResponseModel>(
+        data: _getMockAuthResponse(),
       );
-      return SuccessBaseResponse<AuthResponseModel>(data: response);
     } catch (e) {
       final message = ErrorHandler.handle(e);
       return ErrorBaseResponse<AuthResponseModel>(errorMessage: message);

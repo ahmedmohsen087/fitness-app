@@ -1,11 +1,11 @@
+// lib/core/values/app_strings.dart
 import 'package:easy_localization/easy_localization.dart';
 
 class AppStrings {
-
   // General
   static String get routeNotFound => 'routeNotFound'.tr();
 
- // App Section
+  // App Section
   static String get home => 'home'.tr();
   static String get workouts => 'workouts'.tr();
   static String get profile => 'profile'.tr();
@@ -15,11 +15,6 @@ class AppStrings {
   static String get next => 'next'.tr();
   static String get back => 'back'.tr();
   static String get getStarted => 'getStarted'.tr();
-
-
-
-  // Splash / onboarding
-
 
   // Secure storage - token
   static String get tokenEmpty => 'tokenEmpty'.tr();
@@ -95,20 +90,20 @@ class AppStrings {
   static String get somethingWentWrong => 'somethingWentWrong'.tr();
 
   // Apply
-
   static String get idNumber => 'idNumber'.tr();
-
   static String get idNumberRequired => 'idNumberRequired'.tr();
 
-
-
-
-
-
-
-
-
-
-
-
+  // Forget password flow
+  static String get enterYourEmailLabel => 'enterYourEmailLabel'.tr();
+  static String get forgetPasswordTitle => 'forgetPasswordTitle'.tr();
+  static String get sendOtp => 'sendOtp'.tr();
+  static String get otpCodeLabel => 'otpCodeLabel'.tr();
+  static String get enterYourOtpCheckYourEmail =>
+      'enterYourOtpCheckYourEmail'.tr();
+  static String get resendCode => 'resendCode'.tr();
+  static String get makeSure8CharsOrMore => 'makeSure8CharsOrMore'.tr();
+  static String get createNewPasswordTitle => 'createNewPasswordTitle'.tr();
+  static String get doneButton => 'doneButton'.tr();
+  static String get passwordChangedSuccessfully =>
+      'passwordChangedSuccessfully'.tr();
 }

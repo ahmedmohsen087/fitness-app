@@ -1,10 +1,36 @@
 import 'package:flutter/material.dart';
+import '../../../../core/values/assets.dart';
+import '../widgets/reset_password_widget.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(Assets.authBackGround, fit: BoxFit.cover),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                spacing: 70,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Image.asset(Assets.authLogo),
+                  ),
+                  const ResetPasswordWidget(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
