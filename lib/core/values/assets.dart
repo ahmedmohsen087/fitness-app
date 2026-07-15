@@ -23,6 +23,14 @@ class Assets {
   static const String googleLogo = "assets/icons/google.svg";
   static const String appleLogo = "assets/icons/Apple.svg";
 
+  // home
+  static const String homeBackGround = "assets/images/homebackground.png";
+  static const String yogaLogo = "assets/images/yogalogo.png";
+  static const String aerobicsLogo = "assets/images/aerobicslogo.png";
+  static const String fitnessLogo = "assets/images/fitnesslogo.png";
+  static const String gymLogo = "assets/images/gymlogo.png";
+  static const String trainerLogo = "assets/images/trainerlogo.png";
+  static const String test = "assets/images/test.png";
 
 
 

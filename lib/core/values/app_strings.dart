@@ -112,6 +112,26 @@ class AppStrings {
   static String get rememberMe => 'rememberMe'.tr();
   static String get loggedSuccessfully => 'loggedInSuccessfully'.tr();
 
+  // home
+  static String get gym => 'gym'.tr();
+  static String get trainer => 'trainer'.tr();
+  static String get fitness => 'fitness'.tr();
+  static String get aerobics => 'aerobics'.tr();
+  static String get yoga => 'yoga'.tr();
+  static String get category => 'category'.tr();
+  static String get hi => 'hi'.tr();
+  static String get letsStartYourDay => 'letsStartYourDay'.tr();
+  static String get recommendationToDay => 'recommendationToDay'.tr();
+  static String get upcomingWorkouts => 'upcomingWorkouts'.tr();
+  static String get recommendationForYou => 'recommendationForYou'.tr();
+  static String get popularTraining => 'popularTraining'.tr();
+  static String get seeAll => 'seeAll'.tr();
+
+
+
+
+
+
 
 
 
