@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:fitness_app/core/values/api_endpoints.dart';
 import 'package:fitness_app/core/values/api_parameters.dart';
-import 'package:fitness_app/features/auth/api/request_models/forget_password_request_model.dart';
-import 'package:fitness_app/features/auth/data/models/auth_response_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/forget_password_email_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
+import 'package:fitness_app/features/auth/data/models/forget_password_response_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -16,17 +18,19 @@ abstract class AuthApiClient {
 
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.forgetPassword)
-  Future<AuthResponseModel> forgetPassword(
-    @Body() ForgetPasswordRequestModel body,
+  Future<ForgetPasswordResponseModel> forgetPassword(
+    @Body() ForgetPasswordEmailRequestModel body,
   );
 
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.verifyOtp)
-  Future<AuthResponseModel> verifyOtp(@Body() ForgetPasswordRequestModel body);
+  Future<ForgetPasswordResponseModel> verifyOtp(
+    @Body() VerifyResetCodeRequestModel body,
+  );
 
   @Extra({ApiParameters.requiresAuth: false})
   @PUT(ApiEndpoints.resetPassword)
-  Future<AuthResponseModel> resetPassword(
-    @Body() ForgetPasswordRequestModel body,
+  Future<ForgetPasswordResponseModel> resetPassword(
+    @Body() ResetPasswordRequestModel body,
   );
 }

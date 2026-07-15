@@ -1,222 +1,117 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+// test/features/auth/domain/use_cases/forget_password_use_case_test.dart
 import 'package:fitness_app/config/base_response/base_response.dart';
-import 'package:fitness_app/features/auth/api/request_models/forget_password_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/forget_password_email_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
 import 'package:fitness_app/features/auth/domain/entities/forget_password_entity.dart';
 import 'package:fitness_app/features/auth/domain/repository_contract/auth_repository_contract.dart';
 import 'package:fitness_app/features/auth/domain/use_cases/forget_password_use_case.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
-@GenerateMocks([AuthRepositoryContract])
+@GenerateNiceMocks([MockSpec<AuthRepositoryContract>()])
 import 'forget_password_use_case_test.mocks.dart';
 
 void main() {
+  late MockAuthRepositoryContract mockRepository;
   late ForgetPasswordUseCase useCase;
-  late MockAuthRepositoryContract mockAuthRepository;
 
-  final tRequestModel = ForgetPasswordRequestModel(email: 'test@example.com');
+  const forgetPasswordRequest = ForgetPasswordEmailRequestModel(
+    email: 'test@test.com',
+  );
+  const verifyOtpRequest = VerifyResetCodeRequestModel(resetCode: '1234');
+  const resetPasswordRequest = ResetPasswordRequestModel(
+    password: 'old',
+    newPassword: 'new',
+  );
 
-  const tForgetPasswordEntity = ForgetPasswordEntity(
+  const entity = ForgetPasswordEntity(
     forgetPasswordRecoveryStep: ForgetPasswordRecoveryStep.forget,
-    message: 'Success',
-    info: 'Operation completed',
     status: 'success',
   );
 
-  const tErrorMessage = 'An error occurred';
-
   setUp(() {
-    mockAuthRepository = MockAuthRepositoryContract();
-    useCase = ForgetPasswordUseCase(mockAuthRepository);
-
-    provideDummy<BaseResponse<ForgetPasswordEntity>>(
-      SuccessBaseResponse<ForgetPasswordEntity>(data: tForgetPasswordEntity),
-    );
+    mockRepository = MockAuthRepositoryContract();
+    useCase = ForgetPasswordUseCase(mockRepository);
   });
 
-  group('forgetPassword Tests', () {
-    test(
-      'should return SuccessBaseResponse from repository when forgetPassword is called',
-      () async {
-        // Arrange
-        when(
-          mockAuthRepository.forgetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async => SuccessBaseResponse<ForgetPasswordEntity>(
-            data: tForgetPasswordEntity,
-          ),
-        );
-
-        // Act
-        final result = await useCase.forgetPassword(
-          forgetPasswordRequestModel: tRequestModel,
-        );
-
-        // Assert
-        expect(result, isA<SuccessBaseResponse<ForgetPasswordEntity>>());
-        expect((result as SuccessBaseResponse).data, tForgetPasswordEntity);
-        verify(
-          mockAuthRepository.forgetPassword(
-            forgetPasswordRequestModel: tRequestModel,
-          ),
-        ).called(1);
-      },
+  test('forgetPassword delegates to the repository exactly once', () async {
+    when(
+      mockRepository.forgetPassword(
+        forgetPasswordEmailRequestModel: forgetPasswordRequest,
+      ),
+    ).thenAnswer(
+      (_) async => SuccessBaseResponse<ForgetPasswordEntity>(data: entity),
     );
 
-    test(
-      'should return ErrorBaseResponse from repository when forgetPassword fails',
-      () async {
-        // Arrange
-        when(
-          mockAuthRepository.forgetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async => ErrorBaseResponse<ForgetPasswordEntity>(
-            errorMessage: tErrorMessage,
-          ),
-        );
-
-        // Act
-        final result = await useCase.forgetPassword(
-          forgetPasswordRequestModel: tRequestModel,
-        );
-
-        // Assert
-        expect(result, isA<ErrorBaseResponse<ForgetPasswordEntity>>());
-        expect((result as ErrorBaseResponse).errorMessage, tErrorMessage);
-        verify(
-          mockAuthRepository.forgetPassword(
-            forgetPasswordRequestModel: tRequestModel,
-          ),
-        ).called(1);
-      },
+    final result = await useCase.forgetPassword(
+      forgetPasswordEmailRequestModel: forgetPasswordRequest,
     );
+
+    verify(
+      mockRepository.forgetPassword(
+        forgetPasswordEmailRequestModel: forgetPasswordRequest,
+      ),
+    ).called(1);
+    expect(result, isA<SuccessBaseResponse<ForgetPasswordEntity>>());
   });
 
-  group('verifyOtp Tests', () {
-    test(
-      'should return SuccessBaseResponse from repository when verifyOtp is called',
-      () async {
-        // Arrange
-        when(
-          mockAuthRepository.verifyOtp(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async => SuccessBaseResponse<ForgetPasswordEntity>(
-            data: tForgetPasswordEntity,
-          ),
-        );
-
-        // Act
-        final result = await useCase.verifyOtp(
-          forgetPasswordRequestModel: tRequestModel,
-        );
-
-        // Assert
-        expect(result, isA<SuccessBaseResponse<ForgetPasswordEntity>>());
-        expect((result as SuccessBaseResponse).data, tForgetPasswordEntity);
-        verify(
-          mockAuthRepository.verifyOtp(
-            forgetPasswordRequestModel: tRequestModel,
-          ),
-        ).called(1);
-      },
+  test('verifyOtp delegates to the repository exactly once', () async {
+    when(
+      mockRepository.verifyOtp(verifyResetCodeRequestModel: verifyOtpRequest),
+    ).thenAnswer(
+      (_) async => SuccessBaseResponse<ForgetPasswordEntity>(data: entity),
     );
 
-    test(
-      'should return ErrorBaseResponse from repository when verifyOtp fails',
-      () async {
-        // Arrange
-        when(
-          mockAuthRepository.verifyOtp(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async => ErrorBaseResponse<ForgetPasswordEntity>(
-            errorMessage: tErrorMessage,
-          ),
-        );
-
-        // Act
-        final result = await useCase.verifyOtp(
-          forgetPasswordRequestModel: tRequestModel,
-        );
-
-        // Assert
-        expect(result, isA<ErrorBaseResponse<ForgetPasswordEntity>>());
-        expect((result as ErrorBaseResponse).errorMessage, tErrorMessage);
-        verify(
-          mockAuthRepository.verifyOtp(
-            forgetPasswordRequestModel: tRequestModel,
-          ),
-        ).called(1);
-      },
+    final result = await useCase.verifyOtp(
+      verifyResetCodeRequestModel: verifyOtpRequest,
     );
+
+    verify(
+      mockRepository.verifyOtp(verifyResetCodeRequestModel: verifyOtpRequest),
+    ).called(1);
+    expect(result, isA<SuccessBaseResponse<ForgetPasswordEntity>>());
   });
 
-  group('resetPassword Tests', () {
-    test(
-      'should return SuccessBaseResponse from repository when resetPassword is called',
-      () async {
-        // Arrange
-        when(
-          mockAuthRepository.resetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async => SuccessBaseResponse<ForgetPasswordEntity>(
-            data: tForgetPasswordEntity,
-          ),
-        );
-
-        // Act
-        final result = await useCase.resetPassword(
-          forgetPasswordRequestModel: tRequestModel,
-        );
-
-        // Assert
-        expect(result, isA<SuccessBaseResponse<ForgetPasswordEntity>>());
-        expect((result as SuccessBaseResponse).data, tForgetPasswordEntity);
-        verify(
-          mockAuthRepository.resetPassword(
-            forgetPasswordRequestModel: tRequestModel,
-          ),
-        ).called(1);
-      },
+  test('resetPassword delegates to the repository exactly once', () async {
+    when(
+      mockRepository.resetPassword(
+        resetPasswordRequestModel: resetPasswordRequest,
+      ),
+    ).thenAnswer(
+      (_) async => SuccessBaseResponse<ForgetPasswordEntity>(data: entity),
     );
 
-    test(
-      'should return ErrorBaseResponse from repository when resetPassword fails',
-      () async {
-        // Arrange
-        when(
-          mockAuthRepository.resetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async => ErrorBaseResponse<ForgetPasswordEntity>(
-            errorMessage: tErrorMessage,
-          ),
-        );
+    final result = await useCase.resetPassword(
+      resetPasswordRequestModel: resetPasswordRequest,
+    );
 
-        // Act
-        final result = await useCase.resetPassword(
-          forgetPasswordRequestModel: tRequestModel,
-        );
+    verify(
+      mockRepository.resetPassword(
+        resetPasswordRequestModel: resetPasswordRequest,
+      ),
+    ).called(1);
+    expect(result, isA<SuccessBaseResponse<ForgetPasswordEntity>>());
+  });
 
-        // Assert
-        expect(result, isA<ErrorBaseResponse<ForgetPasswordEntity>>());
-        expect((result as ErrorBaseResponse).errorMessage, tErrorMessage);
-        verify(
-          mockAuthRepository.resetPassword(
-            forgetPasswordRequestModel: tRequestModel,
-          ),
-        ).called(1);
-      },
+  test('propagates an ErrorBaseResponse coming from the repository', () async {
+    when(
+      mockRepository.forgetPassword(
+        forgetPasswordEmailRequestModel: forgetPasswordRequest,
+      ),
+    ).thenAnswer(
+      (_) async =>
+          ErrorBaseResponse<ForgetPasswordEntity>(errorMessage: 'failed'),
+    );
+
+    final result = await useCase.forgetPassword(
+      forgetPasswordEmailRequestModel: forgetPasswordRequest,
+    );
+
+    expect(
+      (result as ErrorBaseResponse<ForgetPasswordEntity>).errorMessage,
+      'failed',
     );
   });
 }

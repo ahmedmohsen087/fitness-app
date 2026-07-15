@@ -8,7 +8,7 @@ import '../../../../core/theme/text_styles.dart';
 import '../../../../core/utils/validation/app_validations.dart';
 import '../../../../core/values/app_routs_name.dart';
 import '../../../../core/values/app_strings.dart';
-import '../../api/request_models/forget_password_request_model.dart';
+import '../../api/request_models/forget_password_email_request_model.dart';
 import '../view_models/forget_password_view_model/forget_password_events.dart';
 import '../view_models/forget_password_view_model/forget_password_states.dart';
 import '../view_models/forget_password_view_model/forget_password_view_model.dart';
@@ -119,7 +119,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
     if (_formKey.currentState!.validate()) {
       context.read<ForgetPasswordViewModel>().doEvent(
         SendForgetPasswordEmailEvent(
-          requestModel: ForgetPasswordRequestModel(
+          forgetPasswordEmailRequestModel: ForgetPasswordEmailRequestModel(
             email: _emailController.text.trim(),
           ),
         ),

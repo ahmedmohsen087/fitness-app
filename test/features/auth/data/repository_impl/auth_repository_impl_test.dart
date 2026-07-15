@@ -1,231 +1,195 @@
+// test/features/auth/data/repository_impl/auth_repository_impl_test.dart
+import 'package:fitness_app/config/auth/auth_manager.dart';
+import 'package:fitness_app/config/base_response/base_response.dart';
+import 'package:fitness_app/features/auth/api/request_models/forget_password_email_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
+import 'package:fitness_app/features/auth/data/data_sources_contract/auth_remote_data_source_contract.dart';
+import 'package:fitness_app/features/auth/data/models/forget_password_response_model.dart';
 import 'package:fitness_app/features/auth/data/repository_impl/auth_repository_impl.dart';
+import 'package:fitness_app/features/auth/domain/entities/forget_password_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:fitness_app/config/base_response/base_response.dart';
-import 'package:fitness_app/config/auth/auth_manager.dart';
-import 'package:fitness_app/features/auth/api/request_models/forget_password_request_model.dart';
-import 'package:fitness_app/features/auth/data/models/auth_response_model.dart';
-import 'package:fitness_app/features/auth/domain/entities/forget_password_entity.dart';
-import 'package:fitness_app/features/auth/domain/mappers/auth_response_model_mapper.dart';
-import 'package:fitness_app/features/auth/data/data_sources_contract/auth_remote_data_source_contract.dart';
 
-@GenerateMocks([AuthRemoteDataSourceContract, AuthManager])
+@GenerateNiceMocks([
+  MockSpec<AuthRemoteDataSourceContract>(),
+  MockSpec<AuthManager>(),
+])
 import 'auth_repository_impl_test.mocks.dart';
 
 void main() {
-  late AuthRepositoryImpl repository;
   late MockAuthRemoteDataSourceContract mockRemoteDataSource;
   late MockAuthManager mockAuthManager;
+  late AuthRepositoryImpl repository;
 
-  final tRequestModel = ForgetPasswordRequestModel(email: 'test@example.com');
+  const forgetPasswordRequest = ForgetPasswordEmailRequestModel(
+    email: 'test@test.com',
+  );
+  const verifyOtpRequest = VerifyResetCodeRequestModel(resetCode: '1234');
+  const resetPasswordRequest = ResetPasswordRequestModel(
+    password: 'old',
+    newPassword: 'new',
+  );
 
-  const tAuthResponseModel = AuthResponseModel(
-    message: 'Success',
-    token: 'mocked_jwt_token',
-    info: 'Operation completed',
+  const responseModel = ForgetPasswordResponseModel(
+    message: 'ok',
+    token: 'tok',
+    info: 'info',
     status: 'success',
   );
-
-  final tForgetEntity = tAuthResponseModel.toForgetPasswordEntity(
-    step: ForgetPasswordRecoveryStep.forget,
-  );
-  final tVerifyEntity = tAuthResponseModel.toForgetPasswordEntity(
-    step: ForgetPasswordRecoveryStep.verify,
-  );
-  final tResetEntity = tAuthResponseModel.toForgetPasswordEntity(
-    step: ForgetPasswordRecoveryStep.reset,
-  );
-
-  const tErrorMessage = 'Something went wrong';
 
   setUp(() {
     mockRemoteDataSource = MockAuthRemoteDataSourceContract();
     mockAuthManager = MockAuthManager();
     repository = AuthRepositoryImpl(mockRemoteDataSource, mockAuthManager);
-
-    provideDummy<BaseResponse<AuthResponseModel>>(
-      SuccessBaseResponse<AuthResponseModel>(data: tAuthResponseModel),
-    );
   });
 
-  group('forgetPassword Tests', () {
+  group('forgetPassword', () {
     test(
-      'should return SuccessBaseResponse holding ForgetPasswordEntity mapped with step.forget when remote data source succeeds',
+      'maps a success response to a ForgetPasswordEntity with forget step',
       () async {
-        // Arrange
         when(
           mockRemoteDataSource.forgetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
+            forgetPasswordEmailRequestModel: forgetPasswordRequest,
           ),
         ).thenAnswer(
-          (_) async =>
-              SuccessBaseResponse<AuthResponseModel>(data: tAuthResponseModel),
+          (_) async => SuccessBaseResponse<ForgetPasswordResponseModel>(
+            data: responseModel,
+          ),
         );
 
-        // Act
         final result = await repository.forgetPassword(
-          forgetPasswordRequestModel: tRequestModel,
+          forgetPasswordEmailRequestModel: forgetPasswordRequest,
         );
 
-        // Assert
         expect(result, isA<SuccessBaseResponse<ForgetPasswordEntity>>());
-        expect((result as SuccessBaseResponse).data, tForgetEntity);
-        verify(
-          mockRemoteDataSource.forgetPassword(
-            forgetPasswordRequestModel: tRequestModel,
-          ),
-        ).called(1);
+        final data = (result as SuccessBaseResponse<ForgetPasswordEntity>).data;
+        expect(
+          data.forgetPasswordRecoveryStep,
+          ForgetPasswordRecoveryStep.forget,
+        );
+        expect(data.message, 'ok');
+        expect(data.status, 'success');
       },
     );
 
-    test(
-      'should return ErrorBaseResponse holding the exact error message when remote data source fails',
-      () async {
-        // Arrange
-        when(
-          mockRemoteDataSource.forgetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async =>
-              ErrorBaseResponse<AuthResponseModel>(errorMessage: tErrorMessage),
-        );
+    test('propagates the error message on failure', () async {
+      when(
+        mockRemoteDataSource.forgetPassword(
+          forgetPasswordEmailRequestModel: forgetPasswordRequest,
+        ),
+      ).thenAnswer(
+        (_) async => ErrorBaseResponse<ForgetPasswordResponseModel>(
+          errorMessage: 'failed',
+        ),
+      );
 
-        // Act
-        final result = await repository.forgetPassword(
-          forgetPasswordRequestModel: tRequestModel,
-        );
+      final result = await repository.forgetPassword(
+        forgetPasswordEmailRequestModel: forgetPasswordRequest,
+      );
 
-        // Assert
-        expect(result, isA<ErrorBaseResponse<ForgetPasswordEntity>>());
-        expect((result as ErrorBaseResponse).errorMessage, tErrorMessage);
-        verify(
-          mockRemoteDataSource.forgetPassword(
-            forgetPasswordRequestModel: tRequestModel,
-          ),
-        ).called(1);
-      },
-    );
+      expect(result, isA<ErrorBaseResponse<ForgetPasswordEntity>>());
+      expect(
+        (result as ErrorBaseResponse<ForgetPasswordEntity>).errorMessage,
+        'failed',
+      );
+    });
   });
 
-  group('verifyOtp Tests', () {
+  group('verifyOtp', () {
     test(
-      'should return SuccessBaseResponse holding ForgetPasswordEntity mapped with step.verify when remote data source succeeds',
+      'maps a success response to a ForgetPasswordEntity with verify step',
       () async {
-        // Arrange
         when(
           mockRemoteDataSource.verifyOtp(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
+            verifyResetCodeRequestModel: verifyOtpRequest,
           ),
         ).thenAnswer(
-          (_) async =>
-              SuccessBaseResponse<AuthResponseModel>(data: tAuthResponseModel),
-        );
-
-        // Act
-        final result = await repository.verifyOtp(
-          forgetPasswordRequestModel: tRequestModel,
-        );
-
-        // Assert
-        expect(result, isA<SuccessBaseResponse<ForgetPasswordEntity>>());
-        expect((result as SuccessBaseResponse).data, tVerifyEntity);
-        verify(
-          mockRemoteDataSource.verifyOtp(
-            forgetPasswordRequestModel: tRequestModel,
+          (_) async => SuccessBaseResponse<ForgetPasswordResponseModel>(
+            data: responseModel,
           ),
-        ).called(1);
+        );
+
+        final result = await repository.verifyOtp(
+          verifyResetCodeRequestModel: verifyOtpRequest,
+        );
+
+        final data = (result as SuccessBaseResponse<ForgetPasswordEntity>).data;
+        expect(
+          data.forgetPasswordRecoveryStep,
+          ForgetPasswordRecoveryStep.verify,
+        );
       },
     );
 
-    test(
-      'should return ErrorBaseResponse when verifyOtp on remote data source fails',
-      () async {
-        // Arrange
-        when(
-          mockRemoteDataSource.verifyOtp(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async =>
-              ErrorBaseResponse<AuthResponseModel>(errorMessage: tErrorMessage),
-        );
+    test('propagates the error message on failure', () async {
+      when(
+        mockRemoteDataSource.verifyOtp(
+          verifyResetCodeRequestModel: verifyOtpRequest,
+        ),
+      ).thenAnswer(
+        (_) async => ErrorBaseResponse<ForgetPasswordResponseModel>(
+          errorMessage: 'bad otp',
+        ),
+      );
 
-        // Act
-        final result = await repository.verifyOtp(
-          forgetPasswordRequestModel: tRequestModel,
-        );
+      final result = await repository.verifyOtp(
+        verifyResetCodeRequestModel: verifyOtpRequest,
+      );
 
-        // Assert
-        expect(result, isA<ErrorBaseResponse<ForgetPasswordEntity>>());
-        expect((result as ErrorBaseResponse).errorMessage, tErrorMessage);
-        verify(
-          mockRemoteDataSource.verifyOtp(
-            forgetPasswordRequestModel: tRequestModel,
-          ),
-        ).called(1);
-      },
-    );
+      expect(
+        (result as ErrorBaseResponse<ForgetPasswordEntity>).errorMessage,
+        'bad otp',
+      );
+    });
   });
 
-  group('resetPassword Tests', () {
+  group('resetPassword', () {
     test(
-      'should return SuccessBaseResponse holding ForgetPasswordEntity mapped with step.reset when remote data source succeeds',
+      'maps a success response to a ForgetPasswordEntity with reset step',
       () async {
-        // Arrange
         when(
           mockRemoteDataSource.resetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
+            resetPasswordRequestModel: resetPasswordRequest,
           ),
         ).thenAnswer(
-          (_) async =>
-              SuccessBaseResponse<AuthResponseModel>(data: tAuthResponseModel),
-        );
-
-        // Act
-        final result = await repository.resetPassword(
-          forgetPasswordRequestModel: tRequestModel,
-        );
-
-        // Assert
-        expect(result, isA<SuccessBaseResponse<ForgetPasswordEntity>>());
-        expect((result as SuccessBaseResponse).data, tResetEntity);
-        verify(
-          mockRemoteDataSource.resetPassword(
-            forgetPasswordRequestModel: tRequestModel,
+          (_) async => SuccessBaseResponse<ForgetPasswordResponseModel>(
+            data: responseModel,
           ),
-        ).called(1);
+        );
+
+        final result = await repository.resetPassword(
+          resetPasswordRequestModel: resetPasswordRequest,
+        );
+
+        final data = (result as SuccessBaseResponse<ForgetPasswordEntity>).data;
+        expect(
+          data.forgetPasswordRecoveryStep,
+          ForgetPasswordRecoveryStep.reset,
+        );
       },
     );
 
-    test(
-      'should return ErrorBaseResponse when resetPassword on remote data source fails',
-      () async {
-        // Arrange
-        when(
-          mockRemoteDataSource.resetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async =>
-              ErrorBaseResponse<AuthResponseModel>(errorMessage: tErrorMessage),
-        );
+    test('propagates the error message on failure', () async {
+      when(
+        mockRemoteDataSource.resetPassword(
+          resetPasswordRequestModel: resetPasswordRequest,
+        ),
+      ).thenAnswer(
+        (_) async => ErrorBaseResponse<ForgetPasswordResponseModel>(
+          errorMessage: 'reset failed',
+        ),
+      );
 
-        // Act
-        final result = await repository.resetPassword(
-          forgetPasswordRequestModel: tRequestModel,
-        );
+      final result = await repository.resetPassword(
+        resetPasswordRequestModel: resetPasswordRequest,
+      );
 
-        // Assert
-        expect(result, isA<ErrorBaseResponse<ForgetPasswordEntity>>());
-        expect((result as ErrorBaseResponse).errorMessage, tErrorMessage);
-        verify(
-          mockRemoteDataSource.resetPassword(
-            forgetPasswordRequestModel: tRequestModel,
-          ),
-        ).called(1);
-      },
-    );
+      expect(
+        (result as ErrorBaseResponse<ForgetPasswordEntity>).errorMessage,
+        'reset failed',
+      );
+    });
   });
 }

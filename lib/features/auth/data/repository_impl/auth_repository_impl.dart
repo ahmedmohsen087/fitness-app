@@ -1,6 +1,8 @@
 import 'package:fitness_app/config/base_response/base_response.dart';
-import 'package:fitness_app/features/auth/api/request_models/forget_password_request_model.dart';
-import 'package:fitness_app/features/auth/data/models/auth_response_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/forget_password_email_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
+import 'package:fitness_app/features/auth/data/models/forget_password_response_model.dart';
 import 'package:fitness_app/features/auth/domain/entities/forget_password_entity.dart';
 import 'package:fitness_app/features/auth/domain/mappers/auth_response_model_mapper.dart';
 import 'package:injectable/injectable.dart';
@@ -17,19 +19,19 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
 
   @override
   Future<BaseResponse<ForgetPasswordEntity>> forgetPassword({
-    required ForgetPasswordRequestModel forgetPasswordRequestModel,
+    required ForgetPasswordEmailRequestModel forgetPasswordEmailRequestModel,
   }) async {
     final response = await _remoteDataSource.forgetPassword(
-      forgetPasswordRequestModel: forgetPasswordRequestModel,
+      forgetPasswordEmailRequestModel: forgetPasswordEmailRequestModel,
     );
     switch (response) {
-      case SuccessBaseResponse<AuthResponseModel>(data: final data):
+      case SuccessBaseResponse<ForgetPasswordResponseModel>(data: final data):
         return SuccessBaseResponse<ForgetPasswordEntity>(
           data: data.toForgetPasswordEntity(
             step: ForgetPasswordRecoveryStep.forget,
           ),
         );
-      case ErrorBaseResponse<AuthResponseModel>(
+      case ErrorBaseResponse<ForgetPasswordResponseModel>(
         errorMessage: final errorMessage,
       ):
         return ErrorBaseResponse<ForgetPasswordEntity>(
@@ -40,19 +42,19 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
 
   @override
   Future<BaseResponse<ForgetPasswordEntity>> verifyOtp({
-    required ForgetPasswordRequestModel forgetPasswordRequestModel,
+    required VerifyResetCodeRequestModel verifyResetCodeRequestModel,
   }) async {
     final response = await _remoteDataSource.verifyOtp(
-      forgetPasswordRequestModel: forgetPasswordRequestModel,
+      verifyResetCodeRequestModel: verifyResetCodeRequestModel,
     );
     switch (response) {
-      case SuccessBaseResponse<AuthResponseModel>(data: final data):
+      case SuccessBaseResponse<ForgetPasswordResponseModel>(data: final data):
         return SuccessBaseResponse<ForgetPasswordEntity>(
           data: data.toForgetPasswordEntity(
             step: ForgetPasswordRecoveryStep.verify,
           ),
         );
-      case ErrorBaseResponse<AuthResponseModel>(
+      case ErrorBaseResponse<ForgetPasswordResponseModel>(
         errorMessage: final errorMessage,
       ):
         return ErrorBaseResponse<ForgetPasswordEntity>(
@@ -63,19 +65,19 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
 
   @override
   Future<BaseResponse<ForgetPasswordEntity>> resetPassword({
-    required ForgetPasswordRequestModel forgetPasswordRequestModel,
+    required ResetPasswordRequestModel resetPasswordRequestModel,
   }) async {
     final response = await _remoteDataSource.resetPassword(
-      forgetPasswordRequestModel: forgetPasswordRequestModel,
+      resetPasswordRequestModel: resetPasswordRequestModel,
     );
     switch (response) {
-      case SuccessBaseResponse<AuthResponseModel>(data: final data):
+      case SuccessBaseResponse<ForgetPasswordResponseModel>(data: final data):
         return SuccessBaseResponse<ForgetPasswordEntity>(
           data: data.toForgetPasswordEntity(
             step: ForgetPasswordRecoveryStep.reset,
           ),
         );
-      case ErrorBaseResponse<AuthResponseModel>(
+      case ErrorBaseResponse<ForgetPasswordResponseModel>(
         errorMessage: final errorMessage,
       ):
         return ErrorBaseResponse<ForgetPasswordEntity>(

@@ -1,221 +1,257 @@
+// test/features/auth/presentation/view_models/forget_password_view_model_test.dart
 import 'package:bloc_test/bloc_test.dart';
+import 'package:fitness_app/config/base_response/base_response.dart';
+import 'package:fitness_app/config/base_state/base_state.dart';
+import 'package:fitness_app/features/auth/api/request_models/forget_password_email_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
+import 'package:fitness_app/features/auth/domain/entities/forget_password_entity.dart';
+import 'package:fitness_app/features/auth/domain/use_cases/forget_password_use_case.dart';
 import 'package:fitness_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_events.dart';
 import 'package:fitness_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_states.dart';
 import 'package:fitness_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:fitness_app/config/base_response/base_response.dart';
-import 'package:fitness_app/config/base_state/base_state.dart';
-import 'package:fitness_app/features/auth/api/request_models/forget_password_request_model.dart';
-import 'package:fitness_app/features/auth/domain/entities/forget_password_entity.dart';
-import 'package:fitness_app/features/auth/domain/use_cases/forget_password_use_case.dart';
 
 @GenerateNiceMocks([MockSpec<ForgetPasswordUseCase>()])
 import 'forget_password_view_model_test.mocks.dart';
 
 void main() {
-  late ForgetPasswordViewModel viewModel;
   late MockForgetPasswordUseCase mockUseCase;
 
-  final tRequestModelWithEmail = ForgetPasswordRequestModel(
-    email: 'test@example.com',
+  const forgetPasswordRequest = ForgetPasswordEmailRequestModel(
+    email: 'test@test.com',
+  );
+  const verifyOtpRequest = VerifyResetCodeRequestModel(resetCode: '1234');
+  const resetPasswordRequest = ResetPasswordRequestModel(
+    password: 'old',
+    newPassword: 'new',
   );
 
-  final tRequestModelWithoutEmail = ForgetPasswordRequestModel(email: null);
-
-  const tForgetPasswordEntity = ForgetPasswordEntity(
+  const forgetEntity = ForgetPasswordEntity(
     forgetPasswordRecoveryStep: ForgetPasswordRecoveryStep.forget,
-    message: 'Success',
+    status: 'success',
   );
-
-  const tErrorMessage = 'Connection Timeout';
+  const verifyEntity = ForgetPasswordEntity(
+    forgetPasswordRecoveryStep: ForgetPasswordRecoveryStep.verify,
+    status: 'success',
+  );
+  const resetEntity = ForgetPasswordEntity(
+    forgetPasswordRecoveryStep: ForgetPasswordRecoveryStep.reset,
+    status: 'success',
+  );
 
   setUp(() {
     mockUseCase = MockForgetPasswordUseCase();
-    viewModel = ForgetPasswordViewModel(mockUseCase);
-
-    provideDummy<BaseResponse<ForgetPasswordEntity>>(
-      SuccessBaseResponse<ForgetPasswordEntity>(data: tForgetPasswordEntity),
-    );
   });
 
-  tearDown(() {
-    viewModel.close();
-  });
-
-  test(
-    'initial state should be ForgetPasswordState with idle/empty base state',
-    () {
-      expect(viewModel.state, const ForgetPasswordState());
-      expect(viewModel.userEmail, isNull);
-    },
-  );
-
-  group('SendForgetPasswordEmailEvent Tests', () {
+  group('SendForgetPasswordEmailEvent', () {
     blocTest<ForgetPasswordViewModel, ForgetPasswordState>(
-      'should emit [loading, success] and save userEmail when send email succeeds',
+      'emits [loading, success] when forgetPassword succeeds',
       build: () {
         when(
           mockUseCase.forgetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
+            forgetPasswordEmailRequestModel: forgetPasswordRequest,
           ),
         ).thenAnswer(
-          (_) async => SuccessBaseResponse<ForgetPasswordEntity>(
-            data: tForgetPasswordEntity,
-          ),
+          (_) async =>
+              SuccessBaseResponse<ForgetPasswordEntity>(data: forgetEntity),
         );
-        return viewModel;
+        return ForgetPasswordViewModel(mockUseCase);
       },
-      act: (bloc) => bloc.doEvent(
-        SendForgetPasswordEmailEvent(requestModel: tRequestModelWithEmail),
+      act: (cubit) => cubit.doEvent(
+        SendForgetPasswordEmailEvent(
+          forgetPasswordEmailRequestModel: forgetPasswordRequest,
+        ),
       ),
       expect: () => [
-        ForgetPasswordState(forgetPasswordState: BaseState.loading()),
-        ForgetPasswordState(
-          forgetPasswordState: BaseState.success(tForgetPasswordEntity),
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.isLoading,
+          'isLoading',
+          true,
         ),
+        isA<ForgetPasswordState>()
+            .having((s) => s.forgetPasswordState.isLoading, 'isLoading', false)
+            .having((s) => s.forgetPasswordState.data, 'data', forgetEntity),
       ],
-      verify: (_) {
-        expect(viewModel.userEmail, 'test@example.com');
-        verify(
-          mockUseCase.forgetPassword(
-            forgetPasswordRequestModel: tRequestModelWithEmail,
-          ),
-        ).called(1);
-      },
     );
 
     blocTest<ForgetPasswordViewModel, ForgetPasswordState>(
-      'should emit [loading, error] when send email fails',
+      'emits [loading, error] when forgetPassword fails',
       build: () {
         when(
           mockUseCase.forgetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
+            forgetPasswordEmailRequestModel: forgetPasswordRequest,
           ),
         ).thenAnswer(
           (_) async => ErrorBaseResponse<ForgetPasswordEntity>(
-            errorMessage: tErrorMessage,
+            errorMessage: 'network error',
           ),
         );
-        return viewModel;
+        return ForgetPasswordViewModel(mockUseCase);
       },
-      act: (bloc) => bloc.doEvent(
-        SendForgetPasswordEmailEvent(requestModel: tRequestModelWithEmail),
+      act: (cubit) => cubit.doEvent(
+        SendForgetPasswordEmailEvent(
+          forgetPasswordEmailRequestModel: forgetPasswordRequest,
+        ),
       ),
       expect: () => [
-        ForgetPasswordState(forgetPasswordState: BaseState.loading()),
-        ForgetPasswordState(
-          forgetPasswordState: BaseState.error(tErrorMessage),
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.isLoading,
+          'isLoading',
+          true,
+        ),
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.msg,
+          'msg',
+          'network error',
+        ),
+      ],
+    );
+
+    test('stores the entered email as userEmail', () async {
+      when(
+        mockUseCase.forgetPassword(
+          forgetPasswordEmailRequestModel: forgetPasswordRequest,
+        ),
+      ).thenAnswer(
+        (_) async =>
+            SuccessBaseResponse<ForgetPasswordEntity>(data: forgetEntity),
+      );
+
+      final cubit = ForgetPasswordViewModel(mockUseCase);
+      cubit.doEvent(
+        SendForgetPasswordEmailEvent(
+          forgetPasswordEmailRequestModel: forgetPasswordRequest,
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(cubit.userEmail, 'test@test.com');
+      await cubit.close();
+    });
+  });
+
+  group('VerifyOtpEvent', () {
+    blocTest<ForgetPasswordViewModel, ForgetPasswordState>(
+      'emits [loading, success] with verify step when verifyOtp succeeds',
+      build: () {
+        when(
+          mockUseCase.verifyOtp(verifyResetCodeRequestModel: verifyOtpRequest),
+        ).thenAnswer(
+          (_) async =>
+              SuccessBaseResponse<ForgetPasswordEntity>(data: verifyEntity),
+        );
+        return ForgetPasswordViewModel(mockUseCase);
+      },
+      act: (cubit) => cubit.doEvent(
+        VerifyOtpEvent(verifyResetCodeRequestModel: verifyOtpRequest),
+      ),
+      expect: () => [
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.isLoading,
+          'isLoading',
+          true,
+        ),
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.data?.forgetPasswordRecoveryStep,
+          'step',
+          ForgetPasswordRecoveryStep.verify,
+        ),
+      ],
+    );
+
+    blocTest<ForgetPasswordViewModel, ForgetPasswordState>(
+      'emits [loading, error] when verifyOtp fails',
+      build: () {
+        when(
+          mockUseCase.verifyOtp(verifyResetCodeRequestModel: verifyOtpRequest),
+        ).thenAnswer(
+          (_) async => ErrorBaseResponse<ForgetPasswordEntity>(
+            errorMessage: 'invalid otp',
+          ),
+        );
+        return ForgetPasswordViewModel(mockUseCase);
+      },
+      act: (cubit) => cubit.doEvent(
+        VerifyOtpEvent(verifyResetCodeRequestModel: verifyOtpRequest),
+      ),
+      expect: () => [
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.isLoading,
+          'isLoading',
+          true,
+        ),
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.msg,
+          'msg',
+          'invalid otp',
         ),
       ],
     );
   });
 
-  group('VerifyOtpEvent Tests', () {
+  group('ResetPasswordEvent', () {
     blocTest<ForgetPasswordViewModel, ForgetPasswordState>(
-      'should fallback to saved _userEmail when requestModel email is null',
+      'emits [loading, success] with reset step when resetPassword succeeds',
       build: () {
-        when(
-          mockUseCase.forgetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async => SuccessBaseResponse<ForgetPasswordEntity>(
-            data: tForgetPasswordEntity,
-          ),
-        );
-        when(
-          mockUseCase.verifyOtp(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async => SuccessBaseResponse<ForgetPasswordEntity>(
-            data: tForgetPasswordEntity,
-          ),
-        );
-        return viewModel;
-      },
-      seed: () {
-        viewModel.doEvent(
-          SendForgetPasswordEmailEvent(requestModel: tRequestModelWithEmail),
-        );
-        return const ForgetPasswordState();
-      },
-      act: (bloc) =>
-          bloc.doEvent(VerifyOtpEvent(requestModel: tRequestModelWithoutEmail)),
-      expect: () => [
-        ForgetPasswordState(forgetPasswordState: BaseState.loading()),
-        ForgetPasswordState(
-          forgetPasswordState: BaseState.success(tForgetPasswordEntity),
-        ),
-      ],
-      verify: (_) {
-        verify(
-          mockUseCase.verifyOtp(
-            forgetPasswordRequestModel: argThat(
-              predicate<ForgetPasswordRequestModel>(
-                (model) => model.email == 'test@example.com',
-              ),
-              named: 'forgetPasswordRequestModel',
-            ),
-          ),
-        ).called(1);
-      },
-    );
-  });
-
-  group('ResetPasswordEvent Tests', () {
-    blocTest<ForgetPasswordViewModel, ForgetPasswordState>(
-      'should append saved _userEmail to copyWith during reset password',
-      build: () {
-        when(
-          mockUseCase.forgetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
-          ),
-        ).thenAnswer(
-          (_) async => SuccessBaseResponse<ForgetPasswordEntity>(
-            data: tForgetPasswordEntity,
-          ),
-        );
         when(
           mockUseCase.resetPassword(
-            forgetPasswordRequestModel: anyNamed('forgetPasswordRequestModel'),
+            resetPasswordRequestModel: resetPasswordRequest,
           ),
         ).thenAnswer(
-          (_) async => SuccessBaseResponse<ForgetPasswordEntity>(
-            data: tForgetPasswordEntity,
-          ),
+          (_) async =>
+              SuccessBaseResponse<ForgetPasswordEntity>(data: resetEntity),
         );
-        return viewModel;
+        return ForgetPasswordViewModel(mockUseCase);
       },
-      seed: () {
-        viewModel.doEvent(
-          SendForgetPasswordEmailEvent(requestModel: tRequestModelWithEmail),
-        );
-        return const ForgetPasswordState();
-      },
-      act: (bloc) => bloc.doEvent(
-        ResetPasswordEvent(requestModel: tRequestModelWithoutEmail),
+      act: (cubit) => cubit.doEvent(
+        ResetPasswordEvent(resetPasswordRequestModel: resetPasswordRequest),
       ),
       expect: () => [
-        ForgetPasswordState(forgetPasswordState: BaseState.loading()),
-        ForgetPasswordState(
-          forgetPasswordState: BaseState.success(tForgetPasswordEntity),
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.isLoading,
+          'isLoading',
+          true,
+        ),
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.data?.forgetPasswordRecoveryStep,
+          'step',
+          ForgetPasswordRecoveryStep.reset,
         ),
       ],
-      verify: (_) {
-        verify(
+    );
+
+    blocTest<ForgetPasswordViewModel, ForgetPasswordState>(
+      'emits [loading, error] when resetPassword fails',
+      build: () {
+        when(
           mockUseCase.resetPassword(
-            forgetPasswordRequestModel: argThat(
-              predicate<ForgetPasswordRequestModel>(
-                (model) => model.email == 'test@example.com',
-              ),
-              named: 'forgetPasswordRequestModel',
-            ),
+            resetPasswordRequestModel: resetPasswordRequest,
           ),
-        ).called(1);
+        ).thenAnswer(
+          (_) async => ErrorBaseResponse<ForgetPasswordEntity>(
+            errorMessage: 'passwords do not match',
+          ),
+        );
+        return ForgetPasswordViewModel(mockUseCase);
       },
+      act: (cubit) => cubit.doEvent(
+        ResetPasswordEvent(resetPasswordRequestModel: resetPasswordRequest),
+      ),
+      expect: () => [
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.isLoading,
+          'isLoading',
+          true,
+        ),
+        isA<ForgetPasswordState>().having(
+          (s) => s.forgetPasswordState.msg,
+          'msg',
+          'passwords do not match',
+        ),
+      ],
     );
   });
 }

@@ -1,6 +1,8 @@
 import 'package:fitness_app/config/base_response/base_response.dart';
 import 'package:fitness_app/config/base_state/base_state.dart';
-import 'package:fitness_app/features/auth/api/request_models/forget_password_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/forget_password_email_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
 import 'package:fitness_app/features/auth/domain/entities/forget_password_entity.dart';
 import 'package:fitness_app/features/auth/domain/use_cases/forget_password_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,56 +25,57 @@ class ForgetPasswordViewModel extends Cubit<ForgetPasswordState> {
   void doEvent(ForgetPasswordEvents event) {
     switch (event) {
       case SendForgetPasswordEmailEvent():
-        _userEmail = event.requestModel.email;
-        _forgetPassword(forgetPasswordRequestModel: event.requestModel);
+        _userEmail = event.forgetPasswordEmailRequestModel.email;
+        _forgetPassword(
+          forgetPasswordEmailRequestModel:
+              event.forgetPasswordEmailRequestModel,
+        );
         break;
 
       case VerifyOtpEvent():
-        _verifyOtp(forgetPasswordRequestModel: event.requestModel);
+        _verifyOtp(
+          verifyResetCodeRequestModel: event.verifyResetCodeRequestModel,
+        );
         break;
 
       case ResetPasswordEvent():
-        _resetPassword(forgetPasswordRequestModel: event.requestModel);
+        _resetPassword(
+          resetPasswordRequestModel: event.resetPasswordRequestModel,
+        );
         break;
     }
   }
 
   Future<void> _forgetPassword({
-    required ForgetPasswordRequestModel forgetPasswordRequestModel,
+    required ForgetPasswordEmailRequestModel forgetPasswordEmailRequestModel,
   }) async {
     emit(state.copyWith(forgetPasswordState: BaseState.loading()));
     final response = await _forgetPasswordUseCase.forgetPassword(
-      forgetPasswordRequestModel: forgetPasswordRequestModel,
+      forgetPasswordEmailRequestModel: forgetPasswordEmailRequestModel,
     );
     _handleResponse(response);
   }
 
   Future<void> _verifyOtp({
-    required ForgetPasswordRequestModel forgetPasswordRequestModel,
+    required VerifyResetCodeRequestModel verifyResetCodeRequestModel,
   }) async {
     emit(state.copyWith(forgetPasswordState: BaseState.loading()));
 
-    final finalRequest = forgetPasswordRequestModel.email == null
-        ? forgetPasswordRequestModel.copyWith(email: _userEmail)
-        : forgetPasswordRequestModel;
-
-    final response = await _forgetPasswordUseCase.verifyOtp(
-      forgetPasswordRequestModel: finalRequest,
+    final verifyResetCode = await _forgetPasswordUseCase.verifyOtp(
+      verifyResetCodeRequestModel: verifyResetCodeRequestModel,
     );
-    _handleResponse(response);
+    _handleResponse(verifyResetCode);
   }
 
   Future<void> _resetPassword({
-    required ForgetPasswordRequestModel forgetPasswordRequestModel,
+    required ResetPasswordRequestModel resetPasswordRequestModel,
   }) async {
     emit(state.copyWith(forgetPasswordState: BaseState.loading()));
 
-    final finalRequest = forgetPasswordRequestModel.copyWith(email: _userEmail);
-
-    final response = await _forgetPasswordUseCase.resetPassword(
-      forgetPasswordRequestModel: finalRequest,
+    final resetPassword = await _forgetPasswordUseCase.resetPassword(
+      resetPasswordRequestModel: resetPasswordRequestModel,
     );
-    _handleResponse(response);
+    _handleResponse(resetPassword);
   }
 
   void _handleResponse(BaseResponse<ForgetPasswordEntity> response) {

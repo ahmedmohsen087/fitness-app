@@ -1,15 +1,13 @@
-// lib/features/auth/presentation/widgets/reset_password_widget.dart
+import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
 import 'package:fitness_app/features/auth/domain/entities/forget_password_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../core/reusable_widgets/app_toast.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/utils/validation/app_validations.dart';
 import '../../../../core/values/app_routs_name.dart';
 import '../../../../core/values/app_strings.dart';
-import '../../api/request_models/forget_password_request_model.dart';
 import '../view_models/forget_password_view_model/forget_password_events.dart';
 import '../view_models/forget_password_view_model/forget_password_states.dart';
 import '../view_models/forget_password_view_model/forget_password_view_model.dart';
@@ -25,13 +23,16 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
+
+  final ValueNotifier<bool> _obscurePassword = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _obscureConfirmPassword = ValueNotifier<bool>(true);
 
   @override
   void dispose() {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _obscurePassword.dispose();
+    _obscureConfirmPassword.dispose();
     super.dispose();
   }
 
@@ -80,62 +81,68 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                     AppStrings.createNewPasswordTitle,
                     style: TextStyles.bodyRegular24,
                   ),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    validator: (value) =>
-                        AppValidations.validatePassword(value ?? ''),
-                    style: const TextStyle(color: AppColors.white),
-                    decoration: InputDecoration(
-                      hintText: AppStrings.newPassword,
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: AppColors.placeHolder,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: AppColors.placeHolder,
+
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _obscurePassword,
+                    builder: (context, obscure, _) {
+                      return TextFormField(
+                        controller: _passwordController,
+                        obscureText: obscure,
+                        validator: (value) =>
+                            AppValidations.validatePassword(value ?? ''),
+                        style: const TextStyle(color: AppColors.white),
+                        decoration: InputDecoration(
+                          hintText: AppStrings.newPassword,
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: AppColors.placeHolder,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              obscure ? Icons.visibility_off : Icons.visibility,
+                              color: AppColors.placeHolder,
+                            ),
+                            onPressed: () {
+                              _obscurePassword.value = !obscure;
+                            },
+                          ),
                         ),
-                        onPressed: () {
-                          setState(() => _obscurePassword = !_obscurePassword);
-                        },
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                  TextFormField(
-                    controller: _confirmPasswordController,
-                    obscureText: _obscureConfirmPassword,
-                    validator: (value) =>
-                        AppValidations.validateConfirmPassword(
-                          _passwordController.text,
-                          value ?? '',
+
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _obscureConfirmPassword,
+                    builder: (context, obscure, _) {
+                      return TextFormField(
+                        controller: _confirmPasswordController,
+                        obscureText: obscure,
+                        validator: (value) =>
+                            AppValidations.validateConfirmPassword(
+                              _passwordController.text,
+                              value ?? '',
+                            ),
+                        style: const TextStyle(color: AppColors.white),
+                        decoration: InputDecoration(
+                          hintText: AppStrings.confirmPassword,
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: AppColors.placeHolder,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              obscure ? Icons.visibility_off : Icons.visibility,
+                              color: AppColors.placeHolder,
+                            ),
+                            onPressed: () {
+                              _obscureConfirmPassword.value = !obscure;
+                            },
+                          ),
                         ),
-                    style: const TextStyle(color: AppColors.white),
-                    decoration: InputDecoration(
-                      hintText: AppStrings.confirmPassword,
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: AppColors.placeHolder,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureConfirmPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: AppColors.placeHolder,
-                        ),
-                        onPressed: () {
-                          setState(
-                            () => _obscureConfirmPassword =
-                                !_obscureConfirmPassword,
-                          );
-                        },
-                      ),
-                    ),
+                      );
+                    },
                   ),
+
                   SizedBox(
                     width: double.infinity,
                     height: 50,
@@ -168,8 +175,9 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
     if (_formKey.currentState!.validate()) {
       context.read<ForgetPasswordViewModel>().doEvent(
         ResetPasswordEvent(
-          requestModel: ForgetPasswordRequestModel(
-            newPassword: _passwordController.text,
+          resetPasswordRequestModel: ResetPasswordRequestModel(
+            password: _passwordController.text,
+            newPassword: _confirmPasswordController.text,
           ),
         ),
       );

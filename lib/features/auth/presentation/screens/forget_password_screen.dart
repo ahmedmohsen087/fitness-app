@@ -17,7 +17,7 @@ class ForgetPasswordScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                spacing: 70,
+                spacing: 60,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Align(

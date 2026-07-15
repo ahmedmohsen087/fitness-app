@@ -1,7 +1,9 @@
 import 'package:fitness_app/config/base_response/base_response.dart';
 import 'package:fitness_app/core/utils/error/error_handler.dart';
-import 'package:fitness_app/features/auth/api/request_models/forget_password_request_model.dart';
-import 'package:fitness_app/features/auth/data/models/auth_response_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/forget_password_email_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
+import 'package:fitness_app/features/auth/data/models/forget_password_response_model.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/data_sources_contract/auth_remote_data_source_contract.dart';
@@ -12,61 +14,67 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
   final AuthApiClient _authApiClient;
 
   AuthRemoteDataSourceImpl(this._authApiClient);
-  AuthResponseModel _getMockAuthResponse() {
-    return AuthResponseModel();
+  ForgetPasswordResponseModel _getMockAuthResponse() {
+    return ForgetPasswordResponseModel();
   }
 
   @override
-  Future<BaseResponse<AuthResponseModel>> forgetPassword({
-    required ForgetPasswordRequestModel forgetPasswordRequestModel,
+  Future<BaseResponse<ForgetPasswordResponseModel>> forgetPassword({
+    required ForgetPasswordEmailRequestModel forgetPasswordEmailRequestModel,
   }) async {
     try {
       // final response = await _authApiClient.forgetPassword(
       //   forgetPasswordRequestModel,
       // );
-      // return SuccessBaseResponse<AuthResponseModel>(data: response);
-      return SuccessBaseResponse<AuthResponseModel>(
+      // return SuccessBaseResponse<ForgetPasswordResponseModel>(data: response);
+      return SuccessBaseResponse<ForgetPasswordResponseModel>(
         data: _getMockAuthResponse(),
       );
     } catch (e) {
       final message = ErrorHandler.handle(e);
-      return ErrorBaseResponse<AuthResponseModel>(errorMessage: message);
+      return ErrorBaseResponse<ForgetPasswordResponseModel>(
+        errorMessage: message,
+      );
     }
   }
 
   @override
-  Future<BaseResponse<AuthResponseModel>> verifyOtp({
-    required ForgetPasswordRequestModel forgetPasswordRequestModel,
+  Future<BaseResponse<ForgetPasswordResponseModel>> verifyOtp({
+    required VerifyResetCodeRequestModel verifyResetCodeRequestModel,
   }) async {
     try {
       // final response = await _authApiClient.verifyOtp(
       //   forgetPasswordRequestModel,
       // );
-      // return SuccessBaseResponse<AuthResponseModel>(data: response);
-      return SuccessBaseResponse<AuthResponseModel>(
+      // return SuccessBaseResponse<ForgetPasswordResponseModel>(data: response);
+      return SuccessBaseResponse<ForgetPasswordResponseModel>(
         data: _getMockAuthResponse(),
       );
     } catch (e) {
       final message = ErrorHandler.handle(e);
-      return ErrorBaseResponse<AuthResponseModel>(errorMessage: message);
+      return ErrorBaseResponse<ForgetPasswordResponseModel>(
+        errorMessage: message,
+      );
     }
   }
 
   @override
-  Future<BaseResponse<AuthResponseModel>> resetPassword({
-    required ForgetPasswordRequestModel forgetPasswordRequestModel,
+  Future<BaseResponse<ForgetPasswordResponseModel>> resetPassword({
+    required ResetPasswordRequestModel resetPasswordRequestModel,
   }) async {
     try {
       // final response = await _authApiClient.resetPassword(
       //   forgetPasswordRequestModel,
       // );await Future.delayed(const Duration(seconds: 1));
-      // return SuccessBaseResponse<AuthResponseModel>(data: response);
-      return SuccessBaseResponse<AuthResponseModel>(
+      // return SuccessBaseResponse<ForgetPasswordResponseModel>(data: response);
+      return SuccessBaseResponse<ForgetPasswordResponseModel>(
         data: _getMockAuthResponse(),
       );
     } catch (e) {
       final message = ErrorHandler.handle(e);
-      return ErrorBaseResponse<AuthResponseModel>(errorMessage: message);
+      return ErrorBaseResponse<ForgetPasswordResponseModel>(
+        errorMessage: message,
+      );
     }
   }
 }

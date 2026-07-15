@@ -1,4 +1,5 @@
 // lib/features/auth/presentation/widgets/email_verification_widget.dart
+import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
 import 'package:fitness_app/features/auth/domain/entities/forget_password_entity.dart';
 import 'package:fitness_app/features/auth/presentation/widgets/otp_input_field.dart';
 import 'package:flutter/gestures.dart';
@@ -11,7 +12,7 @@ import '../../../../core/theme/text_styles.dart';
 import '../../../../core/utils/validation/app_validations.dart';
 import '../../../../core/values/app_routs_name.dart';
 import '../../../../core/values/app_strings.dart';
-import '../../api/request_models/forget_password_request_model.dart';
+import '../../api/request_models/forget_password_email_request_model.dart';
 import '../view_models/forget_password_view_model/forget_password_events.dart';
 import '../view_models/forget_password_view_model/forget_password_states.dart';
 import '../view_models/forget_password_view_model/forget_password_view_model.dart';
@@ -139,16 +140,25 @@ class _EmailVerificationWidgetState extends State<EmailVerificationWidget> {
       return;
     }
 
-    context.read<ForgetPasswordViewModel>().doEvent(
-      VerifyOtpEvent(requestModel: ForgetPasswordRequestModel(resetCode: _otp)),
+    final viewModel = context.read<ForgetPasswordViewModel>();
+
+    viewModel.doEvent(
+      VerifyOtpEvent(
+        verifyResetCodeRequestModel: VerifyResetCodeRequestModel(
+          resetCode: _otp,
+        ),
+      ),
     );
   }
 
   void _onResend() {
     final viewModel = context.read<ForgetPasswordViewModel>();
+
     viewModel.doEvent(
       SendForgetPasswordEmailEvent(
-        requestModel: ForgetPasswordRequestModel(email: viewModel.userEmail),
+        forgetPasswordEmailRequestModel: ForgetPasswordEmailRequestModel(
+          email: viewModel.userEmail ?? '',
+        ),
       ),
     );
   }
