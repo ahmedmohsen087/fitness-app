@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 
 class AppStrings {
-
   // General
   static String get routeNotFound => 'routeNotFound'.tr();
 
- // App Section
+  // App Section
   static String get home => 'home'.tr();
   static String get workouts => 'workouts'.tr();
   static String get profile => 'profile'.tr();
@@ -16,10 +15,7 @@ class AppStrings {
   static String get back => 'back'.tr();
   static String get getStarted => 'getStarted'.tr();
 
-
-
   // Splash / onboarding
-
 
   // Secure storage - token
   static String get tokenEmpty => 'tokenEmpty'.tr();
@@ -95,20 +91,83 @@ class AppStrings {
   static String get somethingWentWrong => 'somethingWentWrong'.tr();
 
   // Apply
-
   static String get idNumber => 'idNumber'.tr();
-
   static String get idNumberRequired => 'idNumberRequired'.tr();
 
+  // Register - gender
+  static String get male => 'male'.tr();
 
+  static String get female => 'female'.tr();
 
+  // Register - goals
+  static String get goalGainWeight => 'goalGainWeight'.tr();
 
+  static String get goalLoseWeight => 'goalLoseWeight'.tr();
 
+  static String get goalGetFitter => 'goalGetFitter'.tr();
 
+  static String get goalGainMoreFlexible => 'goalGainMoreFlexible'.tr();
 
+  static String get goalLearnTheBasic => 'goalLearnTheBasic'.tr();
 
+  // Register - activity levels
+  static String get activityLevelRookie => 'activityLevelRookie'.tr();
 
+  static String get activityLevelBeginner => 'activityLevelBeginner'.tr();
 
+  static String get activityLevelIntermediate =>
+      'activityLevelIntermediate'.tr();
 
+  static String get activityLevelAdvance => 'activityLevelAdvance'.tr();
 
+  static String get activityLevelTrueBeast => 'activityLevelTrueBeast'.tr();
+
+  // Register screen UI
+  static String get heyThere => 'heyThere'.tr();
+
+  static String get createAnAccount => 'createAnAccount'.tr();
+
+  static String get register => 'register'.tr();
+
+  static String get firstName => 'firstName'.tr();
+
+  static String get lastName => 'lastName'.tr();
+
+  static String get or => 'or'.tr();
+
+  static String get alreadyHaveAnAccount => 'alreadyHaveAnAccount'.tr();
+
+  static String get login => 'login'.tr();
+
+  // Gender selection screen UI
+  static String get tellUsAboutYourself => 'tellUsAboutYourself'.tr();
+
+  static String get weNeedToKnowYourGender => 'weNeedToKnowYourGender'.tr();
+
+  static String get stepOneOfSix => 'stepOneOfSix'.tr();
+
+  static String registerStep(int step) => 'registerStep'.tr(args: ['$step']);
+
+  static String get personalizedPlanSubtitle => 'personalizedPlanSubtitle'.tr();
+
+  static String get howOldAreYou => 'howOldAreYou'.tr();
+
+  static String get whatIsYourWeight => 'whatIsYourWeight'.tr();
+
+  static String get whatIsYourHeight => 'whatIsYourHeight'.tr();
+
+  static String get whatIsYourGoal => 'whatIsYourGoal'.tr();
+
+  static String get regularPhysicalActivity => 'regularPhysicalActivity'.tr();
+
+  static String get year => 'year'.tr();
+
+  static String get kilogram => 'kilogram'.tr();
+
+  static String get centimeter => 'centimeter'.tr();
+
+  static String get done => 'done'.tr();
+
+  static String get incompleteRegistrationData =>
+      'incompleteRegistrationData'.tr();
 }

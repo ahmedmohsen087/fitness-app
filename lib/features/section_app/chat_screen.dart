@@ -5,9 +5,6 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: Colors.red,
-    );
+    return Container(width: double.infinity, color: Colors.red);
   }
 }

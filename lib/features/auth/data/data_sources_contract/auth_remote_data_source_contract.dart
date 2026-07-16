@@ -1,4 +1,7 @@
+import '../../../../config/base_response/base_response.dart';
+import '../../api/models/register_response_model.dart';
+import '../../api/request_models/register_request_model.dart';
 
 abstract interface class AuthRemoteDataSourceContract {
-
+  Future<BaseResponse<RegisterResponseModel>> signUp(RegisterRequestModel body);
 }

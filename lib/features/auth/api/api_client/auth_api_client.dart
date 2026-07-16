@@ -2,6 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../../../core/values/api_endpoints.dart';
+import '../../../../core/values/api_parameters.dart';
+import '../models/register_response_model.dart';
+import '../request_models/register_request_model.dart';
+
 part 'auth_api_client.g.dart';
 
 @lazySingleton
@@ -10,5 +15,7 @@ abstract class AuthApiClient {
   @factoryMethod
   factory AuthApiClient(Dio dio) = _AuthApiClient;
 
-
+  @POST(ApiEndpoints.signUp)
+  @Extra({ApiParameters.requiresAuth: false})
+  Future<RegisterResponseModel> signUp(@Body() RegisterRequestModel body);
 }

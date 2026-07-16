@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../core/values/assets.dart';
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: Colors.orange,
-    );
+    return Container(width: double.infinity, color: Colors.orange);
   }
 }
