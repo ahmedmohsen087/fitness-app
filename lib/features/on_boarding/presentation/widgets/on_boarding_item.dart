@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/values/assets.dart';
 
 class OnBoardingItem extends StatelessWidget {
   final String image;
 
-  const OnBoardingItem({
-    super.key,
-    required this.image,
-  });
+  const OnBoardingItem({super.key, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +21,7 @@ class OnBoardingItem extends StatelessWidget {
         bottom: false,
         child: SizedBox(
           height: MediaQuery.of(context).size.height * .60,
-          child: Image.asset(
-            image,
-            fit: BoxFit.contain,
-          ),
+          child: Image.asset(image, fit: BoxFit.contain),
         ),
       ),
     );

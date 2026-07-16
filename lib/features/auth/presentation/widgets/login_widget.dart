@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -256,13 +257,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                             decoration: TextDecoration.underline,
                             decorationColor: AppColors.orange,
                           ),
-                          // recognizer: TapGestureRecognizer()
-                          //   ..onTap = () {
-                          //     Navigator.pushNamed(
-                          //       context,
-                          //       AppRoutsName.registerScreen,
-                          //     );
-                          //   },
+                           recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutsName.register,
+                              );
+                            },
                         ),
                       ],
                     ),

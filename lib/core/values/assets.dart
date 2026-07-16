@@ -8,7 +8,8 @@ class Assets {
   static const String onBoarding1 = "assets/images/onboarding1.png";
   static const String onBoarding2 = "assets/images/onboarding2.png";
   static const String onBoarding3 = "assets/images/onboarding3.png";
-  static const String onBoardingBackGround = "assets/images/onboardingbackground.png";
+  static const String onBoardingBackGround =
+      "assets/images/onboardingbackground.png";
 
   // section app
   static const String homeIcon = "assets/icons/home.svg";
@@ -22,15 +23,6 @@ class Assets {
   static const String facebookLogo = "assets/icons/facebook.svg";
   static const String googleLogo = "assets/icons/google.svg";
   static const String appleLogo = "assets/icons/Apple.svg";
-
-
-
-
-
-
-
-
-
-
-
+  static const String maleIcon = "assets/icons/male.svg";
+  static const String femaleIcon = "assets/icons/female.svg";
 }

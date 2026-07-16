@@ -68,6 +68,5 @@ class AppTheme {
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
     ),
-
   );
 }

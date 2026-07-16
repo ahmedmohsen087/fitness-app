@@ -5,9 +5,6 @@ class WorkoutsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: Colors.cyanAccent,
-    );
+    return Container(width: double.infinity, color: Colors.cyanAccent);
   }
 }

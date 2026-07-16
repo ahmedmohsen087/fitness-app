@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/values/app_routs_name.dart';
 import '../../../../core/values/assets.dart';
@@ -25,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Colors.black,
       body: Container(
         color: AppColors.black,
@@ -33,21 +35,17 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Lottie.asset(Assets.logo,
+            Lottie.asset(
+              Assets.logo,
               delegates: LottieDelegates(
                 values: [
-                  ValueDelegate.color(
-                    const ['*'],
-                    value: AppColors.black,
-                  ),
+                  ValueDelegate.color(const ['*'], value: AppColors.black),
                 ],
               ),
-
             ),
-
           ],
         ),
-      )
+      ),
     );
   }
 }

@@ -4,6 +4,90 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 abstract class TextStyles {
+  static final TextStyle authGreeting = GoogleFonts.balooThambi2(
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+    color: AppColors.white,
+  );
+
+  static final TextStyle authHeadline = GoogleFonts.balooThambi2(
+    fontSize: 20,
+    fontWeight: FontWeight.w800,
+    height: 1.4,
+    color: AppColors.white,
+  );
+
+  static final TextStyle authTitle = GoogleFonts.balooThambi2(
+    fontSize: 24,
+    fontWeight: FontWeight.w800,
+    height: 1.4,
+    color: AppColors.white,
+  );
+
+  static final TextStyle authSubtitle = GoogleFonts.balooThambi2(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+    color: AppColors.white,
+  );
+
+  static final TextStyle authField = GoogleFonts.balooThambi2(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+    color: AppColors.lightGray,
+  );
+
+  static final TextStyle authOption = GoogleFonts.balooThambi2(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    height: 1.4,
+    color: AppColors.white,
+  );
+
+  static final TextStyle authButton = GoogleFonts.balooThambi2(
+    fontSize: 14,
+    fontWeight: FontWeight.w800,
+    color: AppColors.white,
+  );
+
+  static final TextStyle authFooter = GoogleFonts.balooThambi2(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+    color: AppColors.white,
+  );
+
+  static final TextStyle authFooterLink = GoogleFonts.balooThambi2(
+    fontSize: 14,
+    fontWeight: FontWeight.w800,
+    height: 1.4,
+    color: AppColors.orange,
+    decoration: TextDecoration.underline,
+    decorationColor: AppColors.orange,
+  );
+
+  static final TextStyle authStep = GoogleFonts.balooThambi2(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    height: 1.4,
+    color: AppColors.white,
+  );
+
+  static final TextStyle authPickerUnit = GoogleFonts.balooThambi2(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+    color: AppColors.orange,
+  );
+
+  static final TextStyle authPickerValue = GoogleFonts.balooThambi2(
+    fontSize: 44,
+    fontWeight: FontWeight.w800,
+    height: 1.4,
+    color: AppColors.orange,
+  );
 
   static final TextStyle appBarTextStyle = GoogleFonts.inter(
     fontSize: 20,
