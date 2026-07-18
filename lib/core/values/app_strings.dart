@@ -119,7 +119,6 @@ class AppStrings {
       'activityLevelIntermediate'.tr();
 
   static String get activityLevelAdvance => 'activityLevelAdvance'.tr();
-
  // login
 
   static String get heyThere => 'heyThere'.tr();
@@ -151,7 +150,7 @@ class AppStrings {
   static String get weNeedToKnowYourGender => 'weNeedToKnowYourGender'.tr();
 
   static String get stepOneOfSix => 'stepOneOfSix'.tr();
-
+  // Register screen UI
   static String registerStep(int step) => 'registerStep'.tr(args: ['$step']);
 
   static String get personalizedPlanSubtitle => 'personalizedPlanSubtitle'.tr();
@@ -169,6 +168,7 @@ class AppStrings {
   static String get year => 'year'.tr();
 
   static String get kilogram => 'kilogram'.tr();
+  // Gender selection screen UI
 
   static String get centimeter => 'centimeter'.tr();
 
@@ -176,4 +176,5 @@ class AppStrings {
 
   static String get incompleteRegistrationData =>
       'incompleteRegistrationData'.tr();
+
 }

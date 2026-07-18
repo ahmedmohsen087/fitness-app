@@ -11,4 +11,5 @@ abstract class AppRoutsName {
   static const String registerActivity = '/register-activity';
   static const String loginScreen = '/loginScreen';
 
+  static const String register = '/register';
 }
