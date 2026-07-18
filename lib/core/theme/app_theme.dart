@@ -1,9 +1,64 @@
-import 'package:fitness_app/core/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
+import 'text_styles.dart';
 
 class AppTheme {
+  static final ButtonStyle authPrimaryButtonStyle = ButtonStyle(
+    minimumSize: const WidgetStatePropertyAll(Size.zero),
+    padding: const WidgetStatePropertyAll(
+      EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    ),
+    elevation: const WidgetStatePropertyAll(0),
+    foregroundColor: const WidgetStatePropertyAll(AppColors.white),
+    backgroundColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) return AppColors.lightGray;
+      return AppColors.orange;
+    }),
+    shape: WidgetStatePropertyAll(
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    ),
+    textStyle: WidgetStatePropertyAll(TextStyles.authButton),
+  );
+
+  static InputDecoration authInputDecoration({
+    required String hintText,
+    required Widget prefixIcon,
+    Widget? suffixIcon,
+  }) {
+    const border = OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+      borderSide: BorderSide(color: AppColors.grey),
+    );
+
+    return InputDecoration(
+      isDense: true,
+      hintText: hintText,
+      hintStyle: TextStyles.authField,
+      prefixIcon: prefixIcon,
+      prefixIconConstraints: const BoxConstraints.tightFor(
+        width: 44,
+        height: 20,
+      ),
+      suffixIcon: suffixIcon,
+      suffixIconConstraints: const BoxConstraints.tightFor(
+        width: 36,
+        height: 20,
+      ),
+      contentPadding: const EdgeInsets.symmetric(vertical: 8),
+      enabledBorder: border,
+      focusedBorder: border.copyWith(
+        borderSide: const BorderSide(color: AppColors.white),
+      ),
+      errorBorder: border.copyWith(
+        borderSide: const BorderSide(color: AppColors.red),
+      ),
+      focusedErrorBorder: border.copyWith(
+        borderSide: const BorderSide(color: AppColors.red),
+      ),
+    );
+  }
+
   static ThemeData lightTheme = ThemeData(
     primaryColor: AppColors.orange,
     elevatedButtonTheme: ElevatedButtonThemeData(

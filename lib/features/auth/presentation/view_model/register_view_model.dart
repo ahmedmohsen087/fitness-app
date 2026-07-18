@@ -113,7 +113,6 @@ class RegisterViewModel extends Cubit<RegisterState> {
         rePassword == null ||
         rePassword.isEmpty ||
         gender == null ||
-        !RegisterConstants.genders.contains(gender) ||
         age == null ||
         age < RegisterConstants.minimumAge ||
         age > RegisterConstants.maximumAge ||
@@ -124,12 +123,9 @@ class RegisterViewModel extends Cubit<RegisterState> {
         height < RegisterConstants.minimumHeight ||
         height > RegisterConstants.maximumHeight ||
         goal == null ||
-        !RegisterConstants.goals.contains(goal) ||
         activityLevel == null) {
       return null;
     }
-
-    if (!RegisterConstants.activityLevels.contains(activityLevel)) return null;
 
     return RegisterParams(
       firstName: firstName,

@@ -7,27 +7,22 @@ import '../view_model/register_events.dart';
 import '../view_model/register_state.dart';
 import '../view_model/register_view_model.dart';
 import '../widgets/auth_primary_button.dart';
-import '../widgets/register_flow_listener.dart';
 import '../widgets/register_option_tile.dart';
 import '../widgets/register_step_scaffold.dart';
 
 class GoalSelectionScreen extends StatelessWidget {
-  final RegisterViewModel viewModel;
+  final VoidCallback onBack;
 
-  const GoalSelectionScreen({super.key, required this.viewModel});
+  const GoalSelectionScreen({super.key, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: viewModel,
-      child: RegisterFlowListener(
-        child: RegisterStepScaffold(
-          step: 5,
-          title: AppStrings.whatIsYourGoal,
-          subtitle: AppStrings.personalizedPlanSubtitle,
-          child: const _GoalContent(),
-        ),
-      ),
+    return RegisterStepScaffold(
+      step: 5,
+      title: AppStrings.whatIsYourGoal,
+      subtitle: AppStrings.personalizedPlanSubtitle,
+      onBack: onBack,
+      child: const _GoalContent(),
     );
   }
 }
@@ -38,11 +33,11 @@ class _GoalContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final options = [
-      (RegisterConstants.goalGainWeight, AppStrings.goalGainWeight),
-      (RegisterConstants.goalLoseWeight, AppStrings.goalLoseWeight),
-      (RegisterConstants.goalGetFitter, AppStrings.goalGetFitter),
-      (RegisterConstants.goalGainMoreFlexible, AppStrings.goalGainMoreFlexible),
-      (RegisterConstants.goalLearnTheBasic, AppStrings.goalLearnTheBasic),
+      (FitnessGoal.gainWeight, AppStrings.goalGainWeight),
+      (FitnessGoal.loseWeight, AppStrings.goalLoseWeight),
+      (FitnessGoal.getFitter, AppStrings.goalGetFitter),
+      (FitnessGoal.gainMoreFlexible, AppStrings.goalGainMoreFlexible),
+      (FitnessGoal.learnTheBasic, AppStrings.goalLearnTheBasic),
     ];
 
     return BlocBuilder<RegisterViewModel, RegisterState>(

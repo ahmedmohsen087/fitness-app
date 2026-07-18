@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/values/app_routs_name.dart';
 import '../view_model/register_state.dart';
 import '../view_model/register_view_model.dart';
 
 class RegisterFlowListener extends StatelessWidget {
+  final PageController pageController;
   final Widget child;
 
-  const RegisterFlowListener({super.key, required this.child});
+  const RegisterFlowListener({
+    super.key,
+    required this.pageController,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,27 +20,18 @@ class RegisterFlowListener extends StatelessWidget {
       listenWhen: (previous, current) =>
           previous.navigationRequestId != current.navigationRequestId,
       listener: (context, state) {
-        if (ModalRoute.of(context)?.isCurrent != true) return;
-        final routeName = _routeName(state.navigationTarget);
-        if (routeName == null) return;
+        final page = _pageOf(state.navigationTarget);
+        if (page == null || !pageController.hasClients) return;
 
-        Navigator.pushNamed(
-          context,
-          routeName,
-          arguments: context.read<RegisterViewModel>(),
+        pageController.animateToPage(
+          page,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOut,
         );
       },
       child: child,
     );
   }
 
-  String? _routeName(RegisterFlowStep? step) => switch (step) {
-    RegisterFlowStep.gender => AppRoutsName.genderSelection,
-    RegisterFlowStep.age => AppRoutsName.registerAge,
-    RegisterFlowStep.weight => AppRoutsName.registerWeight,
-    RegisterFlowStep.height => AppRoutsName.registerHeight,
-    RegisterFlowStep.goal => AppRoutsName.registerGoal,
-    RegisterFlowStep.activity => AppRoutsName.registerActivity,
-    null => null,
-  };
+  int? _pageOf(RegisterFlowStep? step) => step == null ? null : step.index + 1;
 }

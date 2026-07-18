@@ -19,6 +19,7 @@ import 'package:fitness_app/features/auth/presentation/widgets/register_number_p
 import 'package:fitness_app/features/auth/presentation/widgets/register_option_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -44,7 +45,7 @@ void main() {
     tester,
   ) async {
     final screen = ValueNotifier<Widget>(const RegisterScreen());
-    await _pump(tester, screen);
+    await _pump(tester, screen, mockViewModel);
 
     expect(find.byType(TextFormField), findsNWidgets(4));
     final fields = find.byType(TextFormField);
@@ -63,7 +64,7 @@ void main() {
 
     screen.value = GenderSelectionScreen(
       key: const ValueKey('gender-selected'),
-      viewModel: mockViewModel,
+      onBack: () {},
     );
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.text(AppStrings.registerStep(1)), findsOneWidget);
@@ -77,11 +78,8 @@ void main() {
       isNull,
     );
 
-    _stubViewModel(
-      mockViewModel,
-      const RegisterState(gender: RegisterConstants.genderMale),
-    );
-    screen.value = GenderSelectionScreen(viewModel: mockViewModel);
+    _stubViewModel(mockViewModel, const RegisterState(gender: Gender.male));
+    screen.value = GenderSelectionScreen(onBack: () {});
     await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(ElevatedButton, AppStrings.next));
     final genderNext =
@@ -91,7 +89,7 @@ void main() {
     clearInteractions(mockViewModel);
 
     _stubViewModel(mockViewModel, const RegisterState());
-    screen.value = AgeSelectionScreen(viewModel: mockViewModel);
+    screen.value = AgeSelectionScreen(onBack: () {});
     await tester.pumpAndSettle();
     expect(find.text(AppStrings.registerStep(2)), findsOneWidget);
     expect(find.byType(NumberPicker), findsOneWidget);
@@ -103,7 +101,7 @@ void main() {
     expect(ageNext.target, RegisterFlowStep.weight);
     clearInteractions(mockViewModel);
 
-    screen.value = WeightSelectionScreen(viewModel: mockViewModel);
+    screen.value = WeightSelectionScreen(onBack: () {});
     await tester.pumpAndSettle();
     expect(find.text(AppStrings.registerStep(3)), findsOneWidget);
     expect(find.byType(NumberPicker), findsOneWidget);
@@ -113,13 +111,13 @@ void main() {
       findsOneWidget,
     );
 
-    screen.value = HeightSelectionScreen(viewModel: mockViewModel);
+    screen.value = HeightSelectionScreen(onBack: () {});
     await tester.pumpAndSettle();
     expect(find.text(AppStrings.registerStep(4)), findsOneWidget);
     expect(find.byType(NumberPicker), findsOneWidget);
     expect(find.text('167'), findsOneWidget);
 
-    screen.value = GoalSelectionScreen(viewModel: mockViewModel);
+    screen.value = GoalSelectionScreen(onBack: () {});
     await tester.pumpAndSettle();
     expect(find.text(AppStrings.registerStep(5)), findsOneWidget);
     expect(find.byType(RegisterOptionTile), findsNWidgets(5));
@@ -127,12 +125,12 @@ void main() {
     final goal =
         verify(mockViewModel.doEvent(captureAny)).captured.single
             as SelectGoalEvent;
-    expect(goal.goal, RegisterConstants.goalGainWeight);
+    expect(goal.goal, FitnessGoal.gainWeight);
     clearInteractions(mockViewModel);
 
     screen.value = ActivitySelectionScreen(
       key: const ValueKey('activity-loading'),
-      viewModel: mockViewModel,
+      onBack: () {},
     );
     await tester.pumpAndSettle();
     expect(find.text(AppStrings.registerStep(6)), findsOneWidget);
@@ -145,11 +143,11 @@ void main() {
     _stubViewModel(
       mockViewModel,
       const RegisterState(
-        activityLevel: RegisterConstants.activityLevel1,
+        activityLevel: ActivityLevel.level1,
         submitState: BaseState(isLoading: true),
       ),
     );
-    screen.value = ActivitySelectionScreen(viewModel: mockViewModel);
+    screen.value = ActivitySelectionScreen(onBack: () {});
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.byType(CircularProgressIndicator), findsNWidgets(2));
     expect(
@@ -157,6 +155,31 @@ void main() {
       isNull,
     );
     expect(tester.takeException(), isNull);
+
+    _stubViewModel(mockViewModel, const RegisterState(gender: Gender.male));
+    screen.value = const RegisterScreen();
+    await tester.pumpAndSettle();
+    final pageController = tester
+        .widget<PageView>(find.byType(PageView))
+        .controller!;
+    pageController.jumpToPage(2);
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.howOldAreYou), findsOneWidget);
+
+    final backButton = find.ancestor(
+      of: find.byIcon(Icons.arrow_back_ios_new_rounded).hitTestable(),
+      matching: find.byType(InkWell),
+    );
+    await tester.tap(backButton);
+    await tester.pumpAndSettle();
+    expect(pageController.page, 1);
+    expect(find.text(AppStrings.tellUsAboutYourself), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (widget) => widget is GenderOptionWidget && widget.isSelected,
+      ),
+      findsOneWidget,
+    );
 
     screen.dispose();
   });
@@ -215,7 +238,11 @@ void _stubViewModel(MockRegisterViewModel viewModel, RegisterState state) {
   when(viewModel.close()).thenAnswer((_) async {});
 }
 
-Future<void> _pump(WidgetTester tester, ValueNotifier<Widget> screen) async {
+Future<void> _pump(
+  WidgetTester tester,
+  ValueNotifier<Widget> screen,
+  RegisterViewModel viewModel,
+) async {
   await tester.pumpWidget(
     EasyLocalization(
       supportedLocales: const [Locale('en')],
@@ -229,9 +256,12 @@ Future<void> _pump(WidgetTester tester, ValueNotifier<Widget> screen) async {
           supportedLocales: context.supportedLocales,
           localizationsDelegates: context.localizationDelegates,
           theme: AppTheme.lightTheme,
-          home: ValueListenableBuilder<Widget>(
-            valueListenable: screen,
-            builder: (_, value, _) => value,
+          home: BlocProvider.value(
+            value: viewModel,
+            child: ValueListenableBuilder<Widget>(
+              valueListenable: screen,
+              builder: (_, value, _) => value,
+            ),
           ),
         ),
       ),

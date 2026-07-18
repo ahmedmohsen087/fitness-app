@@ -1,4 +1,5 @@
 import 'package:fitness_app/config/base_response/base_response.dart';
+import 'package:fitness_app/core/values/register_constants.dart';
 import 'package:fitness_app/features/auth/domain/entities/register_params.dart';
 import 'package:fitness_app/features/auth/domain/entities/register_response_entity.dart';
 import 'package:fitness_app/features/auth/domain/repository_contract/auth_repository_contract.dart';
@@ -28,12 +29,12 @@ void main() {
     email: 'test@test.com',
     password: 'Test@123',
     rePassword: 'Test@123',
-    gender: 'male',
+    gender: Gender.male,
     height: 170,
     weight: 70,
     age: 25,
-    goal: 'Gain weight',
-    activityLevel: 'level1',
+    goal: FitnessGoal.gainWeight,
+    activityLevel: ActivityLevel.level1,
   );
 
   final tRegisterResponseEntity = RegisterResponseEntity(

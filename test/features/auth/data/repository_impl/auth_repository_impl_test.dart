@@ -1,5 +1,6 @@
 import 'package:fitness_app/config/auth/auth_manager.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
+import 'package:fitness_app/core/values/register_constants.dart';
 import 'package:fitness_app/features/auth/api/models/register_response_model.dart';
 import 'package:fitness_app/features/auth/api/models/user_model.dart';
 import 'package:fitness_app/features/auth/api/request_models/register_request_model.dart';
@@ -34,12 +35,12 @@ void main() {
     email: 'test@test.com',
     password: 'Test@123',
     rePassword: 'Test@123',
-    gender: 'male',
+    gender: Gender.male,
     height: 170,
     weight: 70,
     age: 25,
-    goal: 'Gain weight',
-    activityLevel: 'level1',
+    goal: FitnessGoal.gainWeight,
+    activityLevel: ActivityLevel.level1,
   );
 
   final tUserModel = UserModel(
@@ -88,6 +89,9 @@ void main() {
           body.toJson(),
           RegisterRequestModel.fromParams(tRegisterParams).toJson(),
         );
+        expect(body.gender, Gender.male.apiValue);
+        expect(body.goal, FitnessGoal.gainWeight.apiValue);
+        expect(body.activityLevel, ActivityLevel.level1.apiValue);
       },
     );
 

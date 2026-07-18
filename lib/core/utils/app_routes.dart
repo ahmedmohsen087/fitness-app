@@ -75,15 +75,6 @@ class AppRoutes {
     }
   }
 
-  static Route<dynamic> _registerFlowRoute(
-    RouteSettings settings,
-    Widget Function(RegisterViewModel viewModel) builder,
-  ) {
-    final argument = settings.arguments;
-    if (argument is! RegisterViewModel) return _notFoundRoute();
-    return MaterialPageRoute(builder: (_) => builder(argument));
-  }
-
   static Route<dynamic> _notFoundRoute() => MaterialPageRoute(
     builder: (_) =>
         Scaffold(body: Center(child: Text(AppStrings.routeNotFound))),

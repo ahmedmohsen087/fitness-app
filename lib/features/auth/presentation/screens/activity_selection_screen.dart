@@ -13,39 +13,37 @@ import '../widgets/register_option_tile.dart';
 import '../widgets/register_step_scaffold.dart';
 
 class ActivitySelectionScreen extends StatelessWidget {
-  final RegisterViewModel viewModel;
+  final VoidCallback onBack;
 
-  const ActivitySelectionScreen({super.key, required this.viewModel});
+  const ActivitySelectionScreen({super.key, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: viewModel,
-      child: BlocListener<RegisterViewModel, RegisterState>(
-        listenWhen: (previous, current) =>
-            previous.submitState != current.submitState &&
-            !current.submitState.isLoading,
-        listener: (context, state) {
-          final error = state.submitState.msg;
-          if (error != null) {
-            AppToast.error(context, error);
-            return;
-          }
+    return BlocListener<RegisterViewModel, RegisterState>(
+      listenWhen: (previous, current) =>
+          previous.submitState != current.submitState &&
+          !current.submitState.isLoading,
+      listener: (context, state) {
+        final error = state.submitState.msg;
+        if (error != null) {
+          AppToast.error(context, error);
+          return;
+        }
 
-          if (state.submitState.data != null) {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutsName.sectionApp,
-              (_) => false,
-            );
-          }
-        },
-        child: RegisterStepScaffold(
-          step: 6,
-          title: AppStrings.regularPhysicalActivity,
-          subtitle: '',
-          child: const _ActivityContent(),
-        ),
+        if (state.submitState.data != null) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppRoutsName.sectionApp,
+            (_) => false,
+          );
+        }
+      },
+      child: RegisterStepScaffold(
+        step: 6,
+        title: AppStrings.regularPhysicalActivity,
+        subtitle: '',
+        onBack: onBack,
+        child: const _ActivityContent(),
       ),
     );
   }
@@ -57,11 +55,11 @@ class _ActivityContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final options = [
-      (RegisterConstants.activityLevel1, AppStrings.activityLevelRookie),
-      (RegisterConstants.activityLevel2, AppStrings.activityLevelBeginner),
-      (RegisterConstants.activityLevel3, AppStrings.activityLevelIntermediate),
-      (RegisterConstants.activityLevel4, AppStrings.activityLevelAdvance),
-      (RegisterConstants.activityLevel5, AppStrings.activityLevelTrueBeast),
+      (ActivityLevel.level1, AppStrings.activityLevelRookie),
+      (ActivityLevel.level2, AppStrings.activityLevelBeginner),
+      (ActivityLevel.level3, AppStrings.activityLevelIntermediate),
+      (ActivityLevel.level4, AppStrings.activityLevelAdvance),
+      (ActivityLevel.level5, AppStrings.activityLevelTrueBeast),
     ];
 
     return BlocBuilder<RegisterViewModel, RegisterState>(

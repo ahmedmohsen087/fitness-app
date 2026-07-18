@@ -11,6 +11,7 @@ class RegisterStepScaffold extends StatelessWidget {
   final int step;
   final String title;
   final String subtitle;
+  final VoidCallback onBack;
   final Widget child;
 
   const RegisterStepScaffold({
@@ -18,6 +19,7 @@ class RegisterStepScaffold extends StatelessWidget {
     required this.step,
     required this.title,
     required this.subtitle,
+    required this.onBack,
     required this.child,
   });
 
@@ -34,7 +36,7 @@ class RegisterStepScaffold extends StatelessWidget {
                 right: 0,
                 child: Center(child: AuthLogo()),
               ),
-              Positioned(top: 28, left: 16, child: _BackButton()),
+              Positioned(top: 28, left: 16, child: _BackButton(onTap: onBack)),
               Center(
                 child: SingleChildScrollView(
                   child: Column(
@@ -58,6 +60,10 @@ class RegisterStepScaffold extends StatelessWidget {
 }
 
 class _BackButton extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _BackButton({required this.onTap});
+
   @override
   Widget build(BuildContext context) {
     return Semantics(
@@ -65,7 +71,7 @@ class _BackButton extends StatelessWidget {
       label: AppStrings.back,
       child: InkWell(
         customBorder: const CircleBorder(),
-        onTap: () => Navigator.maybePop(context),
+        onTap: onTap,
         child: const CircleAvatar(
           radius: 12,
           backgroundColor: AppColors.orange,

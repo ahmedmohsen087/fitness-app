@@ -39,12 +39,12 @@ class RegisterRequestModel {
         email: params.email,
         password: params.password,
         rePassword: params.rePassword,
-        gender: params.gender,
+        gender: params.gender.apiValue,
         height: params.height,
         weight: params.weight,
         age: params.age,
-        goal: params.goal,
-        activityLevel: params.activityLevel,
+        goal: params.goal.apiValue,
+        activityLevel: params.activityLevel.apiValue,
       );
 
   Map<String, dynamic> toJson() => _$RegisterRequestModelToJson(this);

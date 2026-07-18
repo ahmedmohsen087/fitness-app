@@ -8,26 +8,21 @@ import '../view_model/register_state.dart';
 import '../view_model/register_view_model.dart';
 import '../widgets/auth_primary_button.dart';
 import '../widgets/gender_option_widget.dart';
-import '../widgets/register_flow_listener.dart';
 import '../widgets/register_step_scaffold.dart';
 
 class GenderSelectionScreen extends StatelessWidget {
-  final RegisterViewModel viewModel;
+  final VoidCallback onBack;
 
-  const GenderSelectionScreen({super.key, required this.viewModel});
+  const GenderSelectionScreen({super.key, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: viewModel,
-      child: RegisterFlowListener(
-        child: RegisterStepScaffold(
-          step: 1,
-          title: AppStrings.tellUsAboutYourself,
-          subtitle: AppStrings.weNeedToKnowYourGender,
-          child: const _GenderContent(),
-        ),
-      ),
+    return RegisterStepScaffold(
+      step: 1,
+      title: AppStrings.tellUsAboutYourself,
+      subtitle: AppStrings.weNeedToKnowYourGender,
+      onBack: onBack,
+      child: const _GenderContent(),
     );
   }
 }
@@ -47,22 +42,18 @@ class _GenderContent extends StatelessWidget {
                 GenderOptionWidget(
                   label: AppStrings.male,
                   icon: Icons.male,
-                  isSelected: state.gender == RegisterConstants.genderMale,
+                  isSelected: state.gender == Gender.male,
                   onTap: () => context.read<RegisterViewModel>().doEvent(
-                    const SelectGenderEvent(
-                      gender: RegisterConstants.genderMale,
-                    ),
+                    const SelectGenderEvent(gender: Gender.male),
                   ),
                 ),
                 const SizedBox(height: 24),
                 GenderOptionWidget(
                   label: AppStrings.female,
                   icon: Icons.female,
-                  isSelected: state.gender == RegisterConstants.genderFemale,
+                  isSelected: state.gender == Gender.female,
                   onTap: () => context.read<RegisterViewModel>().doEvent(
-                    const SelectGenderEvent(
-                      gender: RegisterConstants.genderFemale,
-                    ),
+                    const SelectGenderEvent(gender: Gender.female),
                   ),
                 ),
               ],

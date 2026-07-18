@@ -50,28 +50,22 @@ void main() {
     'stores every profile selection in state',
     build: () => RegisterViewModel(mockUseCase),
     act: (viewModel) {
-      viewModel.doEvent(
-        const SelectGenderEvent(gender: RegisterConstants.genderMale),
-      );
+      viewModel.doEvent(const SelectGenderEvent(gender: Gender.male));
       viewModel.doEvent(const UpdateAgeEvent(age: 26));
       viewModel.doEvent(const UpdateWeightEvent(weight: 71));
       viewModel.doEvent(const UpdateHeightEvent(height: 171));
+      viewModel.doEvent(const SelectGoalEvent(goal: FitnessGoal.gainWeight));
       viewModel.doEvent(
-        const SelectGoalEvent(goal: RegisterConstants.goalGainWeight),
-      );
-      viewModel.doEvent(
-        const SelectActivityLevelEvent(
-          activityLevel: RegisterConstants.activityLevel1,
-        ),
+        const SelectActivityLevelEvent(activityLevel: ActivityLevel.level1),
       );
     },
     verify: (viewModel) {
-      expect(viewModel.state.gender, RegisterConstants.genderMale);
+      expect(viewModel.state.gender, Gender.male);
       expect(viewModel.state.age, 26);
       expect(viewModel.state.weight, 71);
       expect(viewModel.state.height, 171);
-      expect(viewModel.state.goal, RegisterConstants.goalGainWeight);
-      expect(viewModel.state.activityLevel, RegisterConstants.activityLevel1);
+      expect(viewModel.state.goal, FitnessGoal.gainWeight);
+      expect(viewModel.state.activityLevel, ActivityLevel.level1);
     },
   );
 
@@ -105,12 +99,12 @@ void main() {
           verify(mockUseCase.execute(captureAny)).captured.single
               as RegisterParams;
       expect(params.firstName, 'John');
-      expect(params.gender, RegisterConstants.genderMale);
+      expect(params.gender, Gender.male);
       expect(params.height, 171);
       expect(params.weight, 71);
       expect(params.age, 26);
-      expect(params.goal, RegisterConstants.goalGainWeight);
-      expect(params.activityLevel, RegisterConstants.activityLevel1);
+      expect(params.goal, FitnessGoal.gainWeight);
+      expect(params.activityLevel, ActivityLevel.level1);
     },
   );
 
@@ -139,7 +133,7 @@ void main() {
     ],
     verify: (viewModel) {
       expect(viewModel.state.firstName, 'John');
-      expect(viewModel.state.activityLevel, RegisterConstants.activityLevel1);
+      expect(viewModel.state.activityLevel, ActivityLevel.level1);
     },
   );
 
@@ -180,11 +174,11 @@ RegisterState _completeState() => const RegisterState(
   email: 'john.doe@test.com',
   password: 'Test@123',
   rePassword: 'Test@123',
-  gender: RegisterConstants.genderMale,
+  gender: Gender.male,
   age: 26,
   weight: 71,
   height: 171,
-  goal: RegisterConstants.goalGainWeight,
-  activityLevel: RegisterConstants.activityLevel1,
+  goal: FitnessGoal.gainWeight,
+  activityLevel: ActivityLevel.level1,
   submitState: BaseState(),
 );

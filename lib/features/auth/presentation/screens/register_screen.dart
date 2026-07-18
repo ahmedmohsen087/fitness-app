@@ -11,6 +11,12 @@ import '../widgets/auth_glass_panel.dart';
 import '../widgets/auth_logo.dart';
 import '../widgets/register_flow_listener.dart';
 import '../widgets/register_form.dart';
+import 'activity_selection_screen.dart';
+import 'age_selection_screen.dart';
+import 'gender_selection_screen.dart';
+import 'goal_selection_screen.dart';
+import 'height_selection_screen.dart';
+import 'weight_selection_screen.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -37,7 +43,9 @@ class _RegisterViewState extends State<_RegisterView> {
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _pageController = PageController();
   bool _obscurePassword = true;
+  int _currentPage = 0;
 
   @override
   void dispose() {
@@ -45,6 +53,7 @@ class _RegisterViewState extends State<_RegisterView> {
     _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -64,43 +73,75 @@ class _RegisterViewState extends State<_RegisterView> {
   @override
   Widget build(BuildContext context) {
     return RegisterFlowListener(
-      child: Scaffold(
-        body: AuthBackground(
-          child: SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) => SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 16),
-                      const AuthLogo(),
-                      const SizedBox(height: 39),
-                      const _RegisterHeader(),
-                      const SizedBox(height: 8),
-                      AuthGlassPanel(
-                        child: RegisterForm(
-                          formKey: _formKey,
-                          firstNameController: _firstNameController,
-                          lastNameController: _lastNameController,
-                          emailController: _emailController,
-                          passwordController: _passwordController,
-                          obscurePassword: _obscurePassword,
-                          onTogglePassword: () => setState(
-                            () => _obscurePassword = !_obscurePassword,
-                          ),
-                          onRegister: _continueToGender,
+      pageController: _pageController,
+      child: PopScope(
+        canPop: _currentPage == 0,
+        onPopInvokedWithResult: (didPop, _) {
+          if (!didPop) _previousPage();
+        },
+        child: PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          onPageChanged: (page) => setState(() => _currentPage = page),
+          children: [
+            _registerDetailsPage(),
+            GenderSelectionScreen(onBack: _previousPage),
+            AgeSelectionScreen(onBack: _previousPage),
+            WeightSelectionScreen(onBack: _previousPage),
+            HeightSelectionScreen(onBack: _previousPage),
+            GoalSelectionScreen(onBack: _previousPage),
+            ActivitySelectionScreen(onBack: _previousPage),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _registerDetailsPage() {
+    return Scaffold(
+      body: AuthBackground(
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) => SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 16),
+                    const AuthLogo(),
+                    const SizedBox(height: 39),
+                    const _RegisterHeader(),
+                    const SizedBox(height: 8),
+                    AuthGlassPanel(
+                      child: RegisterForm(
+                        formKey: _formKey,
+                        firstNameController: _firstNameController,
+                        lastNameController: _lastNameController,
+                        emailController: _emailController,
+                        passwordController: _passwordController,
+                        obscurePassword: _obscurePassword,
+                        onTogglePassword: () => setState(
+                          () => _obscurePassword = !_obscurePassword,
                         ),
+                        onRegister: _continueToGender,
                       ),
-                      const SizedBox(height: 24),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
                 ),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  void _previousPage() {
+    if (_currentPage == 0 || !_pageController.hasClients) return;
+    _pageController.previousPage(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOut,
     );
   }
 }
