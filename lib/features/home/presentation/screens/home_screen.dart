@@ -89,8 +89,7 @@ class HomeScreen extends StatelessWidget {
                             fontWeight: FontWeight.w600
                         ),
                       ),
-                  
-                  
+
                     ],
                   ),
                 ),

@@ -32,7 +32,13 @@ class HomeProfileInfo extends StatelessWidget {
         ),
         Spacer(),
         CircleAvatar(
-          child: Image.network(image??'') ,
+          backgroundColor: AppColors.placeHolder,
+          backgroundImage: (image != null && image!.isNotEmpty)
+              ? NetworkImage(image!)
+              : null,
+          child: (image == null || image!.isEmpty)
+              ? const Icon(Icons.person, color: AppColors.white)
+              : null,
         ),
 
       ],

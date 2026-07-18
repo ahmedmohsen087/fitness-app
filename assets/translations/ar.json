@@ -77,7 +77,20 @@
   "heyThere": "مرحباً بك",
   "welcomeBACK": "أهلاً بعودتك",
   "login": "تسجيل الدخول",
-  "don'tHaveAnAccountYet ": "ليس لديك حساب بعد؟",
+  "don'tHaveAnAccountYet": "ليس لديك حساب بعد؟",
   "register": "إنشاء حساب",
-  "or": "أو"
+  "or": "أو",
+  "gym": "جيم",
+  "trainer": "المدرب",
+  "fitness": "اللياقة البدنية",
+  "aerobics": "أيروبكس",
+  "yoga": "يوغا",
+  "category": "الفئات",
+  "hi": "مرحباً",
+  "letsStartYourDay": "لنبدأ يومك",
+  "recommendationToDay": "توصيات اليوم",
+  "upcomingWorkouts": "التمارين القادمة",
+  "recommendationForYou": "موصى به لك",
+  "popularTraining": "التمارين الشائعة",
+  "seeAll": "عرض الكل"
 }

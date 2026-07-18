@@ -43,7 +43,7 @@ class CategoryItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: categories.length,
         separatorBuilder: (_, _) => const SizedBox(
-
+          width: 20,
           child: VerticalDivider(
             color: AppColors.lightGray,
             thickness: .5,

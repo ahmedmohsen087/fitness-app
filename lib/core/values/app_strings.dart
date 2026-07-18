@@ -106,8 +106,8 @@ class AppStrings {
   static String get heyThere => 'heyThere'.tr();
   static String get welcomeBACK => 'welcomeBACK'.tr();
   static String get login => 'login'.tr();
-  static String get doNotHaveAnAccountYet => 'don\'tHaveAnAccountYet '.tr();
-  static String get register => ' register'.tr();
+  static String get doNotHaveAnAccountYet => 'don\'tHaveAnAccountYet'.tr();
+  static String get register => 'register'.tr();
   static String get or => 'or'.tr();
   static String get rememberMe => 'rememberMe'.tr();
   static String get loggedSuccessfully => 'loggedInSuccessfully'.tr();
