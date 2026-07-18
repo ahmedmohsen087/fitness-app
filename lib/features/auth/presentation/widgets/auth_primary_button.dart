@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/theme/text_styles.dart';
 
 class AuthPrimaryButton extends StatelessWidget {
@@ -24,23 +25,7 @@ class AuthPrimaryButton extends StatelessWidget {
       height: 38,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
-        style: ButtonStyle(
-          minimumSize: const WidgetStatePropertyAll(Size.zero),
-          padding: const WidgetStatePropertyAll(
-            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          ),
-          elevation: const WidgetStatePropertyAll(0),
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return AppColors.lightGray;
-            }
-            return AppColors.orange;
-          }),
-          shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          ),
-          textStyle: WidgetStatePropertyAll(TextStyles.authButton),
-        ),
+        style: AppTheme.authPrimaryButtonStyle,
         child: isLoading
             ? const SizedBox.square(
                 dimension: 18,

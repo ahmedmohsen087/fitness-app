@@ -12,12 +12,12 @@ class RegisterState extends Equatable {
   final String? email;
   final String? password;
   final String? rePassword;
-  final String? gender;
+  final Gender? gender;
   final int? age;
   final int? weight;
   final int? height;
-  final String? goal;
-  final String? activityLevel;
+  final FitnessGoal? goal;
+  final ActivityLevel? activityLevel;
   final RegisterFlowStep? navigationTarget;
   final int navigationRequestId;
   final BaseState<RegisterResponseEntity> submitState;
@@ -45,12 +45,12 @@ class RegisterState extends Equatable {
     String? email,
     String? password,
     String? rePassword,
-    String? gender,
+    Gender? gender,
     int? age,
     int? weight,
     int? height,
-    String? goal,
-    String? activityLevel,
+    FitnessGoal? goal,
+    ActivityLevel? activityLevel,
     RegisterFlowStep? navigationTarget,
     int? navigationRequestId,
     BaseState<RegisterResponseEntity>? submitState,

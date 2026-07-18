@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/utils/validation/app_validations.dart';
 import '../../../../core/values/app_strings.dart';
@@ -118,11 +119,6 @@ class _AuthTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const border = OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(20)),
-      borderSide: BorderSide(color: AppColors.grey),
-    );
-
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 311),
       child: TextFormField(
@@ -131,31 +127,10 @@ class _AuthTextField extends StatelessWidget {
         obscureText: obscureText,
         style: TextStyles.authField.copyWith(color: AppColors.white),
         validator: validator,
-        decoration: InputDecoration(
-          isDense: true,
+        decoration: AppTheme.authInputDecoration(
           hintText: hintText,
-          hintStyle: TextStyles.authField,
           prefixIcon: Icon(icon, size: 20, color: AppColors.white),
-          prefixIconConstraints: const BoxConstraints.tightFor(
-            width: 44,
-            height: 20,
-          ),
           suffixIcon: suffixIcon,
-          suffixIconConstraints: const BoxConstraints.tightFor(
-            width: 36,
-            height: 20,
-          ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 8),
-          enabledBorder: border,
-          focusedBorder: border.copyWith(
-            borderSide: const BorderSide(color: AppColors.white),
-          ),
-          errorBorder: border.copyWith(
-            borderSide: const BorderSide(color: AppColors.red),
-          ),
-          focusedErrorBorder: border.copyWith(
-            borderSide: const BorderSide(color: AppColors.red),
-          ),
         ),
       ),
     );

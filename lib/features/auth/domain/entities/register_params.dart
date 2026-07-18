@@ -1,17 +1,19 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/values/register_constants.dart';
+
 class RegisterParams extends Equatable {
   final String firstName;
   final String lastName;
   final String email;
   final String password;
   final String rePassword;
-  final String gender;
+  final Gender gender;
   final int height;
   final int weight;
   final int age;
-  final String goal;
-  final String activityLevel;
+  final FitnessGoal goal;
+  final ActivityLevel activityLevel;
 
   const RegisterParams({
     required this.firstName,

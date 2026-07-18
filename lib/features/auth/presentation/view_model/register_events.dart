@@ -1,3 +1,4 @@
+import '../../../../core/values/register_constants.dart';
 import 'register_state.dart';
 
 sealed class RegisterEvents {
@@ -27,7 +28,7 @@ class ContinueRegistrationEvent extends RegisterEvents {
 }
 
 class SelectGenderEvent extends RegisterEvents {
-  final String gender;
+  final Gender gender;
 
   const SelectGenderEvent({required this.gender});
 }
@@ -51,13 +52,13 @@ class UpdateHeightEvent extends RegisterEvents {
 }
 
 class SelectGoalEvent extends RegisterEvents {
-  final String goal;
+  final FitnessGoal goal;
 
   const SelectGoalEvent({required this.goal});
 }
 
 class SelectActivityLevelEvent extends RegisterEvents {
-  final String activityLevel;
+  final ActivityLevel activityLevel;
 
   const SelectActivityLevelEvent({required this.activityLevel});
 }

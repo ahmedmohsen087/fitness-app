@@ -4,18 +4,17 @@ import '../../../../core/values/app_strings.dart';
 import '../../../../core/values/register_constants.dart';
 import '../view_model/register_events.dart';
 import '../view_model/register_state.dart';
-import '../view_model/register_view_model.dart';
 import '../widgets/register_measurement_step.dart';
 
 class HeightSelectionScreen extends StatelessWidget {
-  final RegisterViewModel viewModel;
+  final VoidCallback onBack;
 
-  const HeightSelectionScreen({super.key, required this.viewModel});
+  const HeightSelectionScreen({super.key, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
     return RegisterMeasurementStep(
-      viewModel: viewModel,
+      onBack: onBack,
       step: 4,
       title: AppStrings.whatIsYourHeight,
       subtitle: AppStrings.personalizedPlanSubtitle,
