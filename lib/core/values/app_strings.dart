@@ -20,7 +20,6 @@ class AppStrings {
 
   static String get getStarted => 'getStarted'.tr();
 
-
   // Secure storage - token
   static String get tokenEmpty => 'tokenEmpty'.tr();
 
@@ -173,16 +172,15 @@ class AppStrings {
 
   static String get login => 'login'.tr();
 
-  static String get doNotHaveAnAccountYet => 'don\'tHaveAnAccountYet '.tr();
+  static String get doNotHaveAnAccountYet => 'don\'tHaveAnAccountYet'.tr();
 
-  static String get register => ' register'.tr();
+  static String get register => 'register'.tr();
 
   static String get or => 'or'.tr();
 
   static String get rememberMe => 'rememberMe'.tr();
 
   static String get loggedSuccessfully => 'loggedInSuccessfully'.tr();
-
 
   static String get activityLevelTrueBeast => 'activityLevelTrueBeast'.tr();
 
@@ -231,5 +229,4 @@ class AppStrings {
 
   static String get incompleteRegistrationData =>
       'incompleteRegistrationData'.tr();
-
 }
