@@ -11,17 +11,16 @@ class RecommendationToDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<HomeViewModel>();
-
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
-        final isLoading = state is HomeLoadingState;
+        final isLoading = state.recommendationToDayState.isLoading;
 
-        final muscles = viewModel.recommendationToDay?.muscles ?? [];
+        final muscles = state.recommendationToDayState.data?.muscles ?? [];
 
         return SizedBox(
           height: 104,
           child: Skeletonizer(
+            enableSwitchAnimation: true,
             enabled: isLoading,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,

@@ -1,30 +1,12 @@
 
-import '../../domain/entities/recommendation_to_day/recommendation_to_day_entity.dart';
+sealed class HomeEvent {}
 
-abstract class HomeState  {
-  const HomeState();
-}
+class LoadHomeDataEvent extends HomeEvent {}
 
-class HomeInitialState extends HomeState {
-  const HomeInitialState();
-}
+class RetryHomeDataEvent extends HomeEvent {}
 
-class HomeLoadingState extends HomeState {
-  const HomeLoadingState();
-}
+class GetMusclesGroupByIdEvent extends HomeEvent {
+  final String id;
 
-class HomeSuccessState extends HomeState {
-  final RecommendationToDayEntity recommendation;
-
-  const HomeSuccessState(this.recommendation);
-
-
-}
-
-class HomeErrorState extends HomeState {
-  final String message;
-
-  const HomeErrorState(this.message);
-
-
+  GetMusclesGroupByIdEvent(this.id);
 }

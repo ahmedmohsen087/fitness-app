@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
+import '../view_models/home_events.dart';
 import '../view_models/home_states.dart';
 import '../view_models/home_view_models.dart';
 
@@ -12,12 +12,13 @@ class MusclesGroupList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<HomeViewModel>();
-
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
-        final isLoading = state is HomeLoadingState;
-        final muscles = viewModel.musclesGroup?.musclesGroup ?? [];
+        final viewModel = context.read<HomeViewModel>();
+
+        final muscles = state.musclesGroupState.data?.musclesGroup ?? [];
+
+        final isLoading = state.musclesGroupState.isLoading;
 
         return SizedBox(
           height: 36,
@@ -39,7 +40,7 @@ class MusclesGroupList extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      'Loading',
+                      "Loading",
                       style: TextStyles.bodyRegular12.copyWith(
                         color: AppColors.white,
                         fontWeight: FontWeight.bold,
@@ -56,7 +57,7 @@ class MusclesGroupList extends StatelessWidget {
                 return InkWell(
                   borderRadius: BorderRadius.circular(20),
                   onTap: () {
-                    viewModel.getMusclesGroupById(muscle.id);
+                    viewModel.doEvent(GetMusclesGroupByIdEvent(muscle.id));
                   },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 250),

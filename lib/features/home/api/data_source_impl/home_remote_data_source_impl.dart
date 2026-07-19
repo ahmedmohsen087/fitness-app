@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/utils/error/error_handler.dart';
 import '../../data/models/muscles_group/muscles_group_by_id_response.dart';
 import '../../data/models/muscles_group/muscles_group_response.dart';
+import '../../data/models/recommendation_food/recommendation_food_response.dart';
 @Injectable(as: HomeRemoteDataSourceContract)
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSourceContract{
   final HomeApiClient homeApiClient ;
@@ -45,9 +46,20 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSourceContract{
       return ErrorBaseResponse<MusclesGroupByIdResponse>(errorMessage: message) ;
     }
   }
+  @override
+  Future<BaseResponse<RecommendationFoodResponse>> getRecommendationFood() async {
+    try{
+      final response = await homeApiClient.getRecommendationFood();
+      return SuccessBaseResponse<RecommendationFoodResponse>(data: response);
+      }catch(e){
+      final message = ErrorHandler.handle(e);
+      return ErrorBaseResponse<RecommendationFoodResponse>(errorMessage: message) ;
+    }
+  }
+  }
 
 
 
 
 
-}
+

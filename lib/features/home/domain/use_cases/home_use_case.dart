@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../config/base_response/base_response.dart';
+import '../entities/category_food/recommendation_food_entity.dart';
 import '../entities/muscles_group/muscles_group_by_id_entity.dart';
 import '../entities/muscles_group/muscles_group_entity.dart';
 import '../entities/recommendation_to_day/recommendation_to_day_entity.dart';
@@ -20,6 +21,9 @@ class HomeUseCase {
   }
   Future<BaseResponse<MusclesGroupByIdEntity>> getMusclesGroupId(String id)  {
     return homeRepository.getMusclesGroupId(id);
+  }
+  Future<BaseResponse<RecommendationFoodEntity>> getRecommendationFood()  {
+    return homeRepository.getRecommendationFood();
   }
 }
 

@@ -4,4 +4,6 @@ abstract class ApiEndpoints {
   static const String muscles = "https://fitness.elevateegy.com/api/v1/muscles/random";
   static const String musclesGroup = "https://fitness.elevateegy.com/api/v1/muscles";
   static const String musclesGroupId = "https://fitness.elevateegy.com/api/v1/musclesGroup/{id}";
+  static const String recommendationFood = "https://www.themealdb.com/api/json/v1/1/categories.php";
+
 }

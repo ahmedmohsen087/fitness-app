@@ -11,16 +11,15 @@ class UpcomingWorkoutsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<HomeViewModel>();
-
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
-        final isLoading = state is HomeLoadingState;
-        final muscles = viewModel.musclesGroupById?.muscles ?? [];
+        final isLoading = state.musclesGroupByIdState.isLoading;
+        final muscles = state.musclesGroupByIdState.data?.muscles ?? [];
 
         return SizedBox(
           height: 90,
           child: Skeletonizer(
+            enableSwitchAnimation: true,
             enabled: isLoading && muscles.isEmpty,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
