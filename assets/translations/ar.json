@@ -110,5 +110,7 @@
   "done": "تم",
   "incompleteRegistrationData": "يرجى إكمال جميع خطوات التسجيل",
   "welcomeBACK": "أهلاً بعودتك",
-  "don'tHaveAnAccountYet ": "ليس لديك حساب بعد؟"
+  "don'tHaveAnAccountYet": "ليس لديك حساب بعد؟",
+  "rememberMe": "تذكرني",
+  "loggedInSuccessfully": "تم تسجيل الدخول بنجاح"
 }

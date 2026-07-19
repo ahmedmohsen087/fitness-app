@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../../config/app_launch/app_launch_manager.dart';
+import '../../../../config/di/di.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/values/app_routs_name.dart';
 import '../../../../core/values/assets.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,11 +19,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () {
-      if (!mounted) return;
+    unawaited(_navigateAfterSplash());
+  }
 
-      Navigator.pushReplacementNamed(context, AppRoutsName.onBoarding);
-    });
+  Future<void> _navigateAfterSplash() async {
+    await Future<void>.delayed(const Duration(seconds: 3));
+
+    final destination = await getIt<AppLaunchManager>().resolveDestination();
+
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, destination);
   }
 
   @override

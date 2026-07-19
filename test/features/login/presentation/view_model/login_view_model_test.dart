@@ -14,20 +14,39 @@ import 'package:mockito/mockito.dart';
 
 import 'login_view_model_test.mocks.dart';
 
-
-final tLoginEntity = LoginUserEntity(id: '', firstName: '', lastName: '', email: '', gender: '', age: 45, weight: 45, height: 45, activityLevel: '', goal: '', photo: '', createdAt: DateTime.now()
-
+final tLoginEntity = LoginUserEntity(
+  id: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  gender: '',
+  age: 45,
+  weight: 45,
+  height: 45,
+  activityLevel: '',
+  goal: '',
+  photo: '',
+  createdAt: DateTime.now(),
 );
-
-
 
 @GenerateMocks([LoginUseCase, AuthManager])
 void main() {
   setUpAll(() {
     provideDummy<BaseResponse<LoginUserEntity>>(
       SuccessBaseResponse<LoginUserEntity>(
-        data:  LoginUserEntity(
-            id: '', firstName: '', lastName: '', email: '', gender: '', age: 45, weight: 45, height: 45, activityLevel: '', goal: '', photo: '', createdAt: DateTime.now()
+        data: LoginUserEntity(
+          id: '',
+          firstName: '',
+          lastName: '',
+          email: '',
+          gender: '',
+          age: 45,
+          weight: 45,
+          height: 45,
+          activityLevel: '',
+          goal: '',
+          photo: '',
+          createdAt: DateTime.now(),
         ),
       ),
     );
@@ -43,23 +62,34 @@ void main() {
   );
 
   final tAuthResponseEntity = LoginUserEntity(
-      id: '', firstName: '', lastName: '', email: '', gender: '', age: 45, weight: 45, height: 45, activityLevel: '', goal: '', photo: '', createdAt: DateTime.now()
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    gender: '',
+    age: 45,
+    weight: 45,
+    height: 45,
+    activityLevel: '',
+    goal: '',
+    photo: '',
+    createdAt: DateTime.now(),
   );
 
   void stubLoginSuccess() {
-    when(mockLoginUseCase.execute(loginRequestModel: tLoginRequestModel))
-        .thenAnswer(
+    when(
+      mockLoginUseCase.execute(loginRequestModel: tLoginRequestModel),
+    ).thenAnswer(
       (_) async =>
           SuccessBaseResponse<LoginUserEntity>(data: tAuthResponseEntity),
     );
   }
 
   void stubLoginError(String message) {
-    when(mockLoginUseCase.execute(loginRequestModel: tLoginRequestModel))
-        .thenAnswer(
-      (_) async => ErrorBaseResponse<LoginUserEntity>(
-        errorMessage: message,
-      ),
+    when(
+      mockLoginUseCase.execute(loginRequestModel: tLoginRequestModel),
+    ).thenAnswer(
+      (_) async => ErrorBaseResponse<LoginUserEntity>(errorMessage: message),
     );
   }
 
@@ -83,10 +113,12 @@ void main() {
       'emits [loading, success] states when login usecase succeeds',
       build: () {
         stubLoginSuccess();
+        when(mockAuthManager.setRememberMe(true)).thenAnswer((_) async {});
         return sut;
       },
-      act: (vm) =>
-          vm.doEvent(LoginRequestEvent(requestModel: tLoginRequestModel)),
+      act: (vm) => vm.doEvent(
+        LoginRequestEvent(requestModel: tLoginRequestModel, rememberMe: true),
+      ),
       expect: () => [
         isA<LoginState>().having(
           (s) => s.loginState.isLoading,
@@ -109,22 +141,8 @@ void main() {
         verify(
           mockLoginUseCase.execute(loginRequestModel: tLoginRequestModel),
         ).called(1);
-        verifyNoMoreInteractions(mockLoginUseCase);
-      },
-    );
-
-    blocTest<LoginViewModel, LoginState>(
-      'calls AuthManager.setRememberMe when RememberMeEvent is dispatched',
-      build: () {
-        return sut;
-      },
-      act: (vm) {
-        when(mockAuthManager.setRememberMe(true))
-            .thenAnswer((_) async {});
-        vm.doEvent(RememberMeEvent(rememberMe: true));
-      },
-      verify: (_) {
         verify(mockAuthManager.setRememberMe(true)).called(1);
+        verifyNoMoreInteractions(mockLoginUseCase);
       },
     );
 
@@ -132,10 +150,12 @@ void main() {
       'emits [loading, error] states when login usecase fails',
       build: () {
         stubLoginError('Invalid credentials');
+        when(mockAuthManager.setRememberMe(false)).thenAnswer((_) async {});
         return sut;
       },
-      act: (vm) =>
-          vm.doEvent(LoginRequestEvent(requestModel: tLoginRequestModel)),
+      act: (vm) => vm.doEvent(
+        LoginRequestEvent(requestModel: tLoginRequestModel, rememberMe: false),
+      ),
       expect: () => [
         isA<LoginState>().having(
           (s) => s.loginState.isLoading,
@@ -158,6 +178,7 @@ void main() {
         verify(
           mockLoginUseCase.execute(loginRequestModel: tLoginRequestModel),
         ).called(1);
+        verify(mockAuthManager.setRememberMe(false)).called(1);
         verifyNoMoreInteractions(mockLoginUseCase);
       },
     );
