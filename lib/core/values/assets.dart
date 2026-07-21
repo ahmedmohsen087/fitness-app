@@ -25,4 +25,23 @@ class Assets {
   static const String appleLogo = "assets/icons/Apple.svg";
   static const String maleIcon = "assets/icons/male.svg";
   static const String femaleIcon = "assets/icons/female.svg";
+
+  // home
+  static const String homeBackGround = "assets/images/homebackground.png";
+  static const String yogaLogo = "assets/images/yogalogo.png";
+  static const String aerobicsLogo = "assets/images/aerobicslogo.png";
+  static const String fitnessLogo = "assets/images/fitnesslogo.png";
+  static const String gymLogo = "assets/images/gymlogo.png";
+  static const String trainerLogo = "assets/images/trainerlogo.png";
+  static const String test = "assets/images/test.png";
+
+
+
+
+
+
+
+
+
+
 }

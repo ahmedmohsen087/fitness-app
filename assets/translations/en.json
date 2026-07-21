@@ -112,5 +112,19 @@
   "register": "Register",
   "or": "or",
   "rememberMe": "Remember Me",
-  "loggedInSuccessfully": "Logged in successfully"
+  "loggedInSuccessfully": "Logged in successfully",
+  "gym": "Gym",
+  "trainer": "Trainer",
+  "fitness": "Fitness",
+  "aerobics": "Aerobics",
+  "yoga": "Yoga",
+  "category": "Category",
+  "hi": "Hi",
+  "letsStartYourDay": "Let's start your day",
+  "recommendationToDay": "Recommendation To Day",
+  "upcomingWorkouts": "Upcoming Workouts",
+  "recommendationForYou": "Recommendation For You",
+  "popularTraining": "Popular Training",
+  "seeAll": "See All"
+
 }

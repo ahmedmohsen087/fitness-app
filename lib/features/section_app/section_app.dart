@@ -2,7 +2,7 @@ import 'package:fitness_app/core/reusable_widgets/app_bottom_nav_bar.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
 import 'package:fitness_app/features/section_app/chat_screen.dart';
-import 'package:fitness_app/features/section_app/home_screen.dart';
+import 'package:fitness_app/features/home/presentation/screens/home_screen.dart';
 import 'package:fitness_app/features/section_app/profile_screen.dart';
 import 'package:fitness_app/features/section_app/workouts_screen.dart';
 import 'package:flutter/material.dart';

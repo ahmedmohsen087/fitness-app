@@ -138,6 +138,15 @@ abstract class TextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.black,
   );
+  static final TextStyle textRegular12 = GoogleFonts.inter(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    color: AppColors.orange,
+    decoration: TextDecoration.underline,
+    decorationColor: AppColors.orange,
+    decorationThickness: 1.5,
+
+  );
   static final TextStyle bodyRegular13 = GoogleFonts.inter(
     fontSize: 13,
     fontWeight: FontWeight.w400,
@@ -179,4 +188,5 @@ abstract class TextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.red,
   );
+
 }
