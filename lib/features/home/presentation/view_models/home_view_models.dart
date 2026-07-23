@@ -33,6 +33,7 @@ class HomeViewModel extends Cubit<HomeState> {
   String? selectedMuscleGroupId;
   String? _requestedFoodCategory;
   String? _selectedMealId;
+  int _mealsRequestId = 0;
 
   void doEvent(HomeEvent event) {
     switch (event) {
@@ -106,6 +107,7 @@ class HomeViewModel extends Cubit<HomeState> {
     emit(state.copyWith(recommendationToDayState: BaseState.loading()));
 
     final response = await _getRecommendationToDayUseCase.execute();
+    if (isClosed) return;
 
     switch (response) {
       case SuccessBaseResponse():
@@ -128,6 +130,7 @@ class HomeViewModel extends Cubit<HomeState> {
     emit(state.copyWith(musclesGroupState: BaseState.loading()));
 
     final response = await _getMusclesGroupUseCase.execute();
+    if (isClosed) return;
 
     switch (response) {
       case SuccessBaseResponse():
@@ -158,6 +161,7 @@ class HomeViewModel extends Cubit<HomeState> {
     emit(state.copyWith(musclesGroupByIdState: BaseState.loading()));
 
     final response = await _getMusclesGroupByIdUseCase.execute(id);
+    if (isClosed) return;
 
     switch (response) {
       case SuccessBaseResponse():
@@ -182,6 +186,7 @@ class HomeViewModel extends Cubit<HomeState> {
   }) async {
     emit(state.copyWith(recommendationFoodState: BaseState.loading()));
     final response = await _getRecommendationFoodUseCase.execute();
+    if (isClosed) return;
     switch (response) {
       case SuccessBaseResponse():
         final categories = response.data.categories;
@@ -220,8 +225,10 @@ class HomeViewModel extends Cubit<HomeState> {
   }
 
   Future<void> _getMealsByCategory(String category) async {
+    final requestId = ++_mealsRequestId;
     emit(state.copyWith(mealsState: BaseState.loading()));
     final response = await _getMealsByCategoryUseCase.execute(category);
+    if (isClosed || requestId != _mealsRequestId) return;
     switch (response) {
       case SuccessBaseResponse():
         emit(state.copyWith(mealsState: BaseState.success(response.data)));
@@ -236,6 +243,7 @@ class HomeViewModel extends Cubit<HomeState> {
     _selectedMealId = mealId;
     emit(state.copyWith(mealDetailsState: BaseState.loading()));
     final response = await _getMealDetailsUseCase.execute(mealId);
+    if (isClosed) return;
     switch (response) {
       case SuccessBaseResponse():
         emit(

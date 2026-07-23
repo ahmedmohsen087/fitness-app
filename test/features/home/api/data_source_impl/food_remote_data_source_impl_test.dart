@@ -1,24 +1,24 @@
 import 'package:dio/dio.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
-import 'package:fitness_app/features/home/api/api_client/home_api_client.dart';
-import 'package:fitness_app/features/home/api/data_source_impl/home_remote_data_source_impl.dart';
+import 'package:fitness_app/features/home/api/api_client/food_api_client.dart';
+import 'package:fitness_app/features/home/api/data_source_impl/food_remote_data_source_impl.dart';
+import 'package:fitness_app/features/home/api/models/food/meal_model.dart';
+import 'package:fitness_app/features/home/api/models/food/meals_response_model.dart';
 import 'package:fitness_app/features/home/api/models/food_details/meal_details_response_model.dart';
-import 'package:fitness_app/features/home/data/models/food/meal_model.dart';
-import 'package:fitness_app/features/home/data/models/food/meals_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'home_remote_data_source_impl_test.mocks.dart';
+import 'food_remote_data_source_impl_test.mocks.dart';
 
-@GenerateMocks([HomeApiClient])
+@GenerateMocks([FoodApiClient])
 void main() {
-  late MockHomeApiClient apiClient;
-  late HomeRemoteDataSourceImpl dataSource;
+  late MockFoodApiClient apiClient;
+  late FoodRemoteDataSourceImpl dataSource;
 
   setUp(() {
-    apiClient = MockHomeApiClient();
-    dataSource = HomeRemoteDataSourceImpl(apiClient);
+    apiClient = MockFoodApiClient();
+    dataSource = FoodRemoteDataSourceImpl(apiClient);
   });
 
   test('returns meals response when category request succeeds', () async {

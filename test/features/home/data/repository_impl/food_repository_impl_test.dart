@@ -1,19 +1,19 @@
 import 'package:fitness_app/config/base_response/base_response.dart';
+import 'package:fitness_app/features/home/api/models/food/meal_model.dart';
+import 'package:fitness_app/features/home/api/models/food/meals_response_model.dart';
 import 'package:fitness_app/features/home/api/models/food_details/meal_details_model.dart';
 import 'package:fitness_app/features/home/api/models/food_details/meal_details_response_model.dart';
-import 'package:fitness_app/features/home/data/data_sources_contract/home_remote_data_source_contract.dart';
-import 'package:fitness_app/features/home/data/models/food/meal_model.dart';
-import 'package:fitness_app/features/home/data/models/food/meals_response_model.dart';
-import 'package:fitness_app/features/home/data/repository_impl/home_repositroy_impl.dart';
+import 'package:fitness_app/features/home/data/data_sources_contract/food_remote_data_source_contract.dart';
+import 'package:fitness_app/features/home/data/repository_impl/food_repository_impl.dart';
 import 'package:fitness_app/features/home/domain/entities/food/meals_entity.dart';
 import 'package:fitness_app/features/home/domain/entities/food_details/meal_details_response_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'home_repository_impl_test.mocks.dart';
+import 'food_repository_impl_test.mocks.dart';
 
-@GenerateMocks([HomeRemoteDataSourceContract])
+@GenerateMocks([FoodRemoteDataSourceContract])
 void main() {
   provideDummy<BaseResponse<MealsResponseModel>>(
     ErrorBaseResponse(errorMessage: 'dummy'),
@@ -22,12 +22,12 @@ void main() {
     ErrorBaseResponse(errorMessage: 'dummy'),
   );
 
-  late MockHomeRemoteDataSourceContract dataSource;
-  late HomeRepositoryImpl repository;
+  late MockFoodRemoteDataSourceContract dataSource;
+  late FoodRepositoryImpl repository;
 
   setUp(() {
-    dataSource = MockHomeRemoteDataSourceContract();
-    repository = HomeRepositoryImpl(dataSource);
+    dataSource = MockFoodRemoteDataSourceContract();
+    repository = FoodRepositoryImpl(dataSource);
   });
 
   test('maps meal models to domain entities', () async {

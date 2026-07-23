@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
 import 'package:fitness_app/features/home/domain/entities/category_food/category_food_entity.dart';
@@ -209,6 +211,36 @@ void main() {
       verify(mealDetailsUseCase.execute('52959')).called(1);
     },
   );
+
+  test('ignores an older category response that finishes last', () async {
+    final beefCompleter = Completer<BaseResponse<MealsEntity>>();
+    final seafoodCompleter = Completer<BaseResponse<MealsEntity>>();
+    when(
+      mealsByCategoryUseCase.execute('Beef'),
+    ).thenAnswer((_) => beefCompleter.future);
+    when(
+      mealsByCategoryUseCase.execute('Seafood'),
+    ).thenAnswer((_) => seafoodCompleter.future);
+    final viewModel = _buildViewModel(
+      recommendationToDayUseCase,
+      musclesGroupUseCase,
+      musclesGroupByIdUseCase,
+      recommendationFoodUseCase,
+      mealsByCategoryUseCase,
+      mealDetailsUseCase,
+    );
+
+    viewModel.doEvent(SelectFoodCategoryEvent('Beef'));
+    viewModel.doEvent(SelectFoodCategoryEvent('Seafood'));
+    seafoodCompleter.complete(SuccessBaseResponse(data: seafoodMeals));
+    await Future<void>.delayed(Duration.zero);
+    beefCompleter.complete(SuccessBaseResponse(data: beefMeals));
+    await Future<void>.delayed(Duration.zero);
+
+    expect(viewModel.state.selectedFoodCategory, 'Seafood');
+    expect(viewModel.state.mealsState.data, seafoodMeals);
+    await viewModel.close();
+  });
 }
 
 HomeViewModel _buildViewModel(

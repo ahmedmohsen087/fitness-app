@@ -1,6 +1,9 @@
-import '../../../domain/entities/food_details/meal_details_entity.dart';
-import '../../../domain/entities/food_details/meal_ingredient_entity.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import '../../../domain/entities/food_details/meal_details_entity.dart';
+import 'meal_ingredient_model.dart';
+
+@JsonSerializable(createFactory: false, createToJson: false)
 class MealDetailsModel {
   final String? id;
   final String? name;
@@ -11,7 +14,7 @@ class MealDetailsModel {
   final String? thumbnail;
   final String? tags;
   final String? youtubeUrl;
-  final List<MealIngredientEntity> ingredients;
+  final List<MealIngredientModel> ingredients;
 
   const MealDetailsModel({
     this.id,
@@ -27,12 +30,12 @@ class MealDetailsModel {
   });
 
   factory MealDetailsModel.fromJson(Map<String, dynamic> json) {
-    final ingredients = <MealIngredientEntity>[];
+    final ingredients = <MealIngredientModel>[];
     for (var index = 1; index <= 20; index++) {
       final name = (json['strIngredient$index'] as String?)?.trim() ?? '';
       if (name.isEmpty) continue;
       final measure = (json['strMeasure$index'] as String?)?.trim() ?? '';
-      ingredients.add(MealIngredientEntity(name: name, measure: measure));
+      ingredients.add(MealIngredientModel(name: name, measure: measure));
     }
 
     return MealDetailsModel(
@@ -65,6 +68,8 @@ class MealDetailsModel {
             .toList() ??
         const [],
     youtubeUrl: youtubeUrl ?? '',
-    ingredients: ingredients,
+    ingredients: ingredients
+        .map((ingredient) => ingredient.toEntity())
+        .toList(),
   );
 }

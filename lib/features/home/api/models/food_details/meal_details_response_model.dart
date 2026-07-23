@@ -1,6 +1,9 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import '../../../domain/entities/food_details/meal_details_response_entity.dart';
 import 'meal_details_model.dart';
 
+@JsonSerializable(createFactory: false, createToJson: false)
 class MealDetailsResponseModel {
   final List<MealDetailsModel>? meals;
 

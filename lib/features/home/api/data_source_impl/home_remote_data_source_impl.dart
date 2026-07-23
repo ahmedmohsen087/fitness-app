@@ -5,11 +5,8 @@ import 'package:fitness_app/features/home/data/models/recommendation_to_day/reco
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/utils/error/error_handler.dart';
-import '../../data/models/food/meals_response_model.dart';
 import '../../data/models/muscles_group/muscles_group_by_id_response.dart';
 import '../../data/models/muscles_group/muscles_group_response.dart';
-import '../../data/models/recommendation_food/recommendation_food_response.dart';
-import '../models/food_details/meal_details_response_model.dart';
 
 @Injectable(as: HomeRemoteDataSourceContract)
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSourceContract {
@@ -52,44 +49,6 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSourceContract {
     } catch (e) {
       final message = ErrorHandler.handle(e);
       return ErrorBaseResponse<MusclesGroupByIdResponse>(errorMessage: message);
-    }
-  }
-
-  @override
-  Future<BaseResponse<RecommendationFoodResponse>>
-  getRecommendationFood() async {
-    try {
-      final response = await homeApiClient.getRecommendationFood();
-      return SuccessBaseResponse<RecommendationFoodResponse>(data: response);
-    } catch (e) {
-      final message = ErrorHandler.handle(e);
-      return ErrorBaseResponse<RecommendationFoodResponse>(
-        errorMessage: message,
-      );
-    }
-  }
-
-  @override
-  Future<BaseResponse<MealsResponseModel>> getMealsByCategory(
-    String category,
-  ) async {
-    try {
-      final response = await homeApiClient.getMealsByCategory(category);
-      return SuccessBaseResponse(data: response);
-    } catch (error) {
-      return ErrorBaseResponse(errorMessage: ErrorHandler.handle(error));
-    }
-  }
-
-  @override
-  Future<BaseResponse<MealDetailsResponseModel>> getMealDetails(
-    String mealId,
-  ) async {
-    try {
-      final response = await homeApiClient.getMealDetails(mealId);
-      return SuccessBaseResponse(data: response);
-    } catch (error) {
-      return ErrorBaseResponse(errorMessage: ErrorHandler.handle(error));
     }
   }
 }

@@ -33,19 +33,16 @@ class RecommendationItemWidget extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  image,
-                  width: width ?? 104,
-                  height: height ?? 104,
-                  fit: BoxFit.fill,
-                  errorBuilder: (_, _, _) => const ColoredBox(
-                    color: AppColors.lightBlack,
-                    child: Icon(
-                      Icons.restaurant_rounded,
-                      color: AppColors.lightGray,
-                    ),
-                  ),
-                ),
+                child: image.trim().isEmpty
+                    ? const _RecommendationImagePlaceholder()
+                    : Image.network(
+                        image,
+                        width: width ?? 104,
+                        height: height ?? 104,
+                        fit: BoxFit.fill,
+                        errorBuilder: (_, _, _) =>
+                            const _RecommendationImagePlaceholder(),
+                      ),
               ),
 
               Positioned(
@@ -76,6 +73,18 @@ class RecommendationItemWidget extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _RecommendationImagePlaceholder extends StatelessWidget {
+  const _RecommendationImagePlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return const ColoredBox(
+      color: AppColors.lightBlack,
+      child: Icon(Icons.restaurant_rounded, color: AppColors.lightGray),
     );
   }
 }

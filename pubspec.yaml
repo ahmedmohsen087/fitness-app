@@ -24,6 +24,7 @@ dependencies:
   fluttertoast: ^9.1.0
   get_it: ^9.2.1
   google_fonts: ^8.1.0
+  http_cache_file_store: ^2.0.1
   image_picker: ^1.2.2
   smooth_page_indicator:
   injectable: ^3.0.0
@@ -33,6 +34,7 @@ dependencies:
   package_info_plus: ^10.1.0
   permission_handler: ^12.0.3
   pinput: ^6.0.2
+  path_provider: ^2.1.5
   pretty_dio_logger: ^1.4.0
   retrofit: ^4.9.2
   rxdart: ^0.28.0

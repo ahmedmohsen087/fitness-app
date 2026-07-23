@@ -5,6 +5,7 @@ import 'package:fitness_app/features/home/domain/entities/food_details/meal_deta
 import 'package:fitness_app/features/home/domain/entities/muscles_group/muscles_group_by_id_entity.dart';
 import 'package:fitness_app/features/home/domain/entities/muscles_group/muscles_group_entity.dart';
 import 'package:fitness_app/features/home/domain/entities/recommendation_to_day/recommendation_to_day_entity.dart';
+import 'package:fitness_app/features/home/domain/repository_contract/food_repository_contract.dart';
 import 'package:fitness_app/features/home/domain/repository_contract/home_repository_contract.dart';
 import 'package:fitness_app/features/home/domain/use_cases/get_meal_details_use_case.dart';
 import 'package:fitness_app/features/home/domain/use_cases/get_meals_by_category_use_case.dart';
@@ -18,9 +19,10 @@ import 'package:mockito/mockito.dart';
 
 import 'home_use_cases_test.mocks.dart';
 
-@GenerateMocks([HomeRepositoryContract])
+@GenerateMocks([HomeRepositoryContract, FoodRepositoryContract])
 void main() {
-  late MockHomeRepositoryContract repository;
+  late MockHomeRepositoryContract homeRepository;
+  late MockFoodRepositoryContract foodRepository;
 
   setUpAll(() {
     provideDummy<BaseResponse<RecommendationToDayEntity>>(
@@ -43,79 +45,94 @@ void main() {
     );
   });
 
-  setUp(() => repository = MockHomeRepositoryContract());
+  setUp(() {
+    homeRepository = MockHomeRepositoryContract();
+    foodRepository = MockFoodRepositoryContract();
+  });
 
   test('GetRecommendationToDayUseCase delegates to repository', () async {
     final expected = ErrorBaseResponse<RecommendationToDayEntity>(
       errorMessage: 'failed',
     );
-    when(repository.getRecommendationToDay()).thenAnswer((_) async => expected);
+    when(
+      homeRepository.getRecommendationToDay(),
+    ).thenAnswer((_) async => expected);
 
-    final result = await GetRecommendationToDayUseCase(repository).execute();
+    final result = await GetRecommendationToDayUseCase(
+      homeRepository,
+    ).execute();
 
     expect(result, same(expected));
-    verify(repository.getRecommendationToDay()).called(1);
+    verify(homeRepository.getRecommendationToDay()).called(1);
   });
 
   test('GetMusclesGroupUseCase delegates to repository', () async {
     final expected = ErrorBaseResponse<MusclesGroupEntity>(
       errorMessage: 'failed',
     );
-    when(repository.getMusclesGroup()).thenAnswer((_) async => expected);
+    when(homeRepository.getMusclesGroup()).thenAnswer((_) async => expected);
 
-    final result = await GetMusclesGroupUseCase(repository).execute();
+    final result = await GetMusclesGroupUseCase(homeRepository).execute();
 
     expect(result, same(expected));
-    verify(repository.getMusclesGroup()).called(1);
+    verify(homeRepository.getMusclesGroup()).called(1);
   });
 
   test('GetMusclesGroupByIdUseCase delegates the ID', () async {
     final expected = ErrorBaseResponse<MusclesGroupByIdEntity>(
       errorMessage: 'failed',
     );
-    when(repository.getMusclesGroupId('id')).thenAnswer((_) async => expected);
+    when(
+      homeRepository.getMusclesGroupId('id'),
+    ).thenAnswer((_) async => expected);
 
-    final result = await GetMusclesGroupByIdUseCase(repository).execute('id');
+    final result = await GetMusclesGroupByIdUseCase(
+      homeRepository,
+    ).execute('id');
 
     expect(result, same(expected));
-    verify(repository.getMusclesGroupId('id')).called(1);
+    verify(homeRepository.getMusclesGroupId('id')).called(1);
   });
 
   test('GetRecommendationFoodUseCase delegates to repository', () async {
     final expected = ErrorBaseResponse<RecommendationFoodEntity>(
       errorMessage: 'failed',
     );
-    when(repository.getRecommendationFood()).thenAnswer((_) async => expected);
+    when(
+      foodRepository.getRecommendationFood(),
+    ).thenAnswer((_) async => expected);
 
-    final result = await GetRecommendationFoodUseCase(repository).execute();
+    final result = await GetRecommendationFoodUseCase(foodRepository).execute();
 
     expect(result, same(expected));
-    verify(repository.getRecommendationFood()).called(1);
+    verify(foodRepository.getRecommendationFood()).called(1);
   });
 
   test('GetMealsByCategoryUseCase delegates the category', () async {
     final expected = ErrorBaseResponse<MealsEntity>(errorMessage: 'failed');
     when(
-      repository.getMealsByCategory('Seafood'),
+      foodRepository.getMealsByCategory('Seafood'),
     ).thenAnswer((_) async => expected);
 
     final result = await GetMealsByCategoryUseCase(
-      repository,
+      foodRepository,
     ).execute('Seafood');
 
     expect(result, same(expected));
-    verify(repository.getMealsByCategory('Seafood')).called(1);
+    verify(foodRepository.getMealsByCategory('Seafood')).called(1);
   });
 
   test('GetMealDetailsUseCase delegates the meal ID', () async {
     final expected = ErrorBaseResponse<MealDetailsResponseEntity>(
       errorMessage: 'failed',
     );
-    when(repository.getMealDetails('52959')).thenAnswer((_) async => expected);
+    when(
+      foodRepository.getMealDetails('52959'),
+    ).thenAnswer((_) async => expected);
 
-    final result = await GetMealDetailsUseCase(repository).execute('52959');
+    final result = await GetMealDetailsUseCase(foodRepository).execute('52959');
 
     expect(result, same(expected));
-    verify(repository.getMealDetails('52959')).called(1);
+    verify(foodRepository.getMealDetails('52959')).called(1);
   });
 }

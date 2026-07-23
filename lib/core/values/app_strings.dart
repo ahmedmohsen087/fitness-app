@@ -157,6 +157,8 @@ class AppStrings {
 
   static String get retry => 'retry'.tr();
 
+  static String get loading => 'loading'.tr();
+
   static String get ingredients => 'ingredients'.tr();
 
   static String get cuisine => 'cuisine'.tr();

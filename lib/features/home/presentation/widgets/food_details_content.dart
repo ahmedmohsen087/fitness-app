@@ -6,26 +6,68 @@ import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/app_strings.dart';
 import '../../domain/entities/food_details/meal_details_entity.dart';
 import 'food_details_ingredients_card.dart';
+import 'food_details_navigation_bar.dart';
 
-class FoodDetailsContent extends StatelessWidget {
+class FoodDetailsContent extends StatefulWidget {
   final MealDetailsEntity meal;
 
   const FoodDetailsContent({super.key, required this.meal});
 
   @override
+  State<FoodDetailsContent> createState() => _FoodDetailsContentState();
+}
+
+class _FoodDetailsContentState extends State<FoodDetailsContent> {
+  static const _collapsedTitleOffset = 240.0;
+
+  late final ScrollController _scrollController;
+  bool _showCollapsedTitle = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final showTitle = _scrollController.offset >= _collapsedTitleOffset;
+    if (showTitle != _showCollapsedTitle) {
+      setState(() => _showCollapsedTitle = showTitle);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(child: _DetailsHero(meal: meal)),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-          sliver: SliverList.list(
-            children: [
-              Text(AppStrings.ingredients, style: TextStyles.authHeadline),
-              const SizedBox(height: 8),
-              FoodDetailsIngredientsCard(meal: meal),
-            ],
-          ),
+    final meal = widget.meal;
+    return Stack(
+      children: [
+        CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            SliverToBoxAdapter(child: _DetailsHero(meal: meal)),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+              sliver: SliverList.list(
+                children: [
+                  Text(AppStrings.ingredients, style: TextStyles.authHeadline),
+                  const SizedBox(height: 8),
+                  FoodDetailsIngredientsCard(meal: meal),
+                ],
+              ),
+            ),
+          ],
+        ),
+        FoodDetailsNavigationBar(
+          mealName: meal.name,
+          showTitle: _showCollapsedTitle,
         ),
       ],
     );
@@ -65,32 +107,6 @@ class _DetailsHero extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [Colors.transparent, AppColors.lightBlack],
                   stops: [0.28, 1],
-                ),
-              ),
-            ),
-            SafeArea(
-              bottom: false,
-              child: Align(
-                alignment: AlignmentDirectional.topStart,
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 16, top: 12),
-                  child: Semantics(
-                    button: true,
-                    label: AppStrings.back,
-                    child: InkWell(
-                      customBorder: const CircleBorder(),
-                      onTap: () => Navigator.maybePop(context),
-                      child: const CircleAvatar(
-                        radius: 12,
-                        backgroundColor: AppColors.orange,
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          size: 12,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
               ),
             ),

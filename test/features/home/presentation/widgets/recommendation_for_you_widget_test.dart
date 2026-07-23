@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/config/base_state/base_state.dart';
 import 'package:fitness_app/config/di/di.dart';
@@ -26,8 +28,37 @@ void main() {
   setUp(() {
     homeViewModel = MockHomeViewModel();
     foodViewModel = MockHomeViewModel();
-    _stubViewModel(
-      homeViewModel,
+    _stubViewModel(foodViewModel, const HomeState());
+    getIt.registerFactory<HomeViewModel>(() => foodViewModel);
+  });
+
+  tearDown(() async {
+    await getIt.reset();
+  });
+
+  testWidgets('retries an error then opens the selected Food category', (
+    tester,
+  ) async {
+    final states = StreamController<HomeState>.broadcast();
+    addTearDown(states.close);
+    final errorState = HomeState(
+      recommendationFoodState: BaseState.error('offline'),
+    );
+    when(homeViewModel.state).thenReturn(errorState);
+    when(homeViewModel.stream).thenAnswer((_) => states.stream);
+    when(homeViewModel.isClosed).thenReturn(false);
+    when(homeViewModel.close()).thenAnswer((_) async {});
+
+    await _pumpRecommendation(tester, homeViewModel);
+
+    expect(find.text('offline'), findsOneWidget);
+    await tester.tap(find.text('Retry'));
+    final retryEvent = verify(
+      homeViewModel.doEvent(captureAny),
+    ).captured.single;
+    expect(retryEvent, isA<RetryHomeDataEvent>());
+
+    states.add(
       HomeState(
         recommendationFoodState: BaseState.success(
           const RecommendationFoodEntity(
@@ -43,54 +74,49 @@ void main() {
         ),
       ),
     );
-    _stubViewModel(foodViewModel, const HomeState());
-    getIt.registerFactory<HomeViewModel>(() => foodViewModel);
-  });
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Seafood'));
+    await tester.pumpAndSettle();
 
-  tearDown(() async {
-    await getIt.reset();
+    expect(find.byType(FoodScreen), findsOneWidget);
+    final navigationEvent =
+        verify(foodViewModel.doEvent(captureAny)).captured.single
+            as LoadFoodDataEvent;
+    expect(navigationEvent.initialCategory, 'Seafood');
+    expect(tester.takeException(), isNull);
   });
+}
 
-  testWidgets(
-    'opens the registered Food page when a recommendation is tapped',
-    (tester) async {
-      await tester.pumpWidget(
-        EasyLocalization(
-          supportedLocales: const [Locale('en')],
-          path: 'assets/translations',
-          fallbackLocale: const Locale('en'),
-          startLocale: const Locale('en'),
-          saveLocale: false,
-          child: Builder(
-            builder: (context) => MaterialApp(
-              locale: context.locale,
-              supportedLocales: context.supportedLocales,
-              localizationsDelegates: context.localizationDelegates,
-              theme: AppTheme.lightTheme,
-              onGenerateRoute: AppRoutes.onGenerateRoute,
-              home: Scaffold(
-                body: BlocProvider<HomeViewModel>.value(
-                  value: homeViewModel,
-                  child: const RecommendationForYouWidget(),
-                ),
-              ),
+Future<void> _pumpRecommendation(
+  WidgetTester tester,
+  HomeViewModel viewModel,
+) async {
+  await tester.pumpWidget(
+    EasyLocalization(
+      key: UniqueKey(),
+      supportedLocales: const [Locale('en')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      startLocale: const Locale('en'),
+      saveLocale: false,
+      child: Builder(
+        builder: (context) => MaterialApp(
+          locale: context.locale,
+          supportedLocales: context.supportedLocales,
+          localizationsDelegates: context.localizationDelegates,
+          theme: AppTheme.lightTheme,
+          onGenerateRoute: AppRoutes.onGenerateRoute,
+          home: Scaffold(
+            body: BlocProvider<HomeViewModel>.value(
+              value: viewModel,
+              child: const RecommendationForYouWidget(),
             ),
           ),
         ),
-      );
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('Seafood'));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(FoodScreen), findsOneWidget);
-      final event =
-          verify(foodViewModel.doEvent(captureAny)).captured.single
-              as LoadFoodDataEvent;
-      expect(event.initialCategory, 'Seafood');
-      expect(tester.takeException(), isNull);
-    },
+      ),
+    ),
   );
+  await tester.pumpAndSettle();
 }
 
 void _stubViewModel(MockHomeViewModel viewModel, HomeState state) {
