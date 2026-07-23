@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:fitness_app/config/app_launch/app_launch_manager.dart';
+import 'package:fitness_app/config/auth/auth_manager.dart';
 import 'package:fitness_app/config/di/di.dart';
+import 'package:fitness_app/config/secure_storage/secure_storage_service.dart';
 import 'package:fitness_app/core/utils/app_routes.dart';
 import 'package:fitness_app/core/values/app_routs_name.dart';
 import 'package:fitness_app/features/splash/presentation/screens/splash_screen.dart';
@@ -12,17 +13,22 @@ import 'package:mockito/mockito.dart';
 
 import 'app_routes_test.mocks.dart';
 
-@GenerateMocks([AppLaunchManager])
+@GenerateMocks([SecureStorageService, AuthManager])
 void main() {
-  late MockAppLaunchManager launchManager;
+  late MockSecureStorageService mockStorage;
+  late MockAuthManager mockAuthManager;
 
   setUp(() async {
     await getIt.reset();
-    launchManager = MockAppLaunchManager();
-    when(
-      launchManager.resolveDestination(),
-    ).thenAnswer((_) => Completer<String>().future);
-    getIt.registerSingleton<AppLaunchManager>(launchManager);
+    mockStorage = MockSecureStorageService();
+    mockAuthManager = MockAuthManager();
+
+    when(mockStorage.readSeenOnboarding())
+        .thenAnswer((_) => Completer<bool>().future);
+    when(mockAuthManager.isLoggedIn).thenReturn(false);
+
+    getIt.registerSingleton<SecureStorageService>(mockStorage);
+    getIt.registerSingleton<AuthManager>(mockAuthManager);
   });
 
   tearDown(() async {

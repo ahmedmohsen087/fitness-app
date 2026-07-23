@@ -35,19 +35,19 @@ class AuthManager {
     await _storage.writeRememberMe(rememberMe);
   }
 
-  Future<bool> _getRememberMe() async {
-    return await _storage.readRememberMe();
-  }
-
-  Future<void> setAuthData({required String token}) async {
+  Future<void> setAuthData({required String token, bool? rememberMe}) async {
     if (token.isEmpty) {
       throw Exception(AppStrings.tokenEmpty);
     }
 
     _token = token;
 
-    final rememberMe = await _getRememberMe();
-    if (rememberMe) {
+    if (rememberMe != null) {
+      await _storage.writeRememberMe(rememberMe);
+    }
+
+    final shouldRemember = rememberMe ?? await _storage.readRememberMe();
+    if (shouldRemember) {
       await _storage.writeToken(token);
     } else {
       await _storage.deleteToken();
@@ -59,13 +59,5 @@ class AuthManager {
 
     await _storage.clearAuthData();
     await _cacheStore.clean();
-  }
-
-  Future<bool> shouldAutoLogin() async {
-    final rememberMe = await _storage.readRememberMe();
-    if (!rememberMe) return false;
-
-    final token = await _storage.readToken();
-    return token != null && token.isNotEmpty;
   }
 }

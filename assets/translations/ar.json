@@ -9,6 +9,7 @@
   "next": "التالي",
   "back": "رجوع",
   "getStarted": "ابدأ الآن",
+  "skip": "تخطي",
 
   "ThePriceOfExcellenceIsDiscipline": "ثمن التميز\nهو الانضباط",
   "fitnessHasNeverBeenSoMuchFun": "لم تكن اللياقة\nممتعة إلى هذا الحد من قبل",
@@ -94,7 +95,7 @@
   "or": "أو",
   "alreadyHaveAnAccount": "هل لديك حساب بالفعل ؟",
   "login": "تسجيل الدخول",
-  "don'tHaveAnAccountYet": "ليس لديك حساب بعد؟",
+  "don'tHaveAnAccountYet": "ليس لديك حساب بعد؟ ",
   "gym": "جيم",
   "trainer": "المدرب",
   "fitness": "اللياقة البدنية",

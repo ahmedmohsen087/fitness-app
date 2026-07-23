@@ -15,6 +15,7 @@ class AppStrings {
   static String get next => 'next'.tr();
   static String get back => 'back'.tr();
   static String get getStarted => 'getStarted'.tr();
+  static String get skip => 'skip'.tr();
 
 
 
