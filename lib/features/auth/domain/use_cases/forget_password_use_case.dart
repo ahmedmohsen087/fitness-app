@@ -1,29 +1,38 @@
 import 'package:fitness_app/config/base_response/base_response.dart';
 import 'package:fitness_app/features/auth/api/request_models/forget_password_email_request_model.dart';
-import 'package:fitness_app/features/auth/api/request_models/login_request_model.dart';
 import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
 import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
 import 'package:fitness_app/features/auth/domain/entities/forget_password_entity.dart';
-import 'package:fitness_app/features/auth/domain/entities/login_user_entity.dart';
-import 'package:fitness_app/features/auth/domain/entities/register_params.dart';
-import 'package:fitness_app/features/auth/domain/entities/register_response_entity.dart';
+import 'package:fitness_app/features/auth/domain/repository_contract/auth_repository_contract.dart';
+import 'package:injectable/injectable.dart';
 
-abstract interface class AuthRepositoryContract {
-  Future<BaseResponse<RegisterResponseEntity>> signUp(RegisterParams params);
+@injectable
+class ForgetPasswordUseCase {
+  final AuthRepositoryContract _authRepositoryContract;
 
-  Future<BaseResponse<LoginUserEntity>> login({
-    required LoginRequestModel loginRequestModel,
-  });
+  ForgetPasswordUseCase(this._authRepositoryContract);
 
   Future<BaseResponse<ForgetPasswordEntity>> forgetPassword({
     required ForgetPasswordEmailRequestModel forgetPasswordEmailRequestModel,
-  });
+  }) {
+    return _authRepositoryContract.forgetPassword(
+      forgetPasswordEmailRequestModel: forgetPasswordEmailRequestModel,
+    );
+  }
 
   Future<BaseResponse<ForgetPasswordEntity>> verifyOtp({
     required VerifyResetCodeRequestModel verifyResetCodeRequestModel,
-  });
+  }) {
+    return _authRepositoryContract.verifyOtp(
+      verifyResetCodeRequestModel: verifyResetCodeRequestModel,
+    );
+  }
 
   Future<BaseResponse<ForgetPasswordEntity>> resetPassword({
     required ResetPasswordRequestModel resetPasswordRequestModel,
-  });
+  }) {
+    return _authRepositoryContract.resetPassword(
+      resetPasswordRequestModel: resetPasswordRequestModel,
+    );
+  }
 }

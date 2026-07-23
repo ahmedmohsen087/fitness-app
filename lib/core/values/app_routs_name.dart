@@ -4,4 +4,7 @@ abstract class AppRoutsName {
   static const String sectionApp = '/sectionApp';
   static const String register = '/register';
   static const String loginScreen = '/loginScreen';
+  static const String forgetPasswordScreen = '/forgetPasswordScreen';
+  static const String emailVerificationScreen = '/emailVerificationScreen';
+  static const String resetPassword = '/resetPassword';
 }

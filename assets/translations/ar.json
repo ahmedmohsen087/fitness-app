@@ -126,5 +126,15 @@
   "incompleteRegistrationData": "يرجى إكمال جميع خطوات التسجيل",
   "welcomeBACK": "أهلاً بعودتك",
   "rememberMe": "تذكرني",
-  "loggedInSuccessfully": "تم تسجيل الدخول بنجاح"
+  "loggedInSuccessfully": "تم تسجيل الدخول بنجاح",
+  "enterYourEmailLabel": "أدخل بريدك الإلكتروني",
+  "forgetPasswordTitle": "نسيت كلمة المرور",
+  "sendOtp": "إرسال الرمز",
+  "otpCodeLabel": "رمز التحقق",
+  "enterYourOtpCheckYourEmail": "أدخل الرمز المرسل إلى بريدك الإلكتروني",
+  "resendCode": "إعادة إرسال الرمز؟",
+  "makeSure8CharsOrMore": "تأكد أنها 8 أحرف على الأقل",
+  "createNewPasswordTitle": "إنشاء كلمة مرور جديدة",
+  "doneButton": "تم",
+  "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح"
 }

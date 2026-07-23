@@ -1,11 +1,11 @@
+// lib/core/values/app_strings.dart
 import 'package:easy_localization/easy_localization.dart';
 
 class AppStrings {
-
   // General
   static String get routeNotFound => 'routeNotFound'.tr();
 
- // App Section
+  // App Section
   static String get home => 'home'.tr();
   static String get workouts => 'workouts'.tr();
   static String get profile => 'profile'.tr();
@@ -16,11 +16,6 @@ class AppStrings {
   static String get back => 'back'.tr();
   static String get getStarted => 'getStarted'.tr();
   static String get skip => 'skip'.tr();
-
-
-
-  // Splash / onboarding
-
 
   // Secure storage - token
   static String get tokenEmpty => 'tokenEmpty'.tr();
@@ -96,9 +91,7 @@ class AppStrings {
   static String get somethingWentWrong => 'somethingWentWrong'.tr();
 
   // Apply
-
   static String get idNumber => 'idNumber'.tr();
-
   static String get idNumberRequired => 'idNumberRequired'.tr();
 
   // Register - gender
@@ -135,8 +128,6 @@ class AppStrings {
   static String get doNotHaveAnAccountYet => 'don\'tHaveAnAccountYet'.tr();
   static String get register => 'register'.tr();
 
-
-
   static String get or => 'or'.tr();
   static String get rememberMe => 'rememberMe'.tr();
   static String get loggedSuccessfully => 'loggedInSuccessfully'.tr();
@@ -156,11 +147,6 @@ class AppStrings {
   static String get popularTraining => 'popularTraining'.tr();
   static String get seeAll => 'seeAll'.tr();
 
-
-
-
-
-
   static String get activityLevelTrueBeast => 'activityLevelTrueBeast'.tr();
 
   // Register screen UI
@@ -178,13 +164,10 @@ class AppStrings {
   static String get weNeedToKnowYourGender => 'weNeedToKnowYourGender'.tr();
 
   static String get stepOneOfSix => 'stepOneOfSix'.tr();
-  // Gender selection screen UI
 
-  // Register screen UI
   static String registerStep(int step) => 'registerStep'.tr(args: ['$step']);
 
   static String get personalizedPlanSubtitle => 'personalizedPlanSubtitle'.tr();
-  // Register screen UI
 
   static String get howOldAreYou => 'howOldAreYou'.tr();
 
@@ -200,12 +183,24 @@ class AppStrings {
 
   static String get kilogram => 'kilogram'.tr();
 
-  // Gender selection screen UI
-
   static String get centimeter => 'centimeter'.tr();
 
   static String get done => 'done'.tr();
 
   static String get incompleteRegistrationData =>
       'incompleteRegistrationData'.tr();
+
+  // Forget password flow
+  static String get enterYourEmailLabel => 'enterYourEmailLabel'.tr();
+  static String get forgetPasswordTitle => 'forgetPasswordTitle'.tr();
+  static String get sendOtp => 'sendOtp'.tr();
+  static String get otpCodeLabel => 'otpCodeLabel'.tr();
+  static String get enterYourOtpCheckYourEmail =>
+      'enterYourOtpCheckYourEmail'.tr();
+  static String get resendCode => 'resendCode'.tr();
+  static String get makeSure8CharsOrMore => 'makeSure8CharsOrMore'.tr();
+  static String get createNewPasswordTitle => 'createNewPasswordTitle'.tr();
+  static String get doneButton => 'doneButton'.tr();
+  static String get passwordChangedSuccessfully =>
+      'passwordChangedSuccessfully'.tr();
 }

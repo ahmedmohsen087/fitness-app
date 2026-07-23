@@ -126,6 +126,15 @@
   "upcomingWorkouts": "Upcoming Workouts",
   "recommendationForYou": "Recommendation For You",
   "popularTraining": "Popular Training",
-  "seeAll": "See All"
-
+  "seeAll": "See All",
+  "enterYourEmailLabel": "Enter Your Email",
+  "forgetPasswordTitle": "Forget Password",
+  "sendOtp": "Sent OTP",
+  "otpCodeLabel": "OTP CODE",
+  "enterYourOtpCheckYourEmail": "Enter Your OTP Check Your Email",
+  "resendCode": "Resend Code?",
+  "makeSure8CharsOrMore": "Make Sure Its 8 Characters Or More",
+  "createNewPasswordTitle": "Create New Password",
+  "doneButton": "Done",
+  "passwordChangedSuccessfully": "Password changed successfully"
 }

@@ -1,3 +1,7 @@
+import 'package:fitness_app/features/auth/api/request_models/forget_password_email_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
+import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
+import 'package:fitness_app/features/auth/data/models/forget_password_response_model.dart';
 import 'package:fitness_app/features/auth/data/models/login_response.dart';
 import 'package:injectable/injectable.dart';
 
@@ -14,6 +18,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
   final AuthApiClient _authApiClient;
 
   AuthRemoteDataSourceImpl(this._authApiClient);
+
+  ForgetPasswordResponseModel _getMockAuthResponse() {
+    return ForgetPasswordResponseModel();
+  }
 
   @override
   Future<BaseResponse<RegisterResponseModel>> signUp(
@@ -37,6 +45,54 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
     } catch (e) {
       final message = ErrorHandler.handle(e);
       return ErrorBaseResponse<LoginResponse>(errorMessage: message);
+    }
+  }
+
+  @override
+  Future<BaseResponse<ForgetPasswordResponseModel>> forgetPassword({
+    required ForgetPasswordEmailRequestModel forgetPasswordEmailRequestModel,
+  }) async {
+    try {
+      return SuccessBaseResponse<ForgetPasswordResponseModel>(
+        data: _getMockAuthResponse(),
+      );
+    } catch (e) {
+      final message = ErrorHandler.handle(e);
+      return ErrorBaseResponse<ForgetPasswordResponseModel>(
+        errorMessage: message,
+      );
+    }
+  }
+
+  @override
+  Future<BaseResponse<ForgetPasswordResponseModel>> verifyOtp({
+    required VerifyResetCodeRequestModel verifyResetCodeRequestModel,
+  }) async {
+    try {
+      return SuccessBaseResponse<ForgetPasswordResponseModel>(
+        data: _getMockAuthResponse(),
+      );
+    } catch (e) {
+      final message = ErrorHandler.handle(e);
+      return ErrorBaseResponse<ForgetPasswordResponseModel>(
+        errorMessage: message,
+      );
+    }
+  }
+
+  @override
+  Future<BaseResponse<ForgetPasswordResponseModel>> resetPassword({
+    required ResetPasswordRequestModel resetPasswordRequestModel,
+  }) async {
+    try {
+      return SuccessBaseResponse<ForgetPasswordResponseModel>(
+        data: _getMockAuthResponse(),
+      );
+    } catch (e) {
+      final message = ErrorHandler.handle(e);
+      return ErrorBaseResponse<ForgetPasswordResponseModel>(
+        errorMessage: message,
+      );
     }
   }
 }

@@ -1,8 +1,12 @@
-
+import 'package:fitness_app/config/di/di.dart';
+import 'package:fitness_app/core/reusable_widgets/app_toast.dart';
+import 'package:fitness_app/core/utils/error/error_handler.dart';
+import 'package:fitness_app/features/auth/presentation/screens/email_verification_screen.dart';
+import 'package:fitness_app/features/auth/presentation/screens/forget_password_screen.dart';
+import 'package:fitness_app/features/auth/presentation/screens/reset_password_screen.dart';
+import 'package:fitness_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../config/di/di.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/view_models/login_view_model.dart';
@@ -16,43 +20,91 @@ import '../values/app_strings.dart';
 
 class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case AppRoutsName.splashScreen:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const SplashScreen(),
-        );
-      case AppRoutsName.onBoarding:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const OnBoarding(),
-        );
+    try {
+      switch (settings.name) {
+        case AppRoutsName.splashScreen:
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => const SplashScreen(),
+          );
+        case AppRoutsName.onBoarding:
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => const OnBoarding(),
+          );
 
-      case AppRoutsName.sectionApp:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => getIt<HomeViewModel>()
-              ..doEvent(LoadHomeDataEvent()),
-            child: const SectionApp(),
-          ),
-          settings: settings,
-         // builder: (_) => const SectionApp(),
-        );
-      case AppRoutsName.register:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const RegisterScreen(),
-        );
-      case AppRoutsName.loginScreen:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => BlocProvider<LoginViewModel>(
-            create: (_) => getIt<LoginViewModel>(),
-            child: const LoginScreen(),
-          ),
-        );
-      default:
-        return _notFoundRoute(settings);
+        case AppRoutsName.sectionApp:
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => BlocProvider(
+              create: (_) =>
+                  getIt<HomeViewModel>()..doEvent(LoadHomeDataEvent()),
+              child: const SectionApp(),
+            ),
+          );
+        case AppRoutsName.register:
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => const RegisterScreen(),
+          );
+        case AppRoutsName.loginScreen:
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => BlocProvider<LoginViewModel>(
+              create: (_) => getIt<LoginViewModel>(),
+              child: const LoginScreen(),
+            ),
+          );
+        case AppRoutsName.forgetPasswordScreen:
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => BlocProvider(
+              create: (_) => getIt<ForgetPasswordViewModel>(),
+              child: const ForgetPasswordScreen(),
+            ),
+          );
+
+        case AppRoutsName.emailVerificationScreen:
+          final viewModel = settings.arguments as ForgetPasswordViewModel;
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => BlocProvider.value(
+              value: viewModel,
+              child: const EmailVerificationScreen(),
+            ),
+          );
+
+        case AppRoutsName.resetPassword:
+          final viewModel = settings.arguments as ForgetPasswordViewModel;
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => BlocProvider.value(
+              value: viewModel,
+              child: const ResetPasswordScreen(),
+            ),
+          );
+
+        default:
+          return _notFoundRoute(settings);
+      }
+    } catch (e) {
+      debugPrint("Routing Exception caught: $e");
+
+      final errorMessage = ErrorHandler.handle(e);
+
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (context) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            AppToast.error(context, errorMessage, position: ToastPosition.top);
+          });
+
+          return const Scaffold(
+            backgroundColor: Colors.transparent,
+            body: SizedBox.shrink(),
+          );
+        },
+      );
     }
   }
 
