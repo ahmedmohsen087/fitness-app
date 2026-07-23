@@ -222,7 +222,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          // Forgot password navigation
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutsName.forgetPasswordScreen,
+                          );
                         },
                         child: Text(
                           AppStrings.forgetPassword,
