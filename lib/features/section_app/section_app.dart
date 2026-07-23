@@ -1,8 +1,8 @@
 import 'package:fitness_app/core/reusable_widgets/app_bottom_nav_bar.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
-import 'package:fitness_app/features/section_app/chat_screen.dart';
 import 'package:fitness_app/features/home/presentation/screens/home_screen.dart';
+import 'package:fitness_app/features/section_app/chat_screen.dart';
 import 'package:fitness_app/features/section_app/profile_screen.dart';
 import 'package:fitness_app/features/section_app/workouts_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +10,27 @@ import 'package:flutter/material.dart';
 enum AppTab { home, chat, workout, profile }
 
 class SectionApp extends StatefulWidget {
-  const SectionApp({super.key});
+  final int initialTabIndex;
+
+  const SectionApp({super.key, this.initialTabIndex = 0});
 
   @override
   State<SectionApp> createState() => _SectionAppState();
 }
 
 class _SectionAppState extends State<SectionApp> {
-  AppTab currentTab = AppTab.home;
+  late AppTab currentTab;
+
+  @override
+  void initState() {
+    super.initState();
+    final safeIndex =
+        widget.initialTabIndex >= 0 &&
+            widget.initialTabIndex < AppTab.values.length
+        ? widget.initialTabIndex
+        : 0;
+    currentTab = AppTab.values[safeIndex];
+  }
 
   final List<Widget> pages = const [
     HomeScreen(),

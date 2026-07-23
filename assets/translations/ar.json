@@ -125,5 +125,17 @@
   "incompleteRegistrationData": "يرجى إكمال جميع خطوات التسجيل",
   "welcomeBACK": "أهلاً بعودتك",
   "rememberMe": "تذكرني",
-  "loggedInSuccessfully": "تم تسجيل الدخول بنجاح"
+  "loggedInSuccessfully": "تم تسجيل الدخول بنجاح",
+  "foodRecommendation": "توصيات الطعام",
+  "noFoodCategories": "لا توجد فئات طعام متاحة",
+  "noMealsFound": "لا توجد وجبات لهذه الفئة",
+  "retry": "إعادة المحاولة",
+  "ingredients": "المكونات",
+  "cuisine": "المطبخ",
+  "country": "البلد",
+  "tags": "الوسوم",
+  "recipeVideo": "فيديو الوصفة",
+  "close": "إغلاق",
+  "videoUnavailable": "فيديو الوصفة غير متاح",
+  "noMealDetails": "تفاصيل الوجبة غير متاحة"
 }

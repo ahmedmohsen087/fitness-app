@@ -7,20 +7,17 @@ class CategoryModel extends StatelessWidget {
   final String image;
   final String title;
 
-  const CategoryModel({
-    required this.image,
-    required this.title,
-    super.key});
+  const CategoryModel({required this.image, required this.title, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Image.asset(image),
-        Text(title,
-            style:  TextStyles.bodyRegular12.copyWith(
-              color: AppColors.lightGray,
-            )),
+        Text(
+          title,
+          style: TextStyles.bodyRegular12.copyWith(color: AppColors.lightGray),
+        ),
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../view_models/home_events.dart';
@@ -51,8 +52,7 @@ class MusclesGroupList extends StatelessWidget {
 
                 final muscle = muscles[index];
 
-                final isSelected =
-                    muscle.id == viewModel.selectedMuscleGroupId;
+                final isSelected = muscle.id == viewModel.selectedMuscleGroupId;
 
                 return InkWell(
                   borderRadius: BorderRadius.circular(20),
@@ -66,20 +66,14 @@ class MusclesGroupList extends StatelessWidget {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.orange
-                          : Colors.transparent,
+                      color: isSelected ? AppColors.orange : Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: AppColors.orange,
-                      ),
+                      border: Border.all(color: AppColors.orange),
                     ),
                     child: Text(
                       muscle.name,
                       style: TextStyles.bodyRegular12.copyWith(
-                        color: isSelected
-                            ? AppColors.white
-                            : AppColors.orange,
+                        color: isSelected ? AppColors.white : AppColors.orange,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

@@ -5,13 +5,10 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/text_styles.dart';
 
 class HomeProfileInfo extends StatelessWidget {
-  final String? name ;
-  final String? image ;
+  final String? name;
+  final String? image;
 
-  const HomeProfileInfo({
-    this.name,
-    this.image,
-    super.key});
+  const HomeProfileInfo({this.name, this.image, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +17,14 @@ class HomeProfileInfo extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${AppStrings.hi} ${name ?? ''},',
+            Text(
+              '${AppStrings.hi} ${name ?? ''},',
               style: TextStyles.bodyRegular16,
             ),
-            Text(AppStrings.letsStartYourDay,
-              style: TextStyles.bodyMedium18.copyWith(
-                color: AppColors.white
-              ),
-            )
+            Text(
+              AppStrings.letsStartYourDay,
+              style: TextStyles.bodyMedium18.copyWith(color: AppColors.white),
+            ),
           ],
         ),
         Spacer(),
@@ -40,7 +37,6 @@ class HomeProfileInfo extends StatelessWidget {
               ? const Icon(Icons.person, color: AppColors.white)
               : null,
         ),
-
       ],
     );
   }

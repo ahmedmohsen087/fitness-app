@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class RecommendationToDayMuscleEntity extends Equatable{
-
+class RecommendationToDayMuscleEntity extends Equatable {
   final String id;
   final String name;
   final String image;
@@ -12,12 +11,5 @@ class RecommendationToDayMuscleEntity extends Equatable{
   });
 
   @override
-  List<Object?> get props => [
-    id,
-    name,
-    image
-  ];
-
-
-
+  List<Object?> get props => [id, name, image];
 }

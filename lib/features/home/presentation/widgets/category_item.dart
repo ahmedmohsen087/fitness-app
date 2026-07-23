@@ -1,5 +1,6 @@
 import 'package:fitness_app/features/home/presentation/widgets/category_model.dart';
 import 'package:flutter/material.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/values/app_strings.dart';
 import '../../../../core/values/assets.dart';
@@ -10,26 +11,11 @@ class CategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categories = [
-      CategoryModel(
-        image: Assets.gymLogo,
-        title: AppStrings.gym,
-      ),
-      CategoryModel(
-        image: Assets.fitnessLogo,
-        title: AppStrings.fitness,
-      ),
-      CategoryModel(
-        image: Assets.yogaLogo,
-        title: AppStrings.yoga,
-      ),
-      CategoryModel(
-        image: Assets.aerobicsLogo,
-        title: AppStrings.aerobics,
-      ),
-      CategoryModel(
-        image: Assets.trainerLogo,
-        title: AppStrings.trainer,
-      ),
+      CategoryModel(image: Assets.gymLogo, title: AppStrings.gym),
+      CategoryModel(image: Assets.fitnessLogo, title: AppStrings.fitness),
+      CategoryModel(image: Assets.yogaLogo, title: AppStrings.yoga),
+      CategoryModel(image: Assets.aerobicsLogo, title: AppStrings.aerobics),
+      CategoryModel(image: Assets.trainerLogo, title: AppStrings.trainer),
     ];
 
     return Container(
@@ -56,10 +42,7 @@ class CategoryItem extends StatelessWidget {
 
           return Padding(
             padding: const EdgeInsets.all(10),
-            child: CategoryModel(
-              image: item.image,
-              title: item.title,
-            ),
+            child: CategoryModel(image: item.image, title: item.title),
           );
         },
       ),

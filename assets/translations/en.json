@@ -125,6 +125,18 @@
   "upcomingWorkouts": "Upcoming Workouts",
   "recommendationForYou": "Recommendation For You",
   "popularTraining": "Popular Training",
-  "seeAll": "See All"
+  "seeAll": "See All",
+  "foodRecommendation": "Food Recommendation",
+  "noFoodCategories": "No food categories available",
+  "noMealsFound": "No meals found for this category",
+  "retry": "Retry",
+  "ingredients": "Ingredients",
+  "cuisine": "Cuisine",
+  "country": "Country",
+  "tags": "Tags",
+  "recipeVideo": "Recipe video",
+  "close": "Close",
+  "videoUnavailable": "This recipe video is unavailable",
+  "noMealDetails": "Meal details are unavailable"
 
 }

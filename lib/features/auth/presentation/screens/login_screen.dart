@@ -15,10 +15,7 @@ class LoginScreen extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              Assets.authBackGround,
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset(Assets.authBackGround, fit: BoxFit.cover),
           ),
           SafeArea(
             child: Padding(
@@ -29,9 +26,7 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Align(
                     alignment: Alignment.topCenter,
-                    child: Image.asset(
-                      Assets.authLogo,
-                    ),
+                    child: Image.asset(Assets.authLogo),
                   ),
                   Text(
                     AppStrings.heyThere,
@@ -39,10 +34,7 @@ class LoginScreen extends StatelessWidget {
                       color: AppColors.white,
                     ),
                   ),
-                  Text(
-                    AppStrings.welcomeBACK,
-                    style: TextStyles.bodyRegular20,
-                  ),
+                  Text(AppStrings.welcomeBACK, style: TextStyles.bodyRegular20),
                   const LoginWidget(),
                 ],
               ),

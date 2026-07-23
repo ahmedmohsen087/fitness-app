@@ -2,6 +2,8 @@ import 'package:fitness_app/features/home/presentation/widgets/recommendation_it
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
+import '../../../../core/values/app_routs_name.dart';
 import '../view_models/home_states.dart';
 import '../view_models/home_view_models.dart';
 
@@ -28,7 +30,8 @@ class RecommendationForYouWidget extends StatelessWidget {
               itemBuilder: (_, index) {
                 if (isLoading) {
                   return const RecommendationItemWidget(
-                    image: 'https://www.themealdb.com/images/category/chicken.png',
+                    image:
+                        'https://www.themealdb.com/images/category/chicken.png',
                     title: 'Loading',
                   );
                 }
@@ -36,6 +39,11 @@ class RecommendationForYouWidget extends StatelessWidget {
                 return RecommendationItemWidget(
                   image: item.strCategoryThumb,
                   title: item.strCategory,
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    AppRoutsName.food,
+                    arguments: item.strCategory,
+                  ),
                 );
               },
             ),

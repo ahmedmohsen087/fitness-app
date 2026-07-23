@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 
 class AppStrings {
-
   // General
   static String get routeNotFound => 'routeNotFound'.tr();
 
- // App Section
+  // App Section
   static String get home => 'home'.tr();
   static String get workouts => 'workouts'.tr();
   static String get profile => 'profile'.tr();
@@ -16,10 +15,7 @@ class AppStrings {
   static String get back => 'back'.tr();
   static String get getStarted => 'getStarted'.tr();
 
-
-
   // Splash / onboarding
-
 
   // Secure storage - token
   static String get tokenEmpty => 'tokenEmpty'.tr();
@@ -126,15 +122,13 @@ class AppStrings {
 
   static String get activityLevelAdvance => 'activityLevelAdvance'.tr();
 
- // login
+  // login
 
   static String get heyThere => 'heyThere'.tr();
   static String get welcomeBACK => 'welcomeBACK'.tr();
   static String get login => 'login'.tr();
   static String get doNotHaveAnAccountYet => 'don\'tHaveAnAccountYet'.tr();
   static String get register => 'register'.tr();
-
-
 
   static String get or => 'or'.tr();
   static String get rememberMe => 'rememberMe'.tr();
@@ -155,10 +149,29 @@ class AppStrings {
   static String get popularTraining => 'popularTraining'.tr();
   static String get seeAll => 'seeAll'.tr();
 
+  static String get foodRecommendation => 'foodRecommendation'.tr();
 
+  static String get noFoodCategories => 'noFoodCategories'.tr();
 
+  static String get noMealsFound => 'noMealsFound'.tr();
 
+  static String get retry => 'retry'.tr();
 
+  static String get ingredients => 'ingredients'.tr();
+
+  static String get cuisine => 'cuisine'.tr();
+
+  static String get country => 'country'.tr();
+
+  static String get tags => 'tags'.tr();
+
+  static String get recipeVideo => 'recipeVideo'.tr();
+
+  static String get close => 'close'.tr();
+
+  static String get videoUnavailable => 'videoUnavailable'.tr();
+
+  static String get noMealDetails => 'noMealDetails'.tr();
 
   static String get activityLevelTrueBeast => 'activityLevelTrueBeast'.tr();
 

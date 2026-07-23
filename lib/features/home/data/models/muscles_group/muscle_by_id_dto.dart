@@ -1,8 +1,9 @@
-
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../domain/entities/muscles_group/muscle_by_id_entity.dart';
+
 part 'muscle_by_id_dto.g.dart';
+
 @JsonSerializable()
 class MuscleByIdDto {
   @JsonKey(name: "_id")
@@ -12,21 +13,13 @@ class MuscleByIdDto {
   @JsonKey(name: "image")
   String? image;
 
-  MuscleByIdDto({
-    this.id,
-    this.name,
-    this.image,
-  });
+  MuscleByIdDto({this.id, this.name, this.image});
 
-  factory MuscleByIdDto.fromJson(Map<String, dynamic> json) => _$MuscleByIdDtoFromJson(json);
+  factory MuscleByIdDto.fromJson(Map<String, dynamic> json) =>
+      _$MuscleByIdDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$MuscleByIdDtoToJson(this);
   MuscleByIdEntity toEntity() {
-    return MuscleByIdEntity(
-        id: id ?? '',
-        name: name ?? '',
-        image: image ?? ''
-
-    );
+    return MuscleByIdEntity(id: id ?? '', name: name ?? '', image: image ?? '');
   }
 }

@@ -92,8 +92,8 @@ class AppTheme {
       circularTrackColor: AppColors.orange,
     ),
     inputDecorationTheme: InputDecorationTheme(
-      prefixIconConstraints: const BoxConstraints( maxHeight: 24, minWidth: 60,),
-      suffixIconConstraints: const BoxConstraints( maxHeight: 24 ,minWidth: 60,),
+      prefixIconConstraints: const BoxConstraints(maxHeight: 24, minWidth: 60),
+      suffixIconConstraints: const BoxConstraints(maxHeight: 24, minWidth: 60),
       floatingLabelBehavior: FloatingLabelBehavior.always,
       filled: false,
       border: OutlineInputBorder(

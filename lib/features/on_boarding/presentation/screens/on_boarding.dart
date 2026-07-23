@@ -96,60 +96,62 @@ class _OnBoardingState extends State<OnBoarding> {
 
                   currentIndex == 0
                       ? SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        boardController.nextPage(
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                        );
-                      },
-                      child: Text(AppStrings.next),
-                    ),
-                  )
-                      : Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent
-                          ),
-                          onPressed: () {
-                            boardController.previousPage(
-                              duration:
-                              const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut,
-                            );
-                          },
-                          child: Text(AppStrings.back),
-                        ),
-                      ),
-
-                      const SizedBox(width: 16),
-
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_isLast) {
-                              Navigator.pushReplacementNamed(
-                                context,
-                                AppRoutsName.loginScreen,
-                              );
-                            } else {
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
                               boardController.nextPage(
-                                duration:
-                                const Duration(milliseconds: 500),
+                                duration: const Duration(milliseconds: 500),
                                 curve: Curves.easeInOut,
                               );
-                            }
-                          },
-                          child: Text(
-                            _isLast ? AppStrings.getStarted : AppStrings.next,
+                            },
+                            child: Text(AppStrings.next),
                           ),
+                        )
+                      : Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.transparent,
+                                ),
+                                onPressed: () {
+                                  boardController.previousPage(
+                                    duration: const Duration(milliseconds: 500),
+                                    curve: Curves.easeInOut,
+                                  );
+                                },
+                                child: Text(AppStrings.back),
+                              ),
+                            ),
+
+                            const SizedBox(width: 16),
+
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_isLast) {
+                                    Navigator.pushReplacementNamed(
+                                      context,
+                                      AppRoutsName.loginScreen,
+                                    );
+                                  } else {
+                                    boardController.nextPage(
+                                      duration: const Duration(
+                                        milliseconds: 500,
+                                      ),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  }
+                                },
+                                child: Text(
+                                  _isLast
+                                      ? AppStrings.getStarted
+                                      : AppStrings.next,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),

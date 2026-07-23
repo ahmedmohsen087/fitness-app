@@ -95,14 +95,12 @@ abstract class TextStyles {
     color: AppColors.black,
   );
 
-
   static const TextStyle textFieldTextStyle = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
     color: AppColors.black,
     letterSpacing: 0.5,
   );
-
 
   static final TextStyle buttonTextStyle = GoogleFonts.inter(
     fontSize: 14,
@@ -125,8 +123,6 @@ abstract class TextStyles {
     color: AppColors.white,
   );
 
-
-
   static final TextStyle bodyRegular11 = GoogleFonts.inter(
     fontSize: 11,
     fontWeight: FontWeight.w400,
@@ -145,7 +141,6 @@ abstract class TextStyles {
     decoration: TextDecoration.underline,
     decorationColor: AppColors.orange,
     decorationThickness: 1.5,
-
   );
   static final TextStyle bodyRegular13 = GoogleFonts.inter(
     fontSize: 13,
@@ -188,5 +183,4 @@ abstract class TextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.red,
   );
-
 }
