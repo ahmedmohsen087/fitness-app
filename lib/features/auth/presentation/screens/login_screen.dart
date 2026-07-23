@@ -12,6 +12,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.black,
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Positioned.fill(
@@ -21,30 +23,44 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                spacing: 10,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Image.asset(
-                      Assets.authLogo,
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 16.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        Assets.authLogo,
+                        height: 60,
+                        fit: BoxFit.contain,
+                      ),
                     ),
-                  ),
-                  Text(
-                    AppStrings.heyThere,
-                    style: TextStyles.bodyMedium18.copyWith(
-                      color: AppColors.white,
+                    const SizedBox(height: 24),
+                    Text(
+                      AppStrings.heyThere,
+                      style: TextStyles.bodyMedium18.copyWith(
+                        color: AppColors.white,
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                  Text(
-                    AppStrings.welcomeBACK,
-                    style: TextStyles.bodyRegular20,
-                  ),
-                  const LoginWidget(),
-                ],
+                    const SizedBox(height: 4),
+                    Text(
+                      AppStrings.welcomeBACK,
+                      style: TextStyles.bodyRegular20.copyWith(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const LoginWidget(),
+                  ],
+                ),
               ),
             ),
           ),

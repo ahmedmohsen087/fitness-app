@@ -2,7 +2,7 @@ class Assets {
   Assets._();
 
   // splash
-  static const String onBoarding = "assets/images/onboarding.png";
+  static const String appLogo = "assets/images/app_logo.png";
   static const String logo = "assets/images/Burpee and Jump Exercise.json";
   // on boarding
   static const String onBoarding1 = "assets/images/onboarding1.png";

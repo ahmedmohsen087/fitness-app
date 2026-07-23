@@ -11,6 +11,7 @@ class OnBoardingItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: double.infinity,
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage(Assets.onBoardingBackGround),
@@ -18,10 +19,15 @@ class OnBoardingItem extends StatelessWidget {
         ),
       ),
       child: SafeArea(
-        bottom: false,
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * .60,
-          child: Image.asset(image, fit: BoxFit.contain),
+        child: Align(
+          alignment: const Alignment(0, -0.3),
+          child: FractionallySizedBox(
+            heightFactor: 0.58,
+            child: Image.asset(
+              image,
+              fit: BoxFit.contain,
+            ),
+          ),
         ),
       ),
     );

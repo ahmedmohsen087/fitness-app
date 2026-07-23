@@ -28,7 +28,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   final _passwordController = TextEditingController();
 
   final ValueNotifier<bool> _obscurePassword = ValueNotifier(true);
-  final ValueNotifier<bool> _rememberMe = ValueNotifier(true);
+  final ValueNotifier<bool> _rememberMe = ValueNotifier(false);
 
   @override
   void dispose() {
@@ -37,6 +37,50 @@ class _LoginWidgetState extends State<LoginWidget> {
     _obscurePassword.dispose();
     _rememberMe.dispose();
     super.dispose();
+  }
+
+  InputDecoration _buildInputDecoration({
+    required String hintText,
+    required IconData prefixIcon,
+    Widget? suffixIcon,
+  }) {
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(25),
+      borderSide: BorderSide(
+        color: AppColors.white.withValues(alpha: .3),
+        width: 1,
+      ),
+    );
+
+    return InputDecoration(
+      filled: true,
+      fillColor: AppColors.black.withValues(alpha: .25),
+      hintText: hintText,
+      hintStyle: TextStyle(
+        color: AppColors.white.withValues(alpha: .5),
+        fontSize: 14,
+      ),
+      prefixIcon: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14.0),
+        child: Icon(
+          prefixIcon,
+          color: AppColors.white.withValues(alpha: .6),
+          size: 18,
+        ),
+      ),
+      suffixIcon: suffixIcon,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      enabledBorder: border,
+      focusedBorder: border.copyWith(
+        borderSide: const BorderSide(color: AppColors.orange, width: 1.5),
+      ),
+      errorBorder: border.copyWith(
+        borderSide: const BorderSide(color: AppColors.red, width: 1.5),
+      ),
+      focusedErrorBorder: border.copyWith(
+        borderSide: const BorderSide(color: AppColors.red, width: 2),
+      ),
+    );
   }
 
   @override
@@ -61,37 +105,46 @@ class _LoginWidgetState extends State<LoginWidget> {
         final isLoading = state.loginState.isLoading;
 
         return Container(
+          width: double.infinity,
           decoration: BoxDecoration(
-            color: AppColors.lightBlack.withValues(alpha: .40),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(50)),
+            color: AppColors.lightBlack.withValues(alpha: .55),
+            borderRadius: BorderRadius.circular(35),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
             child: Form(
               key: _formKey,
               child: Column(
-                spacing: 20,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     AppStrings.login,
-                    style: TextStyles.bodyRegular24,
+                    style: TextStyles.bodyRegular24.copyWith(
+                      color: AppColors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                    ),
                     textAlign: TextAlign.center,
                   ),
+
+                  const SizedBox(height: 20),
 
                   /// Email
                   TextFormField(
                     controller: _emailController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) =>
                         AppValidations.validateEmail(value ?? ''),
                     style: const TextStyle(color: AppColors.white),
-                    decoration: InputDecoration(
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    decoration: _buildInputDecoration(
                       hintText: AppStrings.email,
-                      prefixIcon: const Icon(
-                        Icons.email,
-                        color: AppColors.placeHolder,
-                      ),
+                      prefixIcon: Icons.email_outlined,
                     ),
                   ),
+
+                  const SizedBox(height: 14),
 
                   /// Password
                   ValueListenableBuilder<bool>(
@@ -99,20 +152,22 @@ class _LoginWidgetState extends State<LoginWidget> {
                     builder: (context, obscure, _) {
                       return TextFormField(
                         controller: _passwordController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: obscure,
                         validator: (value) =>
                             AppValidations.validatePassword(value ?? ''),
                         style: const TextStyle(color: AppColors.white),
-                        decoration: InputDecoration(
+                        textInputAction: TextInputAction.done,
+                        decoration: _buildInputDecoration(
                           hintText: AppStrings.password,
-                          prefixIcon: const Icon(
-                            Icons.lock,
-                            color: AppColors.placeHolder,
-                          ),
+                          prefixIcon: Icons.lock_outline,
                           suffixIcon: IconButton(
                             icon: Icon(
-                              obscure ? Icons.visibility_off : Icons.visibility,
-                              color: AppColors.placeHolder,
+                              obscure
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                              color: AppColors.white.withValues(alpha: .6),
+                              size: 18,
                             ),
                             onPressed: () {
                               _obscurePassword.value = !obscure;
@@ -123,67 +178,115 @@ class _LoginWidgetState extends State<LoginWidget> {
                     },
                   ),
 
-                  /// Remember me
+                  const SizedBox(height: 12),
+
+                  /// Remember me & Forgot Password
                   Row(
                     children: [
                       ValueListenableBuilder<bool>(
                         valueListenable: _rememberMe,
                         builder: (context, rememberMe, _) {
                           return SizedBox(
-                            width: 24,
-                            height: 24,
+                            width: 18,
+                            height: 18,
                             child: Checkbox(
                               value: rememberMe,
                               activeColor: AppColors.orange,
                               checkColor: AppColors.white,
+                              side: BorderSide(
+                                color: AppColors.white.withValues(alpha: .6),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
                               onChanged: (value) {
-                                _rememberMe.value = value ?? true;
+                                _rememberMe.value = value ?? false;
                               },
                             ),
                           );
                         },
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        AppStrings.rememberMe,
-                        style: TextStyles.bodyRegular12.copyWith(
-                          color: AppColors.white,
+                      GestureDetector(
+                        onTap: () {
+                          _rememberMe.value = !_rememberMe.value;
+                        },
+                        child: Text(
+                          AppStrings.rememberMe,
+                          style: TextStyle(
+                            color: AppColors.white.withValues(alpha: .9),
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                       const Spacer(),
-                      Text(
-                        AppStrings.forgetPassword,
-                        style: TextStyles.bodyRegular12.copyWith(
-                          color: AppColors.orange,
-                          decoration: TextDecoration.underline,
-                          decorationColor: AppColors.orange,
+                      GestureDetector(
+                        onTap: () {
+                          // Forgot password navigation
+                        },
+                        child: Text(
+                          AppStrings.forgetPassword,
+                          style: const TextStyle(
+                            color: AppColors.orange,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.underline,
+                            decorationColor: AppColors.orange,
+                          ),
                         ),
                       ),
                     ],
                   ),
+
+                  const SizedBox(height: 20),
 
                   /// Divider
                   Row(
                     children: [
-                      const Expanded(
-                        child: Divider(color: AppColors.white, thickness: 1.5),
+                      Expanded(
+                        child: Divider(
+                          color: AppColors.white.withValues(alpha: .3),
+                          thickness: 1,
+                        ),
                       ),
-                      const SizedBox(width: 12),
-                      Text(AppStrings.or, style: TextStyles.bodyRegular16),
-                      const SizedBox(width: 12),
-                      const Expanded(
-                        child: Divider(color: AppColors.white, thickness: 1.5),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                        child: Text(
+                          AppStrings.or,
+                          style: TextStyle(
+                            color: AppColors.white.withValues(alpha: .7),
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Divider(
+                          color: AppColors.white.withValues(alpha: .3),
+                          thickness: 1,
+                        ),
                       ),
                     ],
                   ),
 
+                  const SizedBox(height: 16),
+
                   const LoginWithGoogle(),
+
+                  const SizedBox(height: 20),
 
                   /// Login Button
                   SizedBox(
                     width: double.infinity,
-                    height: 50,
+                    height: 48,
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.orange,
+                        foregroundColor: AppColors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        elevation: 0,
+                      ),
                       onPressed: isLoading
                           ? null
                           : () async {
@@ -210,20 +313,34 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 ),
                               ),
                             )
-                          : Text(AppStrings.login),
+                          : Text(
+                              AppStrings.login,
+                              style: const TextStyle(
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                     ),
                   ),
+
+                  const SizedBox(height: 16),
 
                   /// Register
                   RichText(
                     text: TextSpan(
                       text: AppStrings.doNotHaveAnAccountYet,
-                      style: TextStyles.bodyRegular16,
+                      style: TextStyle(
+                        color: AppColors.white.withValues(alpha: .9),
+                        fontSize: 14,
+                      ),
                       children: [
                         TextSpan(
                           text: AppStrings.register,
-                          style: TextStyles.bodyRegular16.copyWith(
+                          style: const TextStyle(
                             color: AppColors.orange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
                             decoration: TextDecoration.underline,
                             decorationColor: AppColors.orange,
                           ),

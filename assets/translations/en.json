@@ -9,6 +9,7 @@
   "next": "Next",
   "back": "Back",
   "getStarted": "Get Started",
+  "skip": "Skip",
 
   "ThePriceOfExcellenceIsDiscipline": "The price of excellence\nis discipline",
   "fitnessHasNeverBeenSoMuchFun": "Fitness has never been so\nmuch fun",
@@ -108,7 +109,7 @@
   "heyThere": "Hey there",
   "welcomeBACK": "Welcome back",
   "login": "Login",
-  "don'tHaveAnAccountYet": "Don't have an account yet?",
+  "don'tHaveAnAccountYet": "Don't have an account yet? ",
   "register": "Register",
   "or": "or",
   "rememberMe": "Remember Me",
