@@ -14,9 +14,7 @@ class AppStrings {
   // Onboarding actions
   static String get next => 'next'.tr();
   static String get back => 'back'.tr();
-  static String get getStarted => 'getStarted'.tr();
   static String get skip => 'skip'.tr();
-
 
   // Splash / onboarding
 
@@ -232,4 +230,8 @@ class AppStrings {
   static String get doneButton => 'doneButton'.tr();
   static String get passwordChangedSuccessfully =>
       'passwordChangedSuccessfully'.tr();
+
+  // UpcomingWorkouts
+  static String get fullBody => 'fullBody'.tr();
+  static String get noWorkoutsFound => 'noWorkoutsFound'.tr();
 }

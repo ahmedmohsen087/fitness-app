@@ -1,6 +1,6 @@
 import 'package:fitness_app/features/home/presentation/widgets/category_item.dart';
-import 'package:flutter/material.dart';
-
+import 'package:fitness_app/features/section_app/view_model/section_tab_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/app_strings.dart';
 import '../../../../core/values/assets.dart';
@@ -68,7 +68,9 @@ class HomeScreen extends StatelessWidget {
                         ),
                         Spacer(),
                         InkWell(
-                          onTap: () {},
+                          onTap: () => context
+                              .read<SectionTabCubit>()
+                              .changeTab(AppTab.workout),
                           child: Text(
                             AppStrings.seeAll,
                             style: TextStyles.textRegular12.copyWith(

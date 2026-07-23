@@ -149,5 +149,7 @@
   "makeSure8CharsOrMore": "تأكد أنها 8 أحرف على الأقل",
   "createNewPasswordTitle": "إنشاء كلمة مرور جديدة",
   "doneButton": "تم",
-  "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح"
+  "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح",
+  "fullBody": "الجسم بالكامل",
+  "noWorkoutsFound": "لا توجد تمارين"
 }

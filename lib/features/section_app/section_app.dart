@@ -1,61 +1,54 @@
+// lib/features/section_app/section_app.dart
 import 'package:fitness_app/core/reusable_widgets/app_bottom_nav_bar.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
 import 'package:fitness_app/features/home/presentation/screens/home_screen.dart';
 import 'package:fitness_app/features/section_app/chat_screen.dart';
 import 'package:fitness_app/features/section_app/profile_screen.dart';
-import 'package:fitness_app/features/section_app/workouts_screen.dart';
+import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
+import 'package:fitness_app/features/section_app/view_model/section_tab_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum AppTab { home, chat, workout, profile }
+class SectionApp extends StatelessWidget {
+  const SectionApp({super.key});
 
-class SectionApp extends StatefulWidget {
-  final int initialTabIndex;
-
-  const SectionApp({super.key, this.initialTabIndex = 0});
-
-  @override
-  State<SectionApp> createState() => _SectionAppState();
-}
-
-class _SectionAppState extends State<SectionApp> {
-  late AppTab currentTab;
-
-  @override
-  void initState() {
-    super.initState();
-    final safeIndex =
-        widget.initialTabIndex >= 0 &&
-            widget.initialTabIndex < AppTab.values.length
-        ? widget.initialTabIndex
-        : 0;
-    currentTab = AppTab.values[safeIndex];
-  }
-
-  final List<Widget> pages = const [
+  static const List<Widget> _pages = [
     HomeScreen(),
     ChatScreen(),
-    WorkoutsScreen(),
+    UpcomingWorkoutsScreen(),
     ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      body: IndexedStack(index: currentTab.index, children: pages),
-      bottomNavigationBar: AppBottomNavBar(
-        currentIndex: currentTab.index,
-        onTap: (index) => setState(() => currentTab = AppTab.values[index]),
-        items: [
-          AppBottomNavItem(icon: Assets.homeIcon, label: AppStrings.home),
-          AppBottomNavItem(icon: Assets.chatIcon, label: AppStrings.chat),
-          AppBottomNavItem(
-            icon: Assets.workoutsIcon,
-            label: AppStrings.workouts,
-          ),
-          AppBottomNavItem(icon: Assets.profileIcon, label: AppStrings.profile),
-        ],
+    return BlocProvider(
+      create: (_) => SectionTabCubit(),
+      child: BlocBuilder<SectionTabCubit, AppTab>(
+        builder: (context, currentTab) {
+          return Scaffold(
+            extendBody: true,
+            body: IndexedStack(index: currentTab.index, children: _pages),
+            bottomNavigationBar: AppBottomNavBar(
+              currentIndex: currentTab.index,
+              onTap: (index) => context.read<SectionTabCubit>().changeTab(
+                AppTab.values[index],
+              ),
+              items: [
+                AppBottomNavItem(icon: Assets.homeIcon, label: AppStrings.home),
+                AppBottomNavItem(icon: Assets.chatIcon, label: AppStrings.chat),
+                AppBottomNavItem(
+                  icon: Assets.workoutsIcon,
+                  label: AppStrings.workouts,
+                ),
+                AppBottomNavItem(
+                  icon: Assets.profileIcon,
+                  label: AppStrings.profile,
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
