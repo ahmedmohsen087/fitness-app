@@ -1,5 +1,6 @@
 import 'package:fitness_app/features/auth/domain/entities/login_user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'login_user_dto.g.dart';
 
 @JsonSerializable()
@@ -44,7 +45,8 @@ class LoginUserDto {
     this.createdAt,
   });
 
-  factory LoginUserDto.fromJson(Map<String, dynamic> json) => _$LoginUserDtoFromJson(json);
+  factory LoginUserDto.fromJson(Map<String, dynamic> json) =>
+      _$LoginUserDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$LoginUserDtoToJson(this);
 

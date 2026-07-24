@@ -20,5 +20,4 @@ class CategoryFoodEntity extends Equatable {
     strCategoryThumb,
     strCategoryDescription,
   ];
-
 }

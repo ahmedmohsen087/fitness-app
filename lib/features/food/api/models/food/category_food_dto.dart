@@ -1,7 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../domain/entities/category_food/category_food_entity.dart';
+
 part 'category_food_dto.g.dart';
+
 @JsonSerializable()
 class CategoryFoodDto {
   @JsonKey(name: "idCategory")
@@ -20,7 +22,8 @@ class CategoryFoodDto {
     this.strCategoryDescription,
   });
 
-  factory CategoryFoodDto.fromJson(Map<String, dynamic> json) => _$CategoryFoodDtoFromJson(json);
+  factory CategoryFoodDto.fromJson(Map<String, dynamic> json) =>
+      _$CategoryFoodDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$CategoryFoodDtoToJson(this);
 
@@ -32,4 +35,4 @@ class CategoryFoodDto {
       strCategoryDescription: strCategoryDescription ?? '',
     );
   }
-  }
+}

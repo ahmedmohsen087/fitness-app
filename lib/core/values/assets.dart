@@ -34,14 +34,4 @@ class Assets {
   static const String gymLogo = "assets/images/gymlogo.png";
   static const String trainerLogo = "assets/images/trainerlogo.png";
   static const String test = "assets/images/test.png";
-
-
-
-
-
-
-
-
-
-
 }

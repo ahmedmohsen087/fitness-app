@@ -1,21 +1,27 @@
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+import 'package:http_cache_file_store/http_cache_file_store.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../cache/smart_cache_interceptor.dart';
 
 @module
 abstract class CacheModule {
+  @preResolve
   @lazySingleton
-  CacheStore get cacheStore => MemCacheStore();
+  Future<CacheStore> cacheStore() async {
+    final directory = await getApplicationSupportDirectory();
+    return FileCacheStore('${directory.path}/food_cache');
+  }
 
   @lazySingleton
   SmartCacheInterceptor smartCacheInterceptor(CacheStore store) =>
       SmartCacheInterceptor(
-        homeOptions: CacheOptions(
+        foodOptions: CacheOptions(
           store: store,
-          policy: CachePolicy.request,
-          maxStale: const Duration(hours: 1),
-          hitCacheOnErrorCodes: const [401, 403],
+          policy: CachePolicy.forceCache,
+          maxStale: const Duration(days: 1),
+          hitCacheOnNetworkFailure: true,
         ),
       );
 

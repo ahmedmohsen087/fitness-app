@@ -17,6 +17,9 @@ class AppStrings {
   static String get getStarted => 'getStarted'.tr();
   static String get skip => 'skip'.tr();
 
+
+  // Splash / onboarding
+
   // Secure storage - token
   static String get tokenEmpty => 'tokenEmpty'.tr();
   static String get tokenWriteFailed => 'tokenWriteFailed'.tr();
@@ -120,7 +123,7 @@ class AppStrings {
 
   static String get activityLevelAdvance => 'activityLevelAdvance'.tr();
 
- // login
+  // login
 
   static String get heyThere => 'heyThere'.tr();
   static String get welcomeBACK => 'welcomeBACK'.tr();
@@ -146,6 +149,32 @@ class AppStrings {
   static String get recommendationForYou => 'recommendationForYou'.tr();
   static String get popularTraining => 'popularTraining'.tr();
   static String get seeAll => 'seeAll'.tr();
+
+  static String get foodRecommendation => 'foodRecommendation'.tr();
+
+  static String get noFoodCategories => 'noFoodCategories'.tr();
+
+  static String get noMealsFound => 'noMealsFound'.tr();
+
+  static String get retry => 'retry'.tr();
+
+  static String get loading => 'loading'.tr();
+
+  static String get ingredients => 'ingredients'.tr();
+
+  static String get cuisine => 'cuisine'.tr();
+
+  static String get country => 'country'.tr();
+
+  static String get tags => 'tags'.tr();
+
+  static String get recipeVideo => 'recipeVideo'.tr();
+
+  static String get close => 'close'.tr();
+
+  static String get videoUnavailable => 'videoUnavailable'.tr();
+
+  static String get noMealDetails => 'noMealDetails'.tr();
 
   static String get activityLevelTrueBeast => 'activityLevelTrueBeast'.tr();
 

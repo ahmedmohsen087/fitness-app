@@ -17,7 +17,9 @@ void main() {
   const tEmail = 'test@example.com';
   const tPassword = 'password123';
   final tLoginRequestModel = LoginRequestModel(
-      email: tEmail, password: tPassword);
+    email: tEmail,
+    password: tPassword,
+  );
 
   final tAuthResponse = LoginResponse(
     token: 'mocked_jwt_token_for_testing',

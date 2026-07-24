@@ -10,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/view_models/login_view_model.dart';
+import '../../features/food/presentation/screens/food_details_screen.dart';
+import '../../features/food/presentation/screens/food_screen.dart';
 import '../../features/home/presentation/view_models/home_events.dart';
 import '../../features/home/presentation/view_models/home_view_models.dart';
 import '../../features/on_boarding/presentation/screens/on_boarding.dart';
@@ -105,6 +107,52 @@ class AppRoutes {
           );
         },
       );
+      case AppRoutsName.sectionApp:
+        final initialTabIndex = settings.arguments is int
+            ? settings.arguments! as int
+            : 0;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<HomeViewModel>()..doEvent(LoadHomeDataEvent()),
+            child: SectionApp(initialTabIndex: initialTabIndex),
+          ),
+          settings: settings,
+          // builder: (_) => const SectionApp(),
+        );
+      case AppRoutsName.register:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const RegisterScreen(),
+        );
+      case AppRoutsName.loginScreen:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider<LoginViewModel>(
+            create: (_) => getIt<LoginViewModel>(),
+            child: const LoginScreen(),
+          ),
+        );
+      case AppRoutsName.food:
+        final initialCategory =
+            settings.arguments is String &&
+                (settings.arguments! as String).trim().isNotEmpty
+            ? settings.arguments! as String
+            : null;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => FoodScreen(initialCategory: initialCategory),
+        );
+      case AppRoutsName.foodDetails:
+        final mealId = settings.arguments is String
+            ? (settings.arguments! as String).trim()
+            : '';
+        if (mealId.isEmpty) return _notFoundRoute(settings);
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => FoodDetailsScreen(mealId: mealId),
+        );
+      default:
+        return _notFoundRoute(settings);
     }
   }
 

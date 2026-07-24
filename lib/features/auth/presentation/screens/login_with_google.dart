@@ -8,7 +8,6 @@ class LoginWithGoogle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Row(
       spacing: 15,
       mainAxisAlignment: MainAxisAlignment.center,

@@ -1,5 +1,6 @@
 import 'package:fitness_app/features/home/presentation/widgets/category_item.dart';
 import 'package:flutter/material.dart';
+
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/app_strings.dart';
 import '../../../../core/values/assets.dart';
@@ -8,7 +9,6 @@ import '../widgets/recommendation_for_you_widget.dart';
 import '../widgets/recommendation_to_day.dart';
 import '../widgets/upcoming_workouts_widget.dart';
 import 'home_profile_info.dart';
-
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,83 +19,85 @@ class HomeScreen extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              Assets.homeBackGround,
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset(Assets.homeBackGround, fit: BoxFit.cover),
           ),
           SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: SingleChildScrollView(
-                  child: Column(
-                    spacing: 10,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      HomeProfileInfo(),
-                      Text(AppStrings.category,
-                        style: TextStyles.labelTextFieldStyle.copyWith(
-                          fontWeight: FontWeight.w600
-                        ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SingleChildScrollView(
+                child: Column(
+                  spacing: 10,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    HomeProfileInfo(),
+                    Text(
+                      AppStrings.category,
+                      style: TextStyles.labelTextFieldStyle.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
-                      CategoryItem(),
-                      Row(
-                        children: [
-                          Text(AppStrings.recommendationToDay,
-                            style: TextStyles.labelTextFieldStyle.copyWith(
-                                fontWeight: FontWeight.w600
+                    ),
+                    CategoryItem(),
+                    Row(
+                      children: [
+                        Text(
+                          AppStrings.recommendationToDay,
+                          style: TextStyles.labelTextFieldStyle.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Spacer(),
+                        InkWell(
+                          onTap: () {},
+                          child: Text(
+                            AppStrings.seeAll,
+                            style: TextStyles.textRegular12.copyWith(
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Spacer(),
-                          InkWell(
-                            onTap: (){},
-                            child: Text(AppStrings.seeAll,
-                              style: TextStyles.textRegular12.copyWith(
-                                  fontWeight: FontWeight.w600
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      RecommendationToDay(),
-                      Row(
-                        children: [
-                          Text(AppStrings.upcomingWorkouts,
-                            style: TextStyles.labelTextFieldStyle.copyWith(
-                                fontWeight: FontWeight.w600
+                        ),
+                      ],
+                    ),
+                    RecommendationToDay(),
+                    Row(
+                      children: [
+                        Text(
+                          AppStrings.upcomingWorkouts,
+                          style: TextStyles.labelTextFieldStyle.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Spacer(),
+                        InkWell(
+                          onTap: () {},
+                          child: Text(
+                            AppStrings.seeAll,
+                            style: TextStyles.textRegular12.copyWith(
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Spacer(),
-                          InkWell(
-                            onTap: (){},
-                            child: Text(AppStrings.seeAll,
-                              style: TextStyles.textRegular12.copyWith(
-                                  fontWeight: FontWeight.w600
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      MusclesGroupList(),
-                      UpcomingWorkoutsWidget(),
-                      Text(AppStrings.recommendationForYou,
-                        style: TextStyles.labelTextFieldStyle.copyWith(
-                            fontWeight: FontWeight.w600
                         ),
+                      ],
+                    ),
+                    MusclesGroupList(),
+                    UpcomingWorkoutsWidget(),
+                    Text(
+                      AppStrings.recommendationForYou,
+                      style: TextStyles.labelTextFieldStyle.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
-                      RecommendationForYouWidget(),
-                      Text(AppStrings.popularTraining,
-                        style: TextStyles.labelTextFieldStyle.copyWith(
-                            fontWeight: FontWeight.w600
-                        ),
+                    ),
+                    RecommendationForYouWidget(),
+                    Text(
+                      AppStrings.popularTraining,
+                      style: TextStyles.labelTextFieldStyle.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
-
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
+            ),
           ),
-
         ],
       ),
     );

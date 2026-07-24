@@ -17,10 +17,7 @@ class LoginScreen extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              Assets.authBackGround,
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset(Assets.authBackGround, fit: BoxFit.cover),
           ),
           SafeArea(
             child: Center(

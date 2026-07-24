@@ -7,59 +7,48 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/utils/error/error_handler.dart';
 import '../../data/models/muscles_group/muscles_group_by_id_response.dart';
 import '../../data/models/muscles_group/muscles_group_response.dart';
-import '../../data/models/recommendation_food/recommendation_food_response.dart';
+
 @Injectable(as: HomeRemoteDataSourceContract)
-class HomeRemoteDataSourceImpl implements HomeRemoteDataSourceContract{
-  final HomeApiClient homeApiClient ;
-  HomeRemoteDataSourceImpl(
-    this.homeApiClient
-);
+class HomeRemoteDataSourceImpl implements HomeRemoteDataSourceContract {
+  final HomeApiClient homeApiClient;
+
+  HomeRemoteDataSourceImpl(this.homeApiClient);
 
   @override
-  Future<BaseResponse<RecommendationToDayResponse>> getRecommendationToDay() async {
-    try{
+  Future<BaseResponse<RecommendationToDayResponse>>
+  getRecommendationToDay() async {
+    try {
       final response = await homeApiClient.getRecommendationToDay();
       return SuccessBaseResponse<RecommendationToDayResponse>(data: response);
-    }catch(e){
+    } catch (e) {
       final message = ErrorHandler.handle(e);
-      return ErrorBaseResponse<RecommendationToDayResponse>(errorMessage: message) ;
+      return ErrorBaseResponse<RecommendationToDayResponse>(
+        errorMessage: message,
+      );
     }
   }
 
   @override
   Future<BaseResponse<MusclesGroupResponse>> getMusclesGroup() async {
-    try{
+    try {
       final response = await homeApiClient.getMusclesGroup();
       return SuccessBaseResponse<MusclesGroupResponse>(data: response);
-      }catch(e){
+    } catch (e) {
       final message = ErrorHandler.handle(e);
-      return ErrorBaseResponse<MusclesGroupResponse>(errorMessage: message) ;
+      return ErrorBaseResponse<MusclesGroupResponse>(errorMessage: message);
     }
   }
+
   @override
-  Future<BaseResponse<MusclesGroupByIdResponse>> getMusclesGroupId(String id) async {
-    try{
+  Future<BaseResponse<MusclesGroupByIdResponse>> getMusclesGroupId(
+    String id,
+  ) async {
+    try {
       final response = await homeApiClient.getMusclesGroupById(id);
       return SuccessBaseResponse<MusclesGroupByIdResponse>(data: response);
-      }catch(e){
+    } catch (e) {
       final message = ErrorHandler.handle(e);
-      return ErrorBaseResponse<MusclesGroupByIdResponse>(errorMessage: message) ;
+      return ErrorBaseResponse<MusclesGroupByIdResponse>(errorMessage: message);
     }
   }
-  @override
-  Future<BaseResponse<RecommendationFoodResponse>> getRecommendationFood() async {
-    try{
-      final response = await homeApiClient.getRecommendationFood();
-      return SuccessBaseResponse<RecommendationFoodResponse>(data: response);
-      }catch(e){
-      final message = ErrorHandler.handle(e);
-      return ErrorBaseResponse<RecommendationFoodResponse>(errorMessage: message) ;
-    }
-  }
-  }
-
-
-
-
-
-
+}

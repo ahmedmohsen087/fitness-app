@@ -6,9 +6,9 @@ import 'package:retrofit/http.dart';
 
 import '../../../../core/values/api_endpoints.dart';
 import '../../../../core/values/api_parameters.dart';
+
 import '../../data/models/muscles_group/muscles_group_by_id_response.dart';
 import '../../data/models/muscles_group/muscles_group_response.dart';
-import '../../data/models/recommendation_food/recommendation_food_response.dart';
 import '../../data/models/recommendation_to_day/recommendation_to_day_response.dart';
 
 part 'home_api_client.g.dart';
@@ -18,7 +18,6 @@ part 'home_api_client.g.dart';
 abstract class HomeApiClient {
   @factoryMethod
   factory HomeApiClient(Dio dio) = _HomeApiClient;
-
 
   @GET(ApiEndpoints.muscles)
   @Extra({ApiParameters.requiresAuth: true})
@@ -30,10 +29,5 @@ abstract class HomeApiClient {
 
   @GET(ApiEndpoints.musclesGroupId)
   @Extra({ApiParameters.requiresAuth: true})
-  Future<MusclesGroupByIdResponse> getMusclesGroupById(
-      @Path("id") String id,
-      );
-  @GET(ApiEndpoints.recommendationFood)
-  Future<RecommendationFoodResponse> getRecommendationFood();
+  Future<MusclesGroupByIdResponse> getMusclesGroupById(@Path("id") String id);
 }
-

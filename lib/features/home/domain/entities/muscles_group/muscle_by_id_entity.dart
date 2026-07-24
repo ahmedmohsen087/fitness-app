@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class MuscleByIdEntity extends Equatable{
+class MuscleByIdEntity extends Equatable {
   final String id;
   final String name;
   final String image;
@@ -10,9 +10,5 @@ class MuscleByIdEntity extends Equatable{
     required this.image,
   });
   @override
-  List<Object?> get props => [
-    id,
-    name,
-    image
-  ];
+  List<Object?> get props => [id, name, image];
 }

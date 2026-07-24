@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
+
 import 'muscle_by_id_entity.dart';
 import 'muscles_entity.dart';
 
-class MusclesGroupByIdEntity extends Equatable{
+class MusclesGroupByIdEntity extends Equatable {
   final String message;
   final MusclesEntity musclesGroupDto;
   final List<MuscleByIdEntity> muscles;
@@ -12,10 +13,5 @@ class MusclesGroupByIdEntity extends Equatable{
     required this.muscles,
   });
   @override
-  List<Object?> get props => [
-    message,
-    musclesGroupDto,
-    muscles
-  ];
-
+  List<Object?> get props => [message, musclesGroupDto, muscles];
 }

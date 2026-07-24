@@ -3,6 +3,8 @@ abstract class ApiParameters {
   static const String requiresAuth = 'requiresAuth';
   static const String email = 'email';
   static const String password = 'password';
+  static const String category = 'c';
+  static const String mealId = 'i';
   static const String newPassword = 'newPassword';
   static const String resetCode = 'resetCode';
 }

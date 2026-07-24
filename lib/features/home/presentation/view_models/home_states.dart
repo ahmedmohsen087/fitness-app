@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:fitness_app/features/home/domain/entities/recommendation_to_day/recommendation_to_day_entity.dart';
 
 import '../../../../config/base_state/base_state.dart';
-import '../../domain/entities/category_food/recommendation_food_entity.dart';
+import '../../../food/domain/entities/category_food/recommendation_food_entity.dart';
 import '../../domain/entities/muscles_group/muscles_group_by_id_entity.dart';
 import '../../domain/entities/muscles_group/muscles_group_entity.dart';
 
@@ -11,7 +11,6 @@ class HomeState extends Equatable {
   final BaseState<MusclesGroupEntity> musclesGroupState;
   final BaseState<MusclesGroupByIdEntity> musclesGroupByIdState;
   final BaseState<RecommendationFoodEntity> recommendationFoodState;
-
 
   const HomeState({
     this.recommendationToDayState = const BaseState(),
@@ -27,10 +26,13 @@ class HomeState extends Equatable {
     BaseState<RecommendationFoodEntity>? recommendationFoodState,
   }) {
     return HomeState(
-      recommendationToDayState: recommendationToDayState ?? this.recommendationToDayState,
+      recommendationToDayState:
+          recommendationToDayState ?? this.recommendationToDayState,
       musclesGroupState: musclesGroupState ?? this.musclesGroupState,
-      musclesGroupByIdState: musclesGroupByIdState ?? this.musclesGroupByIdState,
-      recommendationFoodState: recommendationFoodState ?? this.recommendationFoodState,
+      musclesGroupByIdState:
+          musclesGroupByIdState ?? this.musclesGroupByIdState,
+      recommendationFoodState:
+          recommendationFoodState ?? this.recommendationFoodState,
     );
   }
 

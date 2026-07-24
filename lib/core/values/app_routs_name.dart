@@ -7,4 +7,6 @@ abstract class AppRoutsName {
   static const String forgetPasswordScreen = '/forgetPasswordScreen';
   static const String emailVerificationScreen = '/emailVerificationScreen';
   static const String resetPassword = '/resetPassword';
+  static const String food = '/food';
+  static const String foodDetails = '/foodDetails';
 }
