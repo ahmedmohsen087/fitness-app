@@ -7,6 +7,7 @@ import 'package:fitness_app/features/auth/presentation/screens/reset_password_sc
 import 'package:fitness_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/view_models/login_view_model.dart';
@@ -85,7 +86,25 @@ class AppRoutes {
               child: const ResetPasswordScreen(),
             ),
           );
-
+        case AppRoutsName.food:
+          final initialCategory =
+              settings.arguments is String &&
+                  (settings.arguments! as String).trim().isNotEmpty
+              ? settings.arguments! as String
+              : null;
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => FoodScreen(initialCategory: initialCategory),
+          );
+        case AppRoutsName.foodDetails:
+          final mealId = settings.arguments is String
+              ? (settings.arguments! as String).trim()
+              : '';
+          if (mealId.isEmpty) return _notFoundRoute(settings);
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => FoodDetailsScreen(mealId: mealId),
+          );
         default:
           return _notFoundRoute(settings);
       }
@@ -107,52 +126,6 @@ class AppRoutes {
           );
         },
       );
-      case AppRoutsName.sectionApp:
-        final initialTabIndex = settings.arguments is int
-            ? settings.arguments! as int
-            : 0;
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => getIt<HomeViewModel>()..doEvent(LoadHomeDataEvent()),
-            child: SectionApp(initialTabIndex: initialTabIndex),
-          ),
-          settings: settings,
-          // builder: (_) => const SectionApp(),
-        );
-      case AppRoutsName.register:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => const RegisterScreen(),
-        );
-      case AppRoutsName.loginScreen:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => BlocProvider<LoginViewModel>(
-            create: (_) => getIt<LoginViewModel>(),
-            child: const LoginScreen(),
-          ),
-        );
-      case AppRoutsName.food:
-        final initialCategory =
-            settings.arguments is String &&
-                (settings.arguments! as String).trim().isNotEmpty
-            ? settings.arguments! as String
-            : null;
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => FoodScreen(initialCategory: initialCategory),
-        );
-      case AppRoutsName.foodDetails:
-        final mealId = settings.arguments is String
-            ? (settings.arguments! as String).trim()
-            : '';
-        if (mealId.isEmpty) return _notFoundRoute(settings);
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => FoodDetailsScreen(mealId: mealId),
-        );
-      default:
-        return _notFoundRoute(settings);
     }
   }
 
