@@ -6,9 +6,9 @@ import '../../../../core/reusable_widgets/app_toast.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/values/app_strings.dart';
 import '../../../../core/values/assets.dart';
-import '../view_models/home_events.dart';
-import '../view_models/home_states.dart';
-import '../view_models/home_view_models.dart';
+import '../view_model/food_events.dart';
+import '../view_model/food_state.dart';
+import '../view_model/food_view_model.dart';
 import '../widgets/food_details_content.dart';
 import '../widgets/food_details_message_state.dart';
 
@@ -21,7 +21,7 @@ class FoodDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          getIt<HomeViewModel>()..doEvent(LoadMealDetailsEvent(mealId)),
+          getIt<FoodViewModel>()..doEvent(LoadMealDetailsEvent(mealId)),
       child: const _FoodDetailsView(),
     );
   }
@@ -32,7 +32,7 @@ class _FoodDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeViewModel, HomeState>(
+    return BlocListener<FoodViewModel, FoodState>(
       listenWhen: (previous, current) =>
           previous.mealDetailsState.msg != current.mealDetailsState.msg,
       listener: (context, state) {
@@ -49,7 +49,7 @@ class _FoodDetailsView extends StatelessWidget {
             Positioned.fill(
               child: ColoredBox(color: AppColors.black.withValues(alpha: 0.5)),
             ),
-            BlocBuilder<HomeViewModel, HomeState>(
+            BlocBuilder<FoodViewModel, FoodState>(
               buildWhen: (previous, current) =>
                   previous.mealDetailsState != current.mealDetailsState,
               builder: (context, state) {

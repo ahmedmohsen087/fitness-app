@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/di/di.dart';
-import '../../../../core/reusable_widgets/app_bottom_nav_bar.dart';
 import '../../../../core/reusable_widgets/app_toast.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/app_routs_name.dart';
 import '../../../../core/values/app_strings.dart';
 import '../../../../core/values/assets.dart';
-import '../view_models/home_events.dart';
-import '../view_models/home_states.dart';
-import '../view_models/home_view_models.dart';
+import '../view_model/food_events.dart';
+import '../view_model/food_state.dart';
+import '../view_model/food_view_model.dart';
 import '../widgets/food_category_tabs.dart';
 import '../widgets/meal_card.dart';
 
@@ -24,7 +23,7 @@ class FoodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          getIt<HomeViewModel>()
+          getIt<FoodViewModel>()
             ..doEvent(LoadFoodDataEvent(initialCategory: initialCategory)),
       child: const _FoodView(),
     );
@@ -36,35 +35,16 @@ class _FoodView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeViewModel, HomeState>(
+    return BlocListener<FoodViewModel, FoodState>(
       listenWhen: (previous, current) =>
-          previous.recommendationFoodState.msg !=
-              current.recommendationFoodState.msg ||
+          previous.categoriesState.msg != current.categoriesState.msg ||
           previous.mealsState.msg != current.mealsState.msg,
       listener: (context, state) {
-        final message =
-            state.recommendationFoodState.msg ?? state.mealsState.msg;
+        final message = state.categoriesState.msg ?? state.mealsState.msg;
         if (message != null) AppToast.error(context, message);
       },
       child: Scaffold(
-        extendBody: true,
         backgroundColor: AppColors.lightBlack,
-        bottomNavigationBar: AppBottomNavBar(
-          currentIndex: 0,
-          onTap: (index) => _onNavigationTap(context, index),
-          items: [
-            AppBottomNavItem(icon: Assets.homeIcon, label: AppStrings.home),
-            AppBottomNavItem(icon: Assets.chatIcon, label: AppStrings.chat),
-            AppBottomNavItem(
-              icon: Assets.workoutsIcon,
-              label: AppStrings.workouts,
-            ),
-            AppBottomNavItem(
-              icon: Assets.profileIcon,
-              label: AppStrings.profile,
-            ),
-          ],
-        ),
         body: Stack(
           children: [
             Positioned.fill(
@@ -85,10 +65,10 @@ class _FoodView extends StatelessWidget {
                     const FoodCategoryTabs(),
                     const SizedBox(height: 24),
                     Expanded(
-                      child: BlocBuilder<HomeViewModel, HomeState>(
+                      child: BlocBuilder<FoodViewModel, FoodState>(
                         buildWhen: (previous, current) =>
-                            previous.recommendationFoodState !=
-                                current.recommendationFoodState ||
+                            previous.categoriesState !=
+                                current.categoriesState ||
                             previous.mealsState != current.mealsState,
                         builder: (context, state) => _FoodContent(state: state),
                       ),
@@ -100,20 +80,6 @@ class _FoodView extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  void _onNavigationTap(BuildContext context, int index) {
-    if (index == 0) {
-      Navigator.maybePop(context);
-      return;
-    }
-
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      AppRoutsName.sectionApp,
-      (_) => false,
-      arguments: index,
     );
   }
 }
@@ -162,29 +128,26 @@ class _FoodHeader extends StatelessWidget {
 }
 
 class _FoodContent extends StatelessWidget {
-  final HomeState state;
+  final FoodState state;
 
   const _FoodContent({required this.state});
 
   @override
   Widget build(BuildContext context) {
-    if (state.recommendationFoodState.isLoading ||
+    if (state.categoriesState.isLoading ||
         (state.mealsState.isLoading && state.mealsState.data == null)) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (state.recommendationFoodState.msg != null ||
-        state.mealsState.msg != null) {
+    if (state.categoriesState.msg != null || state.mealsState.msg != null) {
       return _MessageState(
-        message:
-            state.recommendationFoodState.msg ?? state.mealsState.msg ?? '',
+        message: state.categoriesState.msg ?? state.mealsState.msg ?? '',
         onRetry: () =>
-            context.read<HomeViewModel>().doEvent(RetryFoodDataEvent()),
+            context.read<FoodViewModel>().doEvent(RetryFoodDataEvent()),
       );
     }
 
-    final categories =
-        state.recommendationFoodState.data?.categories ?? const [];
+    final categories = state.categoriesState.data?.categories ?? const [];
     if (categories.isEmpty) {
       return _MessageState(message: AppStrings.noFoodCategories);
     }
@@ -195,7 +158,7 @@ class _FoodContent extends StatelessWidget {
     }
 
     return GridView.builder(
-      padding: const EdgeInsets.only(bottom: 112),
+      padding: const EdgeInsets.only(bottom: 32),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         mainAxisSpacing: 17,

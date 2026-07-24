@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/app_strings.dart';
-import '../view_models/home_events.dart';
-import '../view_models/home_view_models.dart';
+import '../view_model/food_events.dart';
+import '../view_model/food_view_model.dart';
 
 class FoodDetailsMessageState extends StatelessWidget {
   final String message;
@@ -39,7 +39,7 @@ class FoodDetailsMessageState extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () => context.read<HomeViewModel>().doEvent(
+                  onPressed: () => context.read<FoodViewModel>().doEvent(
                     RetryMealDetailsEvent(),
                   ),
                   child: Text(AppStrings.retry),

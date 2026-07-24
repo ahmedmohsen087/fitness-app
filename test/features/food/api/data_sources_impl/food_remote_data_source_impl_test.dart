@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
-import 'package:fitness_app/features/home/api/api_client/food_api_client.dart';
-import 'package:fitness_app/features/home/api/data_source_impl/food_remote_data_source_impl.dart';
-import 'package:fitness_app/features/home/api/models/food/meal_model.dart';
-import 'package:fitness_app/features/home/api/models/food/meals_response_model.dart';
-import 'package:fitness_app/features/home/api/models/food_details/meal_details_response_model.dart';
+import 'package:fitness_app/features/food/api/api_client/food_api_client.dart';
+import 'package:fitness_app/features/food/api/data_sources_impl/food_remote_data_source_impl.dart';
+import 'package:fitness_app/features/food/api/models/food/meal_model.dart';
+import 'package:fitness_app/features/food/api/models/food/meals_response_model.dart';
+import 'package:fitness_app/features/food/api/models/food_details/meal_details_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

@@ -1,4 +1,4 @@
-import 'package:fitness_app/features/home/api/models/food_details/meal_details_response_model.dart';
+import 'package:fitness_app/features/food/api/models/food_details/meal_details_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
