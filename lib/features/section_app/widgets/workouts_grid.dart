@@ -1,13 +1,13 @@
 import 'package:fitness_app/core/theme/text_styles.dart';
+import 'package:fitness_app/core/values/app_routs_name.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
-import 'package:fitness_app/features/home/presentation/view_models/home_states.dart';
-import 'package:fitness_app/features/home/presentation/view_models/home_view_models.dart';
+import 'package:fitness_app/features/fitness/domain/entities/muscle_entity.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_state.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:fitness_app/features/section_app/widgets/workout_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
-typedef _WorkoutItem = ({String id, String name, String image});
 
 class WorkoutsGrid extends StatelessWidget {
   final String? selectedMuscleGroupId;
@@ -16,23 +16,17 @@ class WorkoutsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeViewModel, HomeState>(
+    return BlocBuilder<FitnessViewModel, FitnessState>(
       builder: (context, state) {
         final isFullBody = selectedMuscleGroupId == null;
 
         final isLoading = isFullBody
             ? state.recommendationToDayState.isLoading
-            : state.musclesGroupByIdState.isLoading;
+            : state.musclesByGroupState.isLoading;
 
-        final List<_WorkoutItem> workouts = isFullBody
-            ? state.recommendationToDayState.data?.muscles
-                      .map((e) => (id: e.id, name: e.name, image: e.image))
-                      .toList() ??
-                  []
-            : state.musclesGroupByIdState.data?.muscles
-                      .map((e) => (id: e.id, name: e.name, image: e.image))
-                      .toList() ??
-                  [];
+        final List<MuscleEntity> workouts = isFullBody
+            ? state.recommendationToDayState.data ?? []
+            : state.musclesByGroupState.data ?? [];
 
         if (!isLoading && workouts.isEmpty) {
           return Center(
@@ -63,7 +57,17 @@ class WorkoutsGrid extends StatelessWidget {
               }
 
               final workout = workouts[index];
-              return WorkoutCard(image: workout.image, title: workout.name);
+              return WorkoutCard(
+                image: workout.image,
+                title: workout.name,
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutsName.upcomingWorkout,
+                    arguments: workout.id,
+                  );
+                },
+              );
             },
           ),
         );

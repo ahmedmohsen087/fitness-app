@@ -1,16 +1,21 @@
+import 'package:fitness_app/config/di/di.dart';
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:fitness_app/features/section_app/widgets/workouts_filter_tabs.dart';
 import 'package:fitness_app/features/section_app/widgets/workouts_grid.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UpcomingWorkoutsScreen extends StatefulWidget {
   const UpcomingWorkoutsScreen({super.key});
 
   @override
-  State<UpcomingWorkoutsScreen> createState() => _UpcomingWorkoutsScreenState();
+  State<UpcomingWorkoutsScreen> createState() =>
+      _UpcomingWorkoutsScreenState();
 }
 
 class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
@@ -27,7 +32,7 @@ class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppBackgroundScaffold(
+    Widget content = AppBackgroundScaffold(
       imagePath: Assets.mainBackground,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -54,6 +59,16 @@ class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
           ],
         ),
       ),
+    );
+
+    if (context.read<FitnessViewModel?>() != null) {
+      return content;
+    }
+
+    return BlocProvider<FitnessViewModel>(
+      create: (_) => getIt<FitnessViewModel>()
+        ..doEvent(LoadHomeFitnessDataEvent()),
+      child: content,
     );
   }
 }
