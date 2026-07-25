@@ -1,42 +1,43 @@
+import 'package:fitness_app/core/reusable_widgets/custom_media_card.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_state.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
-import '../view_models/home_states.dart';
-import '../view_models/home_view_models.dart';
-import 'recommendation_item_widget.dart';
 
 class RecommendationToDay extends StatelessWidget {
   const RecommendationToDay({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeViewModel, HomeState>(
+    return BlocBuilder<FitnessViewModel, FitnessState>(
       builder: (context, state) {
         final isLoading = state.recommendationToDayState.isLoading;
-
-        final muscles = state.recommendationToDayState.data?.muscles ?? [];
+        final muscles = state.recommendationToDayState.data ?? [];
 
         return SizedBox(
-          height: 104,
+          height: 110,
           child: Skeletonizer(
-            enableSwitchAnimation: true,
-            enabled: isLoading,
+            enabled: isLoading && muscles.isEmpty,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: isLoading ? 5 : muscles.length,
-              separatorBuilder: (_, _) => const SizedBox(width: 20),
+              itemCount: isLoading && muscles.isEmpty ? 5 : muscles.length,
+              separatorBuilder: (_, _) => const SizedBox(width: 14),
               itemBuilder: (context, index) {
-                if (isLoading) {
-                  return const RecommendationItemWidget(
-                    image: 'https://iili.io/33pY9AN.png',
-                    title: 'Loading',
+                if (isLoading && muscles.isEmpty) {
+                  return const CustomMediaCard(
+                    width: 90,
+                    height: 110,
+                    image: '',
+                    title: '...',
                   );
                 }
 
                 final muscle = muscles[index];
 
-                return RecommendationItemWidget(
+                return CustomMediaCard(
+                  width: 90,
+                  height: 110,
                   image: muscle.image,
                   title: muscle.name,
                 );

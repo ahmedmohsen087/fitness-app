@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
@@ -15,10 +14,11 @@ class CategoryModel extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SvgPicture.asset(
+        Image.asset(
           image,
           width: 44,
           height: 44,
+          fit: BoxFit.contain,
         ),
         const SizedBox(height: 4),
         Text(

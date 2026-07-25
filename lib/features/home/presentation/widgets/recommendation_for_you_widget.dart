@@ -1,3 +1,4 @@
+import 'package:fitness_app/core/reusable_widgets/custom_media_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -11,7 +12,6 @@ import '../../../food/domain/entities/category_food/recommendation_food_entity.d
 import '../view_models/home_events.dart';
 import '../view_models/home_states.dart';
 import '../view_models/home_view_models.dart';
-import 'recommendation_item_widget.dart';
 
 class RecommendationForYouWidget extends StatelessWidget {
   const RecommendationForYouWidget({super.key});
@@ -59,14 +59,13 @@ class _RecommendationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 104,
+      height: 110,
       child: Skeletonizer(
-        enabled: isLoading,
-        enableSwitchAnimation: true,
+        enabled: isLoading && recommendations.isEmpty,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
-          itemCount: isLoading ? 5 : recommendations.length,
-          separatorBuilder: (_, _) => const SizedBox(width: 20),
+          itemCount: isLoading && recommendations.isEmpty ? 5 : recommendations.length,
+          separatorBuilder: (_, _) => const SizedBox(width: 14),
           itemBuilder: (context, index) => _buildItem(context, index),
         ),
       ),
@@ -74,11 +73,18 @@ class _RecommendationList extends StatelessWidget {
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    if (isLoading) {
-      return RecommendationItemWidget(image: '', title: AppStrings.loading);
+    if (isLoading && recommendations.isEmpty) {
+      return const CustomMediaCard(
+        width: 90,
+        height: 110,
+        image: '',
+        title: '...',
+      );
     }
     final item = recommendations[index];
-    return RecommendationItemWidget(
+    return CustomMediaCard(
+      width: 90,
+      height: 110,
       image: item.strCategoryThumb,
       title: item.strCategory,
       onTap: () => Navigator.pushNamed(
@@ -98,7 +104,7 @@ class _RecommendationError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 104,
+      height: 110,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

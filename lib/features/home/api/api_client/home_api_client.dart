@@ -19,7 +19,7 @@ abstract class HomeApiClient {
   @factoryMethod
   factory HomeApiClient(Dio dio) = _HomeApiClient;
 
-  @GET(ApiEndpoints.muscles)
+  @GET(ApiEndpoints.musclesRandom)
   @Extra({ApiParameters.requiresAuth: true})
   Future<RecommendationToDayResponse> getRecommendationToDay();
 

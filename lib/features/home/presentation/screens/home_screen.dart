@@ -1,11 +1,18 @@
+import 'package:fitness_app/config/di/di.dart';
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
+import 'package:fitness_app/core/reusable_widgets/custom_section_header.dart';
+import 'package:fitness_app/core/theme/text_styles.dart';
+import 'package:fitness_app/core/values/app_strings.dart';
+import 'package:fitness_app/core/values/assets.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
+import 'package:fitness_app/features/home/presentation/view_models/home_events.dart';
+import 'package:fitness_app/features/home/presentation/view_models/home_view_models.dart';
 import 'package:fitness_app/features/home/presentation/widgets/category_item.dart';
 import 'package:fitness_app/features/section_app/view_model/section_tab_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/theme/text_styles.dart';
-import '../../../../core/values/app_strings.dart';
-import '../../../../core/values/assets.dart';
+
 import '../widgets/muscles_group_list.dart';
 import '../widgets/recommendation_for_you_widget.dart';
 import '../widgets/recommendation_to_day.dart';
@@ -17,82 +24,54 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBackgroundScaffold(
-      imagePath: Assets.mainBackground,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: Column(
-            spacing: 10,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HomeProfileInfo(),
-              Text(
-                AppStrings.category,
-                style: TextStyles.labelTextFieldStyle.copyWith(
-                  fontWeight: FontWeight.w600,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeViewModel>(
+          create: (_) => getIt<HomeViewModel>()..doEvent(LoadHomeDataEvent()),
+        ),
+        BlocProvider<FitnessViewModel>(
+          create: (_) => getIt<FitnessViewModel>()
+            ..doEvent(LoadHomeFitnessDataEvent()),
+        ),
+      ],
+      child: AppBackgroundScaffold(
+        imagePath: Assets.mainBackground,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SingleChildScrollView(
+            child: Column(
+              spacing: 12,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const HomeProfileInfo(),
+                Text(
+                  AppStrings.category,
+                  style: TextStyles.labelTextFieldStyle.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              CategoryItem(),
-              Row(
-                children: [
-                  Text(
-                    AppStrings.recommendationToDay,
-                    style: TextStyles.labelTextFieldStyle.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {},
-                    child: Text(
-                      AppStrings.seeAll,
-                      style: TextStyles.textRegular12.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              RecommendationToDay(),
-              Row(
-                children: [
-                  Text(
-                    AppStrings.upcomingWorkouts,
-                    style: TextStyles.labelTextFieldStyle.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () => context
-                        .read<SectionTabCubit>()
-                        .changeTab(AppTab.workout),
-                    child: Text(
-                      AppStrings.seeAll,
-                      style: TextStyles.textRegular12.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              MusclesGroupList(),
-              UpcomingWorkoutsWidget(),
-              Text(
-                AppStrings.recommendationForYou,
-                style: TextStyles.labelTextFieldStyle.copyWith(
-                  fontWeight: FontWeight.w600,
+                const CategoryItem(),
+                CustomSectionHeader(
+                  title: AppStrings.recommendationToDay,
+                  onSeeAllTap: () => context
+                      .read<SectionTabCubit>()
+                      .changeTab(AppTab.workout),
                 ),
-              ),
-              RecommendationForYouWidget(),
-              Text(
-                AppStrings.popularTraining,
-                style: TextStyles.labelTextFieldStyle.copyWith(
-                  fontWeight: FontWeight.w600,
+                const RecommendationToDay(),
+                CustomSectionHeader(
+                  title: AppStrings.upcomingWorkouts,
+                  onSeeAllTap: () => context
+                      .read<SectionTabCubit>()
+                      .changeTab(AppTab.workout),
                 ),
-              ),
-            ],
+                const MusclesGroupList(),
+                const UpcomingWorkoutsWidget(),
+                CustomSectionHeader(
+                  title: AppStrings.recommendationForYou,
+                ),
+                const RecommendationForYouWidget(),
+              ],
+            ),
           ),
         ),
       ),
