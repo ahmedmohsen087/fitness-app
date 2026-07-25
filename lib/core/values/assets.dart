@@ -4,12 +4,18 @@ class Assets {
   // splash
   static const String appLogo = "assets/images/app_logo.png";
   static const String logo = "assets/images/Burpee and Jump Exercise.json";
+
+  // backgrounds
+  static const String mainBackground = "assets/images/main_background.png";
+  static const String authBackground = "assets/images/auth_background.png";
+  static const String chatBackground = "assets/images/chat_background.png";
+  static const String onboardingBackground =
+      "assets/images/onboarding_background.png";
+
   // on boarding
   static const String onBoarding1 = "assets/images/onboarding1.png";
   static const String onBoarding2 = "assets/images/onboarding2.png";
   static const String onBoarding3 = "assets/images/onboarding3.png";
-  static const String onBoardingBackGround =
-      "assets/images/onboardingbackground.png";
 
   // section app
   static const String homeIcon = "assets/icons/home.svg";
@@ -18,20 +24,16 @@ class Assets {
   static const String profileIcon = "assets/icons/profile.svg";
 
   // auth
-  static const String authBackGround = "assets/images/authpackground.png";
-  static const String authLogo = "assets/images/authlogo.png";
   static const String facebookLogo = "assets/icons/facebook.svg";
   static const String googleLogo = "assets/icons/google.svg";
   static const String appleLogo = "assets/icons/Apple.svg";
   static const String maleIcon = "assets/icons/male.svg";
   static const String femaleIcon = "assets/icons/female.svg";
 
-  // home
-  static const String homeBackGround = "assets/images/homebackground.png";
-  static const String yogaLogo = "assets/images/yogalogo.png";
-  static const String aerobicsLogo = "assets/images/aerobicslogo.png";
-  static const String fitnessLogo = "assets/images/fitnesslogo.png";
-  static const String gymLogo = "assets/images/gymlogo.png";
-  static const String trainerLogo = "assets/images/trainerlogo.png";
-  static const String test = "assets/images/test.png";
+  // avatars
+  static const String gymAvatar = "assets/avatars/gym_avatar.svg";
+  static const String fitnessAvatar = "assets/avatars/fitness_avatar.svg";
+  static const String yogaAvatar = "assets/avatars/yoga_avatar.svg";
+  static const String aerobicsAvatar = "assets/avatars/aerobics_avatar.svg";
+  static const String trainerAvatar = "assets/avatars/trainer_avatar.svg";
 }

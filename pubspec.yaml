@@ -64,6 +64,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/avatars/
     - assets/translations/
 flutter_launcher_icons:
   android: "launcher_icon"

@@ -1,9 +1,9 @@
+import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/di/di.dart';
 import '../../../../core/reusable_widgets/app_toast.dart';
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/values/app_strings.dart';
 import '../../../../core/values/assets.dart';
 import '../view_model/food_events.dart';
@@ -39,40 +39,30 @@ class _FoodDetailsView extends StatelessWidget {
         final message = state.mealDetailsState.msg;
         if (message != null) AppToast.error(context, message);
       },
-      child: Scaffold(
-        backgroundColor: AppColors.lightBlack,
-        body: Stack(
-          children: [
-            Positioned.fill(
-              child: Image.asset(Assets.homeBackGround, fit: BoxFit.cover),
-            ),
-            Positioned.fill(
-              child: ColoredBox(color: AppColors.black.withValues(alpha: 0.5)),
-            ),
-            BlocBuilder<FoodViewModel, FoodState>(
-              buildWhen: (previous, current) =>
-                  previous.mealDetailsState != current.mealDetailsState,
-              builder: (context, state) {
-                if (state.mealDetailsState.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+      child: AppBackgroundScaffold(
+        imagePath: Assets.mainBackground,
+        child: BlocBuilder<FoodViewModel, FoodState>(
+          buildWhen: (previous, current) =>
+              previous.mealDetailsState != current.mealDetailsState,
+          builder: (context, state) {
+            if (state.mealDetailsState.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                final message = state.mealDetailsState.msg;
-                if (message != null) {
-                  return FoodDetailsMessageState(message: message);
-                }
+            final message = state.mealDetailsState.msg;
+            if (message != null) {
+              return FoodDetailsMessageState(message: message);
+            }
 
-                final meals = state.mealDetailsState.data?.meals ?? const [];
-                if (meals.isEmpty) {
-                  return FoodDetailsMessageState(
-                    message: AppStrings.noMealDetails,
-                  );
-                }
+            final meals = state.mealDetailsState.data?.meals ?? const [];
+            if (meals.isEmpty) {
+              return FoodDetailsMessageState(
+                message: AppStrings.noMealDetails,
+              );
+            }
 
-                return FoodDetailsContent(meal: meals.first);
-              },
-            ),
-          ],
+            return FoodDetailsContent(meal: meals.first);
+          },
         ),
       ),
     );

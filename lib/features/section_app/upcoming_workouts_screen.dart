@@ -1,4 +1,4 @@
-// lib/features/section_app/upcoming_workouts_screen.dart
+import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
@@ -27,40 +27,32 @@ class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(Assets.homeBackGround, fit: BoxFit.cover),
-          ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 20,
-                children: [
-                  Center(
-                    child: Text(
-                      AppStrings.workouts,
-                      style: TextStyles.bodyRegular24,
-                    ),
-                  ),
-                  WorkoutsFilterTabs(
-                    selectedMuscleGroupId: _selectedMuscleGroupId,
-                    onFullBodyTap: _onFullBodySelected,
-                    onGroupTap: _onMuscleGroupSelected,
-                  ),
-                  Expanded(
-                    child: WorkoutsGrid(
-                      selectedMuscleGroupId: _selectedMuscleGroupId,
-                    ),
-                  ),
-                ],
+    return AppBackgroundScaffold(
+      imagePath: Assets.mainBackground,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 20,
+          children: [
+            Center(
+              child: Text(
+                AppStrings.workouts,
+                style: TextStyles.bodyRegular24,
               ),
             ),
-          ),
-        ],
+            WorkoutsFilterTabs(
+              selectedMuscleGroupId: _selectedMuscleGroupId,
+              onFullBodyTap: _onFullBodySelected,
+              onGroupTap: _onMuscleGroupSelected,
+            ),
+            Expanded(
+              child: WorkoutsGrid(
+                selectedMuscleGroupId: _selectedMuscleGroupId,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

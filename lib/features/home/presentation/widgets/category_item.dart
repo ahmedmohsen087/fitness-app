@@ -11,11 +11,11 @@ class CategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categories = [
-      CategoryModel(image: Assets.gymLogo, title: AppStrings.gym),
-      CategoryModel(image: Assets.fitnessLogo, title: AppStrings.fitness),
-      CategoryModel(image: Assets.yogaLogo, title: AppStrings.yoga),
-      CategoryModel(image: Assets.aerobicsLogo, title: AppStrings.aerobics),
-      CategoryModel(image: Assets.trainerLogo, title: AppStrings.trainer),
+      CategoryModel(image: Assets.gymAvatar, title: AppStrings.gym),
+      CategoryModel(image: Assets.fitnessAvatar, title: AppStrings.fitness),
+      CategoryModel(image: Assets.yogaAvatar, title: AppStrings.yoga),
+      CategoryModel(image: Assets.aerobicsAvatar, title: AppStrings.aerobics),
+      CategoryModel(image: Assets.trainerAvatar, title: AppStrings.trainer),
     ];
 
     return Container(

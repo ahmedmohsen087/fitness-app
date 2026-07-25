@@ -14,7 +14,7 @@ class OnBoardingItem extends StatelessWidget {
       height: double.infinity,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(Assets.onBoardingBackGround),
+          image: AssetImage(Assets.onboardingBackground),
           fit: BoxFit.cover,
         ),
       ),

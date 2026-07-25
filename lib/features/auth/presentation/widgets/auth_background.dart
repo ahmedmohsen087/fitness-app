@@ -1,8 +1,6 @@
-import 'dart:ui';
-
+import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/values/assets.dart';
 
 class AuthBackground extends StatelessWidget {
@@ -12,17 +10,9 @@ class AuthBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        const ColoredBox(color: AppColors.lightBlack),
-        Image.asset(Assets.authBackGround, fit: BoxFit.cover),
-        BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 6.25, sigmaY: 6.25),
-          child: ColoredBox(color: AppColors.black.withValues(alpha: 0.5)),
-        ),
-        child,
-      ],
+    return AppBackgroundScaffold(
+      imagePath: Assets.authBackground,
+      child: child,
     );
   }
 }

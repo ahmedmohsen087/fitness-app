@@ -1,3 +1,4 @@
+import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,41 +44,28 @@ class _FoodView extends StatelessWidget {
         final message = state.categoriesState.msg ?? state.mealsState.msg;
         if (message != null) AppToast.error(context, message);
       },
-      child: Scaffold(
-        backgroundColor: AppColors.lightBlack,
-        body: Stack(
-          children: [
-            Positioned.fill(
-              child: Image.asset(Assets.homeBackGround, fit: BoxFit.cover),
-            ),
-            Positioned.fill(
-              child: ColoredBox(color: AppColors.black.withValues(alpha: 0.50)),
-            ),
-            SafeArea(
-              bottom: false,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const _FoodHeader(),
-                    const SizedBox(height: 24),
-                    const FoodCategoryTabs(),
-                    const SizedBox(height: 24),
-                    Expanded(
-                      child: BlocBuilder<FoodViewModel, FoodState>(
-                        buildWhen: (previous, current) =>
-                            previous.categoriesState !=
-                                current.categoriesState ||
-                            previous.mealsState != current.mealsState,
-                        builder: (context, state) => _FoodContent(state: state),
-                      ),
-                    ),
-                  ],
+      child: AppBackgroundScaffold(
+        imagePath: Assets.mainBackground,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const _FoodHeader(),
+              const SizedBox(height: 24),
+              const FoodCategoryTabs(),
+              const SizedBox(height: 24),
+              Expanded(
+                child: BlocBuilder<FoodViewModel, FoodState>(
+                  buildWhen: (previous, current) =>
+                      previous.categoriesState !=
+                          current.categoriesState ||
+                      previous.mealsState != current.mealsState,
+                  builder: (context, state) => _FoodContent(state: state),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

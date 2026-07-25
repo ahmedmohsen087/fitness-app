@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
@@ -12,8 +13,14 @@ class CategoryModel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(image),
+        SvgPicture.asset(
+          image,
+          width: 44,
+          height: 44,
+        ),
+        const SizedBox(height: 4),
         Text(
           title,
           style: TextStyles.bodyRegular12.copyWith(color: AppColors.lightGray),
