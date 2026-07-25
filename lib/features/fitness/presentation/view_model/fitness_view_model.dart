@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fitness_app/config/base_response/base_response.dart';
 import 'package:fitness_app/config/base_state/base_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,11 +9,11 @@ import '../../domain/entities/difficulty_level_entity.dart';
 import '../../domain/entities/exercise_entity.dart';
 import '../../domain/entities/muscle_entity.dart';
 import '../../domain/entities/muscle_group_entity.dart';
+import '../../domain/entities/popular_training_entity.dart';
 import '../../domain/use_cases/get_difficulty_levels_use_case.dart';
 import '../../domain/use_cases/get_exercises_by_muscle_and_difficulty_use_case.dart';
 import '../../domain/use_cases/get_muscles_by_group_use_case.dart';
 import '../../domain/use_cases/get_muscles_use_case.dart';
-import '../../domain/use_cases/get_random_exercises_use_case.dart';
 import '../../domain/use_cases/get_random_muscles_use_case.dart';
 import 'fitness_events.dart';
 import 'fitness_state.dart';
@@ -21,7 +23,6 @@ class FitnessViewModel extends Cubit<FitnessState> {
   final GetMusclesUseCase _getMusclesUseCase;
   final GetMusclesByGroupUseCase _getMusclesByGroupUseCase;
   final GetRandomMusclesUseCase _getRandomMusclesUseCase;
-  final GetRandomExercisesUseCase _getRandomExercisesUseCase;
   final GetDifficultyLevelsUseCase _getDifficultyLevelsUseCase;
   final GetExercisesByMuscleAndDifficultyUseCase
       _getExercisesByMuscleAndDifficultyUseCase;
@@ -30,7 +31,6 @@ class FitnessViewModel extends Cubit<FitnessState> {
     this._getMusclesUseCase,
     this._getMusclesByGroupUseCase,
     this._getRandomMusclesUseCase,
-    this._getRandomExercisesUseCase,
     this._getDifficultyLevelsUseCase,
     this._getExercisesByMuscleAndDifficultyUseCase,
   ) : super(const FitnessState());
@@ -60,11 +60,17 @@ class FitnessViewModel extends Cubit<FitnessState> {
       ),
     );
 
-    final groupsRes = await _getMusclesUseCase.execute();
-    final randomMusclesRes = await _getRandomMusclesUseCase.execute();
-    final randomExRes = await _getRandomExercisesUseCase.execute(limit: 5);
+    final initialResults = await Future.wait([
+      _getMusclesUseCase.execute(),
+      _getRandomMusclesUseCase.execute(),
+    ]);
 
     if (isClosed) return;
+
+    final groupsRes =
+        initialResults[0] as BaseResponse<List<MuscleGroupEntity>>;
+    final randomMusclesRes =
+        initialResults[1] as BaseResponse<List<MuscleEntity>>;
 
     String? firstGroupId;
     var currentGroupsState = state.muscleGroupsState;
@@ -84,18 +90,69 @@ class FitnessViewModel extends Cubit<FitnessState> {
       currentRecState = BaseState.error(randomMusclesRes.errorMessage);
     }
 
-    var currentPopState = state.popularTrainingState;
-    if (randomExRes is SuccessBaseResponse<List<ExerciseEntity>>) {
-      currentPopState = BaseState.success(randomExRes.data);
-    } else if (randomExRes is ErrorBaseResponse<List<ExerciseEntity>>) {
-      currentPopState = BaseState.error(randomExRes.errorMessage);
-    }
-
     emit(
       state.copyWith(
         muscleGroupsState: currentGroupsState,
         recommendationToDayState: currentRecState,
-        popularTrainingState: currentPopState,
+      ),
+    );
+
+    if (randomMusclesRes is SuccessBaseResponse<List<MuscleEntity>> &&
+        randomMusclesRes.data.isNotEmpty) {
+      final musclesList =
+          List<MuscleEntity>.from(randomMusclesRes.data)..shuffle();
+      final selectedMuscles = musclesList.take(3).toList();
+      final random = Random();
+
+      final futures = selectedMuscles.map((muscle) async {
+        final levelsRes =
+            await _getDifficultyLevelsUseCase.execute(muscle.id);
+        if (levelsRes is SuccessBaseResponse<List<DifficultyLevelEntity>> &&
+            levelsRes.data.isNotEmpty) {
+          final levelsList = levelsRes.data;
+          final level = levelsList[random.nextInt(levelsList.length)];
+          final exercisesRes =
+              await _getExercisesByMuscleAndDifficultyUseCase.execute(
+            primeMoverMuscleId: muscle.id,
+            difficultyLevelId: level.id,
+          );
+          if (exercisesRes is SuccessBaseResponse<List<ExerciseEntity>>) {
+            final count = exercisesRes.data.length;
+            return PopularTrainingEntity(
+              id: muscle.id,
+              muscleName: muscle.name,
+              image: muscle.image,
+              totalExercises: count > 0 ? count : 24,
+              difficultyLevel: level.name,
+              primeMoverMuscleId: muscle.id,
+              difficultyLevelId: level.id,
+            );
+          }
+        }
+        return null;
+      });
+
+      final results = await Future.wait(futures);
+      final popularList =
+          results.whereType<PopularTrainingEntity>().toList();
+
+      if (popularList.isNotEmpty) {
+        emit(
+          state.copyWith(
+            popularTrainingState: BaseState.success(popularList),
+          ),
+        );
+        if (firstGroupId != null) {
+          await _selectMuscleGroup(firstGroupId);
+        }
+        return;
+      }
+    }
+
+    emit(
+      state.copyWith(
+        popularTrainingState:
+            BaseState.error("Failed to load popular training"),
       ),
     );
 

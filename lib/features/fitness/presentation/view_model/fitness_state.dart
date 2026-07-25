@@ -5,12 +5,13 @@ import '../../domain/entities/difficulty_level_entity.dart';
 import '../../domain/entities/exercise_entity.dart';
 import '../../domain/entities/muscle_entity.dart';
 import '../../domain/entities/muscle_group_entity.dart';
+import '../../domain/entities/popular_training_entity.dart';
 
 class FitnessState extends Equatable {
   final BaseState<List<MuscleGroupEntity>> muscleGroupsState;
   final BaseState<List<MuscleEntity>> musclesByGroupState;
   final BaseState<List<MuscleEntity>> recommendationToDayState;
-  final BaseState<List<ExerciseEntity>> popularTrainingState;
+  final BaseState<List<PopularTrainingEntity>> popularTrainingState;
   final BaseState<List<DifficultyLevelEntity>> difficultyLevelsState;
   final BaseState<List<ExerciseEntity>> exercisesByDifficultyState;
   final String? selectedGroupId;
@@ -31,7 +32,7 @@ class FitnessState extends Equatable {
     BaseState<List<MuscleGroupEntity>>? muscleGroupsState,
     BaseState<List<MuscleEntity>>? musclesByGroupState,
     BaseState<List<MuscleEntity>>? recommendationToDayState,
-    BaseState<List<ExerciseEntity>>? popularTrainingState,
+    BaseState<List<PopularTrainingEntity>>? popularTrainingState,
     BaseState<List<DifficultyLevelEntity>>? difficultyLevelsState,
     BaseState<List<ExerciseEntity>>? exercisesByDifficultyState,
     String? selectedGroupId,

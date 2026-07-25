@@ -5,11 +5,11 @@ import 'package:fitness_app/features/fitness/domain/entities/difficulty_level_en
 import 'package:fitness_app/features/fitness/domain/entities/exercise_entity.dart';
 import 'package:fitness_app/features/fitness/domain/entities/muscle_entity.dart';
 import 'package:fitness_app/features/fitness/domain/entities/muscle_group_entity.dart';
+import 'package:fitness_app/features/fitness/domain/entities/popular_training_entity.dart';
 import 'package:fitness_app/features/fitness/domain/use_cases/get_difficulty_levels_use_case.dart';
 import 'package:fitness_app/features/fitness/domain/use_cases/get_exercises_by_muscle_and_difficulty_use_case.dart';
 import 'package:fitness_app/features/fitness/domain/use_cases/get_muscles_by_group_use_case.dart';
 import 'package:fitness_app/features/fitness/domain/use_cases/get_muscles_use_case.dart';
-import 'package:fitness_app/features/fitness/domain/use_cases/get_random_exercises_use_case.dart';
 import 'package:fitness_app/features/fitness/domain/use_cases/get_random_muscles_use_case.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_state.dart';
@@ -24,7 +24,6 @@ import 'fitness_view_model_test.mocks.dart';
   GetMusclesUseCase,
   GetMusclesByGroupUseCase,
   GetRandomMusclesUseCase,
-  GetRandomExercisesUseCase,
   GetDifficultyLevelsUseCase,
   GetExercisesByMuscleAndDifficultyUseCase,
 ])
@@ -33,7 +32,6 @@ void main() {
   late MockGetMusclesUseCase mockGetMusclesUseCase;
   late MockGetMusclesByGroupUseCase mockGetMusclesByGroupUseCase;
   late MockGetRandomMusclesUseCase mockGetRandomMusclesUseCase;
-  late MockGetRandomExercisesUseCase mockGetRandomExercisesUseCase;
   late MockGetDifficultyLevelsUseCase mockGetDifficultyLevelsUseCase;
   late MockGetExercisesByMuscleAndDifficultyUseCase
       mockGetExercisesByMuscleAndDifficultyUseCase;
@@ -57,7 +55,6 @@ void main() {
     mockGetMusclesUseCase = MockGetMusclesUseCase();
     mockGetMusclesByGroupUseCase = MockGetMusclesByGroupUseCase();
     mockGetRandomMusclesUseCase = MockGetRandomMusclesUseCase();
-    mockGetRandomExercisesUseCase = MockGetRandomExercisesUseCase();
     mockGetDifficultyLevelsUseCase = MockGetDifficultyLevelsUseCase();
     mockGetExercisesByMuscleAndDifficultyUseCase =
         MockGetExercisesByMuscleAndDifficultyUseCase();
@@ -66,7 +63,6 @@ void main() {
       mockGetMusclesUseCase,
       mockGetMusclesByGroupUseCase,
       mockGetRandomMusclesUseCase,
-      mockGetRandomExercisesUseCase,
       mockGetDifficultyLevelsUseCase,
       mockGetExercisesByMuscleAndDifficultyUseCase,
     );
@@ -98,16 +94,26 @@ void main() {
           data: const [MuscleEntity(id: 'm2', name: 'Biceps', image: 'img')],
         ),
       );
-      when(mockGetRandomExercisesUseCase.execute(limit: 5)).thenAnswer(
+      when(mockGetDifficultyLevelsUseCase.execute('m2')).thenAnswer(
+        (_) async => SuccessBaseResponse(
+          data: const [DifficultyLevelEntity(id: 'l1', name: 'Beginner')],
+        ),
+      );
+      when(
+        mockGetExercisesByMuscleAndDifficultyUseCase.execute(
+          primeMoverMuscleId: 'm2',
+          difficultyLevelId: 'l1',
+        ),
+      ).thenAnswer(
         (_) async => SuccessBaseResponse(
           data: const [
             ExerciseEntity(
               id: 'e1',
-              exercise: 'Pushup',
-              difficultyLevel: 'Easy',
-              targetMuscleGroup: 'Chest',
-              primeMoverMuscle: 'Pecs',
-              primaryEquipment: 'Body',
+              exercise: 'Curl',
+              difficultyLevel: 'Beginner',
+              targetMuscleGroup: 'Arms',
+              primeMoverMuscle: 'Biceps',
+              primaryEquipment: 'Dumbbell',
               videoUrl: 'http',
             ),
           ],
@@ -129,16 +135,25 @@ void main() {
         recommendationToDayState: BaseState(
           data: [MuscleEntity(id: 'm2', name: 'Biceps', image: 'img')],
         ),
+        popularTrainingState: BaseState(isLoading: true),
+      ),
+      const FitnessState(
+        muscleGroupsState: BaseState(
+          data: [MuscleGroupEntity(id: 'g1', name: 'Chest')],
+        ),
+        recommendationToDayState: BaseState(
+          data: [MuscleEntity(id: 'm2', name: 'Biceps', image: 'img')],
+        ),
         popularTrainingState: BaseState(
           data: [
-            ExerciseEntity(
-              id: 'e1',
-              exercise: 'Pushup',
-              difficultyLevel: 'Easy',
-              targetMuscleGroup: 'Chest',
-              primeMoverMuscle: 'Pecs',
-              primaryEquipment: 'Body',
-              videoUrl: 'http',
+            PopularTrainingEntity(
+              id: 'm2',
+              muscleName: 'Biceps',
+              image: 'img',
+              totalExercises: 1,
+              difficultyLevel: 'Beginner',
+              primeMoverMuscleId: 'm2',
+              difficultyLevelId: 'l1',
             ),
           ],
         ),
@@ -152,14 +167,14 @@ void main() {
         ),
         popularTrainingState: BaseState(
           data: [
-            ExerciseEntity(
-              id: 'e1',
-              exercise: 'Pushup',
-              difficultyLevel: 'Easy',
-              targetMuscleGroup: 'Chest',
-              primeMoverMuscle: 'Pecs',
-              primaryEquipment: 'Body',
-              videoUrl: 'http',
+            PopularTrainingEntity(
+              id: 'm2',
+              muscleName: 'Biceps',
+              image: 'img',
+              totalExercises: 1,
+              difficultyLevel: 'Beginner',
+              primeMoverMuscleId: 'm2',
+              difficultyLevelId: 'l1',
             ),
           ],
         ),
@@ -175,14 +190,14 @@ void main() {
         ),
         popularTrainingState: BaseState(
           data: [
-            ExerciseEntity(
-              id: 'e1',
-              exercise: 'Pushup',
-              difficultyLevel: 'Easy',
-              targetMuscleGroup: 'Chest',
-              primeMoverMuscle: 'Pecs',
-              primaryEquipment: 'Body',
-              videoUrl: 'http',
+            PopularTrainingEntity(
+              id: 'm2',
+              muscleName: 'Biceps',
+              image: 'img',
+              totalExercises: 1,
+              difficultyLevel: 'Beginner',
+              primeMoverMuscleId: 'm2',
+              difficultyLevelId: 'l1',
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:fitness_app/config/di/di.dart';
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:fitness_app/core/reusable_widgets/custom_section_header.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
+import 'package:fitness_app/core/values/app_routs_name.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../widgets/muscles_group_list.dart';
+import '../widgets/popular_training_widget.dart';
 import '../widgets/recommendation_for_you_widget.dart';
 import '../widgets/recommendation_to_day.dart';
 import '../widgets/upcoming_workouts_widget.dart';
@@ -53,9 +55,6 @@ class HomeScreen extends StatelessWidget {
                 const CategoryItem(),
                 CustomSectionHeader(
                   title: AppStrings.recommendationToDay,
-                  onSeeAllTap: () => context
-                      .read<SectionTabCubit>()
-                      .changeTab(AppTab.workout),
                 ),
                 const RecommendationToDay(),
                 CustomSectionHeader(
@@ -68,8 +67,17 @@ class HomeScreen extends StatelessWidget {
                 const UpcomingWorkoutsWidget(),
                 CustomSectionHeader(
                   title: AppStrings.recommendationForYou,
+                  onSeeAllTap: () => Navigator.pushNamed(
+                    context,
+                    AppRoutsName.food,
+                  ),
                 ),
                 const RecommendationForYouWidget(),
+                CustomSectionHeader(
+                  title: AppStrings.popularTraining,
+                ),
+                const PopularTrainingWidget(),
+                const SizedBox(height: 16),
               ],
             ),
           ),
