@@ -120,8 +120,9 @@ class AppRoutes {
         case AppRoutsName.upcomingWorkout:
           return MaterialPageRoute(
             settings: settings,
-            builder: (_) => BlocProvider<HomeViewModel>(
-              create: (_) => getIt<HomeViewModel>(),
+            builder: (_) => BlocProvider<FitnessViewModel>(
+              create: (_) => getIt<FitnessViewModel>()
+                ..doEvent(LoadHomeFitnessDataEvent()),
               child: const UpcomingWorkoutsScreen(),
             ),
           );
