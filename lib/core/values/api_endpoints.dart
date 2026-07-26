@@ -16,4 +16,5 @@ abstract class ApiEndpoints {
   static const String forgetPassword = "forgotPassword";
   static const String verifyOtp = "verifyResetCode";
   static const String resetPassword = "resetPassword";
+  static const String getProfile = "profile-data";
 }
