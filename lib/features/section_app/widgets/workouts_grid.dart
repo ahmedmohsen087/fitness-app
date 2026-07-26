@@ -2,6 +2,7 @@ import 'package:fitness_app/core/theme/text_styles.dart';
 import 'package:fitness_app/core/values/app_routs_name.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/features/fitness/domain/entities/muscle_entity.dart';
+import 'package:fitness_app/features/fitness/presentation/screens/exercise_screen.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_state.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:fitness_app/features/section_app/widgets/workout_card.dart';
@@ -64,7 +65,8 @@ class WorkoutsGrid extends StatelessWidget {
           childAspectRatio: .85,
         ),
         itemCount: isLoading ? 6 : workouts.length,
-        itemBuilder: (context, index) => _buildItem(context, isLoading, workouts, index),
+        itemBuilder: (context, index) =>
+            _buildItem(context, isLoading, workouts, index),
       ),
     );
   }
@@ -89,8 +91,12 @@ class WorkoutsGrid extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(
           context,
-          AppRoutsName.food,
-          arguments: workout.name,
+          AppRoutsName.exercise,
+          arguments: ExerciseScreenArgs(
+            primeMoverMuscleId: workout.id,
+            muscleName: workout.name,
+            image: workout.image,
+          ),
         );
       },
     );

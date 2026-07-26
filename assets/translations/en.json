@@ -151,5 +151,6 @@
   "videoUnavailable": "This recipe video is unavailable",
   "noMealDetails": "Meal details are unavailable",
   "fullBody": "Full Body",
-  "noWorkoutsFound": "No workouts found"
+  "noWorkoutsFound": "No workouts found",
+  "exercises": "Exercises"
 }

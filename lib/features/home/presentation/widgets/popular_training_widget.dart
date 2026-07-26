@@ -1,6 +1,8 @@
 import 'package:fitness_app/core/reusable_widgets/custom_network_image.dart';
 import 'package:fitness_app/core/theme/app_colors.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
+import 'package:fitness_app/core/values/app_routs_name.dart';
+import 'package:fitness_app/features/fitness/presentation/screens/exercise_screen.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_state.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +42,18 @@ class PopularTrainingWidget extends StatelessWidget {
                 final item = items[index];
 
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutsName.exercise,
+                      arguments: ExerciseScreenArgs(
+                        primeMoverMuscleId: item.primeMoverMuscleId,
+                        muscleName: item.muscleName,
+                        image: item.image,
+                        initialLevelId: item.difficultyLevelId,
+                      ),
+                    );
+                  },
                   child: Container(
                     width: 190,
                     height: 160,

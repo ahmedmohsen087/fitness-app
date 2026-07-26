@@ -5,6 +5,7 @@ import 'package:fitness_app/features/auth/presentation/screens/email_verificatio
 import 'package:fitness_app/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:fitness_app/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:fitness_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_view_model.dart';
+import 'package:fitness_app/features/fitness/presentation/screens/exercise_screen.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
@@ -58,6 +59,8 @@ class AppRoutes {
         return _buildFoodDetailsRoute(settings);
       case AppRoutsName.upcomingWorkout:
         return _buildUpcomingWorkoutRoute(settings);
+      case AppRoutsName.exercise:
+        return _buildExerciseRoute(settings);
       default:
         return null;
     }
@@ -158,6 +161,17 @@ class AppRoutes {
         child: const UpcomingWorkoutsScreen(),
       ),
     );
+  }
+
+  static Route<dynamic> _buildExerciseRoute(RouteSettings settings) {
+    final args = settings.arguments;
+    if (args is ExerciseScreenArgs) {
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => ExerciseScreen(args: args),
+      );
+    }
+    return _notFoundRoute(settings);
   }
 
   static Route<dynamic> _handleRouteError(RouteSettings settings, Object e) {

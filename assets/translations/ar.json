@@ -151,5 +151,6 @@
   "doneButton": "تم",
   "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح",
   "fullBody": "الجسم بالكامل",
-  "noWorkoutsFound": "لا توجد تمارين"
+  "noWorkoutsFound": "لا توجد تمارين",
+  "exercises": "التمارين"
 }

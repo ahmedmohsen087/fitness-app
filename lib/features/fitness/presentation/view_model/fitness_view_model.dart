@@ -2,6 +2,7 @@ import 'package:fitness_app/config/base_cubit/base_cubit.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
 import 'package:fitness_app/config/base_state/base_state.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../api/request_models/exercises_request_model.dart';
 import '../../domain/entities/muscle_entity.dart';
 import '../../domain/entities/popular_training_entity.dart';
@@ -20,7 +21,7 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
   final GetRandomMusclesUseCase _getRandomMusclesUseCase;
   final GetDifficultyLevelsUseCase _getDifficultyLevelsUseCase;
   final GetExercisesByMuscleAndDifficultyUseCase
-  _getExercisesByMuscleAndDifficultyUseCase;
+      _getExercisesByMuscleAndDifficultyUseCase;
 
   FitnessViewModel(
     this._getMusclesUseCase,
@@ -37,7 +38,10 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
       case SelectMuscleGroupEvent():
         _selectMuscleGroup(event.groupId);
       case LoadExerciseDetailsEvent():
-        _loadExerciseDetails(event.primeMoverMuscleId);
+        _loadExerciseDetails(
+          event.primeMoverMuscleId,
+          event.initialDifficultyLevelId,
+        );
       case SelectDifficultyLevelEvent():
         _selectDifficultyLevel(
           event.primeMoverMuscleId,
@@ -54,7 +58,10 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
         popularTrainingState: BaseState.loading(),
       ),
     );
-    await Future.wait([_loadMuscleGroups(), _loadRecommendationToDay()]);
+    await Future.wait([
+      _loadMuscleGroups(),
+      _loadRecommendationToDay(),
+    ]);
   }
 
   Future<void> _loadMuscleGroups() async {
@@ -62,7 +69,9 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
     switch (response) {
       case SuccessBaseResponse():
         emit(
-          state.copyWith(muscleGroupsState: BaseState.success(response.data)),
+          state.copyWith(
+            muscleGroupsState: BaseState.success(response.data),
+          ),
         );
         if (response.data.isNotEmpty) {
           await _loadPopularTraining(response.data.first.id);
@@ -71,10 +80,6 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
         emit(
           state.copyWith(
             muscleGroupsState: BaseState.error(response.errorMessage),
-          ),
-        );
-        emit(
-          state.copyWith(
             popularTrainingState: BaseState.error(response.errorMessage),
           ),
         );
@@ -93,7 +98,8 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
       case ErrorBaseResponse():
         emit(
           state.copyWith(
-            recommendationToDayState: BaseState.error(response.errorMessage),
+            recommendationToDayState:
+                BaseState.error(response.errorMessage),
           ),
         );
     }
@@ -104,7 +110,11 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
     switch (response) {
       case SuccessBaseResponse():
         final popular = _mapMusclesToPopularTrainings(response.data);
-        emit(state.copyWith(popularTrainingState: BaseState.success(popular)));
+        emit(
+          state.copyWith(
+            popularTrainingState: BaseState.success(popular),
+          ),
+        );
       case ErrorBaseResponse():
         emit(
           state.copyWith(
@@ -139,7 +149,9 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
     switch (response) {
       case SuccessBaseResponse():
         emit(
-          state.copyWith(musclesByGroupState: BaseState.success(response.data)),
+          state.copyWith(
+            musclesByGroupState: BaseState.success(response.data),
+          ),
         );
       case ErrorBaseResponse():
         emit(
@@ -150,7 +162,10 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
     }
   }
 
-  Future<void> _loadExerciseDetails(String primeMoverMuscleId) async {
+  Future<void> _loadExerciseDetails(
+    String primeMoverMuscleId, [
+    String? initialDifficultyLevelId,
+  ]) async {
     emit(
       state.copyWith(
         difficultyLevelsState: BaseState.loading(),
@@ -159,9 +174,8 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
       ),
     );
 
-    final response = await _getDifficultyLevelsUseCase.execute(
-      primeMoverMuscleId,
-    );
+    final response =
+        await _getDifficultyLevelsUseCase.execute(primeMoverMuscleId);
     switch (response) {
       case SuccessBaseResponse():
         emit(
@@ -170,15 +184,21 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
           ),
         );
         if (response.data.isNotEmpty) {
+          final targetLevelId = (initialDifficultyLevelId != null &&
+                  response.data.any((l) => l.id == initialDifficultyLevelId))
+              ? initialDifficultyLevelId
+              : response.data.first.id;
           await _selectDifficultyLevel(
             primeMoverMuscleId,
-            response.data.first.id,
+            targetLevelId,
           );
         }
       case ErrorBaseResponse():
         emit(
           state.copyWith(
             difficultyLevelsState: BaseState.error(response.errorMessage),
+            exercisesByDifficultyState:
+                BaseState.error(response.errorMessage),
           ),
         );
     }
@@ -214,7 +234,8 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
       case ErrorBaseResponse():
         emit(
           state.copyWith(
-            exercisesByDifficultyState: BaseState.error(response.errorMessage),
+            exercisesByDifficultyState:
+                BaseState.error(response.errorMessage),
           ),
         );
     }
