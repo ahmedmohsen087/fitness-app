@@ -1,4 +1,4 @@
-import 'package:fitness_app/core/shared/data/models/login_user_dto.dart';
+import 'package:fitness_app/features/auth/data/models/login_user_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'profile_response_model.g.dart';

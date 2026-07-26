@@ -30,5 +30,18 @@ class LoginUserEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, firstName, lastName];
+  List<Object?> get props => [
+    id,
+    firstName,
+    lastName,
+    email,
+    gender,
+    age,
+    weight,
+    height,
+    activityLevel,
+    goal,
+    photo,
+    createdAt,
+  ];
 }
