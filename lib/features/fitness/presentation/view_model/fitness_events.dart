@@ -9,7 +9,11 @@ class SelectMuscleGroupEvent extends FitnessEvent {
 
 class LoadExerciseDetailsEvent extends FitnessEvent {
   final String primeMoverMuscleId;
-  LoadExerciseDetailsEvent(this.primeMoverMuscleId);
+  final String? initialDifficultyLevelId;
+  LoadExerciseDetailsEvent(
+    this.primeMoverMuscleId, [
+    this.initialDifficultyLevelId,
+  ]);
 }
 
 class SelectDifficultyLevelEvent extends FitnessEvent {

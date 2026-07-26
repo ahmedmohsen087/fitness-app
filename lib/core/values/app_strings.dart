@@ -1,4 +1,3 @@
-// lib/core/values/app_strings.dart
 import 'package:easy_localization/easy_localization.dart';
 
 class AppStrings {
@@ -16,8 +15,6 @@ class AppStrings {
   static String get back => 'back'.tr();
   static String get getStarted => 'getStarted'.tr();
   static String get skip => 'skip'.tr();
-
-  // Splash / onboarding
 
   // Secure storage - token
   static String get tokenEmpty => 'tokenEmpty'.tr();
@@ -98,38 +95,28 @@ class AppStrings {
 
   // Register - gender
   static String get male => 'male'.tr();
-
   static String get female => 'female'.tr();
 
   // Register - goals
   static String get goalGainWeight => 'goalGainWeight'.tr();
-
   static String get goalLoseWeight => 'goalLoseWeight'.tr();
-
   static String get goalGetFitter => 'goalGetFitter'.tr();
-
   static String get goalGainMoreFlexible => 'goalGainMoreFlexible'.tr();
-
   static String get goalLearnTheBasic => 'goalLearnTheBasic'.tr();
 
   // Register - activity levels
   static String get activityLevelRookie => 'activityLevelRookie'.tr();
-
   static String get activityLevelBeginner => 'activityLevelBeginner'.tr();
-
   static String get activityLevelIntermediate =>
       'activityLevelIntermediate'.tr();
-
   static String get activityLevelAdvance => 'activityLevelAdvance'.tr();
 
   // login
-
   static String get heyThere => 'heyThere'.tr();
   static String get welcomeBACK => 'welcomeBACK'.tr();
   static String get login => 'login'.tr();
   static String get doNotHaveAnAccountYet => 'don\'tHaveAnAccountYet'.tr();
   static String get register => 'register'.tr();
-
   static String get or => 'or'.tr();
   static String get rememberMe => 'rememberMe'.tr();
   static String get loggedSuccessfully => 'loggedInSuccessfully'.tr();
@@ -150,71 +137,41 @@ class AppStrings {
   static String get seeAll => 'seeAll'.tr();
 
   static String get foodRecommendation => 'foodRecommendation'.tr();
-
   static String get noFoodCategories => 'noFoodCategories'.tr();
-
   static String get noMealsFound => 'noMealsFound'.tr();
-
   static String get retry => 'retry'.tr();
-
   static String get loading => 'loading'.tr();
-
   static String get ingredients => 'ingredients'.tr();
-
   static String get cuisine => 'cuisine'.tr();
-
   static String get country => 'country'.tr();
-
   static String get tags => 'tags'.tr();
-
   static String get recipeVideo => 'recipeVideo'.tr();
-
   static String get close => 'close'.tr();
-
   static String get videoUnavailable => 'videoUnavailable'.tr();
-
   static String get noMealDetails => 'noMealDetails'.tr();
-
   static String get activityLevelTrueBeast => 'activityLevelTrueBeast'.tr();
 
   // Register screen UI
   static String get createAnAccount => 'createAnAccount'.tr();
-
   static String get firstName => 'firstName'.tr();
-
   static String get lastName => 'lastName'.tr();
-
   static String get alreadyHaveAnAccount => 'alreadyHaveAnAccount'.tr();
 
   // Gender selection screen UI
   static String get tellUsAboutYourself => 'tellUsAboutYourself'.tr();
-
   static String get weNeedToKnowYourGender => 'weNeedToKnowYourGender'.tr();
-
   static String get stepOneOfSix => 'stepOneOfSix'.tr();
-
   static String registerStep(int step) => 'registerStep'.tr(args: ['$step']);
-
   static String get personalizedPlanSubtitle => 'personalizedPlanSubtitle'.tr();
-
   static String get howOldAreYou => 'howOldAreYou'.tr();
-
   static String get whatIsYourWeight => 'whatIsYourWeight'.tr();
-
   static String get whatIsYourHeight => 'whatIsYourHeight'.tr();
-
   static String get whatIsYourGoal => 'whatIsYourGoal'.tr();
-
   static String get regularPhysicalActivity => 'regularPhysicalActivity'.tr();
-
   static String get year => 'year'.tr();
-
   static String get kilogram => 'kilogram'.tr();
-
   static String get centimeter => 'centimeter'.tr();
-
   static String get done => 'done'.tr();
-
   static String get incompleteRegistrationData =>
       'incompleteRegistrationData'.tr();
 
@@ -235,4 +192,5 @@ class AppStrings {
   // UpcomingWorkouts
   static String get fullBody => 'fullBody'.tr();
   static String get noWorkoutsFound => 'noWorkoutsFound'.tr();
+  static String get exercises => 'exercises'.tr();
 }

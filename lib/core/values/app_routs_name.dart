@@ -10,4 +10,5 @@ abstract class AppRoutsName {
   static const String food = '/food';
   static const String foodDetails = '/foodDetails';
   static const String upcomingWorkout = '/upcomingWorkout';
+  static const String exercise = '/exercise';
 }

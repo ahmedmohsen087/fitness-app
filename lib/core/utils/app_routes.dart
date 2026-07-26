@@ -5,6 +5,7 @@ import 'package:fitness_app/features/auth/presentation/screens/email_verificatio
 import 'package:fitness_app/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:fitness_app/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:fitness_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_view_model.dart';
+import 'package:fitness_app/features/fitness/presentation/screens/exercise_screen.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
@@ -117,6 +118,26 @@ class AppRoutes {
               child: const UpcomingWorkoutsScreen(),
             ),
           );
+        case AppRoutsName.exercise:
+          final args = settings.arguments;
+          if (args is ExerciseScreenArgs) {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (_) => ExerciseScreen(args: args),
+            );
+          } else if (args is String && args.isNotEmpty) {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (_) => ExerciseScreen(
+                args: ExerciseScreenArgs(
+                  primeMoverMuscleId: args,
+                  muscleName: '',
+                  image: '',
+                ),
+              ),
+            );
+          }
+          return _notFoundRoute(settings);
         default:
           return _notFoundRoute(settings);
       }

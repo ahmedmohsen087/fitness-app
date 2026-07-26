@@ -42,7 +42,10 @@ class FitnessViewModel extends Cubit<FitnessState> {
       case SelectMuscleGroupEvent():
         _selectMuscleGroup(event.groupId);
       case LoadExerciseDetailsEvent():
-        _loadExerciseDetails(event.primeMoverMuscleId);
+        _loadExerciseDetails(
+          event.primeMoverMuscleId,
+          event.initialDifficultyLevelId,
+        );
       case SelectDifficultyLevelEvent():
         _selectDifficultyLevel(
           event.primeMoverMuscleId,
@@ -189,7 +192,10 @@ class FitnessViewModel extends Cubit<FitnessState> {
     }
   }
 
-  Future<void> _loadExerciseDetails(String primeMoverMuscleId) async {
+  Future<void> _loadExerciseDetails(
+    String primeMoverMuscleId, [
+    String? initialDifficultyLevelId,
+  ]) async {
     emit(state.copyWith(difficultyLevelsState: BaseState.loading()));
 
     final levelsRes =
@@ -203,9 +209,14 @@ class FitnessViewModel extends Cubit<FitnessState> {
         ),
       );
       if (levelsRes.data.isNotEmpty) {
+        final targetLevelId = (initialDifficultyLevelId != null &&
+                levelsRes.data.any((l) => l.id == initialDifficultyLevelId))
+            ? initialDifficultyLevelId
+            : levelsRes.data.first.id;
+
         await _selectDifficultyLevel(
           primeMoverMuscleId,
-          levelsRes.data.first.id,
+          targetLevelId,
         );
       }
     } else if (levelsRes is ErrorBaseResponse<List<DifficultyLevelEntity>>) {
