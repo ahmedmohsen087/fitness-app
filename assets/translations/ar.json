@@ -152,5 +152,16 @@
   "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح",
   "fullBody": "الجسم بالكامل",
   "noWorkoutsFound": "لا توجد تمارين",
-  "exercises": "التمارين"
+  "exercises": "التمارين",
+  "language": "اللغة",
+  "English": "الإنجليزية",
+  "Arabic": "العربية",
+  "couldNotLaunchLink": "تعذر فتح الرابط",
+  "noProfileDataAvailable": "لا توجد بيانات للملف الشخصي متاحة",
+  "editProfile": "تعديل الملف الشخصي",
+  "changePassword": "تغيير كلمة المرور",
+  "security": "الأمان",
+  "privacyPolicy": "سياسة الخصوصية",
+  "help": "المساعدة",
+  "logout": "تسجيل الخروج"
 }

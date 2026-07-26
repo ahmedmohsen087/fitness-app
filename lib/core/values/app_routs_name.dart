@@ -11,4 +11,5 @@ abstract class AppRoutsName {
   static const String foodDetails = '/foodDetails';
   static const String upcomingWorkout = '/upcomingWorkout';
   static const String exercise = '/exercise';
+  static const String profileScreen = '/profileScreen';
 }

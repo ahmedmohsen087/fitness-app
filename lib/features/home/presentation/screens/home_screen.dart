@@ -29,7 +29,14 @@ class HomeScreen extends StatelessWidget {
             spacing: 12,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const HomeProfileInfo(),
+              HomeProfileInfo(
+                onProfileTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutsName.profileScreen,
+                  );
+                },
+              ),
               Text(
                 AppStrings.category,
                 style: TextStyles.labelTextFieldStyle.copyWith(
