@@ -1,3 +1,4 @@
+import 'package:fitness_app/core/values/app_routs_name.dart';
 import 'package:fitness_app/features/home/presentation/widgets/category_item.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,14 @@ class HomeScreen extends StatelessWidget {
                   spacing: 10,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HomeProfileInfo(),
+                    HomeProfileInfo(
+                      onProfileTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutsName.profileScreen,
+                        );
+                      },
+                    ),
                     Text(
                       AppStrings.category,
                       style: TextStyles.labelTextFieldStyle.copyWith(

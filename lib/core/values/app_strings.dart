@@ -17,7 +17,6 @@ class AppStrings {
   static String get getStarted => 'getStarted'.tr();
   static String get skip => 'skip'.tr();
 
-
   // Splash / onboarding
 
   // Secure storage - token
@@ -232,4 +231,23 @@ class AppStrings {
   static String get doneButton => 'doneButton'.tr();
   static String get passwordChangedSuccessfully =>
       'passwordChangedSuccessfully'.tr();
+  // Profile screen
+  static String get language => 'language'.tr();
+  static String get english => 'English'.tr();
+  static String get arabic => 'Arabic'.tr();
+  static String get couldNotLaunchLink => 'couldNotLaunchLink'.tr();
+  static String get noProfileDataAvailable => 'noProfileDataAvailable'.tr();
+  static String get editProfile => 'editProfile'.tr();
+  static String get changePassword => 'changePassword'.tr();
+  static String get security => 'security'.tr();
+  static String get privacyPolicy => 'privacyPolicy'.tr();
+  static String get help => 'help'.tr();
+  static String get logout => 'logout'.tr();
+  // Webviews URLs
+  static const String securityUrl =
+      'https://elevate-flutter-team.github.io/fitness-app-webviews/security.html';
+  static const String privacyPolicyUrl =
+      'https://elevate-flutter-team.github.io/fitness-app-webviews/privacy-policy.html';
+  static const String helpUrl =
+      'https://elevate-flutter-team.github.io/fitness-app-webviews/help.html';
 }

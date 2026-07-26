@@ -5,6 +5,9 @@ import 'package:fitness_app/features/auth/presentation/screens/email_verificatio
 import 'package:fitness_app/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:fitness_app/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:fitness_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_view_model.dart';
+import 'package:fitness_app/features/profile/presentation/screens/profile_screen.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -104,6 +107,16 @@ class AppRoutes {
           return MaterialPageRoute(
             settings: settings,
             builder: (_) => FoodDetailsScreen(mealId: mealId),
+          );
+        case AppRoutsName.profileScreen:
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => BlocProvider(
+              create: (_) =>
+                  getIt<GetProfileViewModel>()
+                    ..doEvent(const RefreshProfileEvent()),
+              child: const ProfileScreen(),
+            ),
           );
         default:
           return _notFoundRoute(settings);

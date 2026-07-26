@@ -7,8 +7,9 @@ import '../../../../core/theme/text_styles.dart';
 class HomeProfileInfo extends StatelessWidget {
   final String? name;
   final String? image;
+  final VoidCallback? onProfileTap;
 
-  const HomeProfileInfo({this.name, this.image, super.key});
+  const HomeProfileInfo({this.name, this.image, super.key, this.onProfileTap});
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +29,18 @@ class HomeProfileInfo extends StatelessWidget {
           ],
         ),
         Spacer(),
-        CircleAvatar(
-          backgroundColor: AppColors.placeHolder,
-          backgroundImage: (image != null && image!.isNotEmpty)
-              ? NetworkImage(image!)
-              : null,
-          child: (image == null || image!.isEmpty)
-              ? const Icon(Icons.person, color: AppColors.white)
-              : null,
+        InkWell(
+          onTap: onProfileTap,
+          borderRadius: BorderRadius.circular(20),
+          child: CircleAvatar(
+            backgroundColor: AppColors.placeHolder,
+            backgroundImage: (image != null && image!.isNotEmpty)
+                ? NetworkImage(image!)
+                : null,
+            child: (image == null || image!.isEmpty)
+                ? const Icon(Icons.person, color: AppColors.white)
+                : null,
+          ),
         ),
       ],
     );

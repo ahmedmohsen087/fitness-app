@@ -149,6 +149,16 @@
   "recipeVideo": "Recipe video",
   "close": "Close",
   "videoUnavailable": "This recipe video is unavailable",
-  "noMealDetails": "Meal details are unavailable"
-
+  "noMealDetails": "Meal details are unavailable",
+  "language": "language",
+  "English": "English",
+  "Arabic": "Arabic",
+  "couldNotLaunchLink": "Could not launch link",
+  "noProfileDataAvailable": "No profile data available",
+  "editProfile": "Edit Profile",
+  "changePassword": "Change Password",
+  "security": "Security",
+  "privacyPolicy": "Privacy Policy",
+  "help": "Help",
+  "logout": "Logout"
 }

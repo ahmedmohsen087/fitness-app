@@ -149,5 +149,16 @@
   "makeSure8CharsOrMore": "تأكد أنها 8 أحرف على الأقل",
   "createNewPasswordTitle": "إنشاء كلمة مرور جديدة",
   "doneButton": "تم",
-  "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح"
+  "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح",
+  "language": "اللغة",
+  "English": "الإنجليزية",
+  "Arabic": "العربية",
+  "couldNotLaunchLink": "تعذر فتح الرابط",
+  "noProfileDataAvailable": "لا توجد بيانات للملف الشخصي متاحة",
+  "editProfile": "تعديل الملف الشخصي",
+  "changePassword": "تغيير كلمة المرور",
+  "security": "الأمان",
+  "privacyPolicy": "سياسة الخصوصية",
+  "help": "المساعدة",
+  "logout": "تسجيل الخروج"
 }

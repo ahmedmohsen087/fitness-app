@@ -1,11 +1,15 @@
+import 'package:fitness_app/config/di/di.dart';
 import 'package:fitness_app/core/reusable_widgets/app_bottom_nav_bar.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
 import 'package:fitness_app/features/home/presentation/screens/home_screen.dart';
+import 'package:fitness_app/features/profile/presentation/screens/profile_screen.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
 import 'package:fitness_app/features/section_app/chat_screen.dart';
-import 'package:fitness_app/features/section_app/profile_screen.dart';
 import 'package:fitness_app/features/section_app/workouts_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum AppTab { home, chat, workout, profile }
 
@@ -32,11 +36,15 @@ class _SectionAppState extends State<SectionApp> {
     currentTab = AppTab.values[safeIndex];
   }
 
-  final List<Widget> pages = const [
+  final List<Widget> pages = [
     HomeScreen(),
     ChatScreen(),
     WorkoutsScreen(),
-    ProfileScreen(),
+    BlocProvider(
+      create: (_) =>
+          getIt<GetProfileViewModel>()..doEvent(const RefreshProfileEvent()),
+      child: const ProfileScreen(),
+    ),
   ];
 
   @override
