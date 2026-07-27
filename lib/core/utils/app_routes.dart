@@ -8,6 +8,9 @@ import 'package:fitness_app/features/auth/presentation/view_models/forget_passwo
 import 'package:fitness_app/features/fitness/presentation/screens/exercise_screen.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
+import 'package:fitness_app/features/profile/presentation/screens/profile_screen.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -138,6 +141,16 @@ class AppRoutes {
             );
           }
           return _notFoundRoute(settings);
+        case AppRoutsName.profileScreen:
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => BlocProvider(
+              create: (_) =>
+                  getIt<GetProfileViewModel>()
+                    ..doEvent(const RefreshProfileEvent()),
+              child: const ProfileScreen(),
+            ),
+          );
         default:
           return _notFoundRoute(settings);
       }

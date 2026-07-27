@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/core/reusable_widgets/custom_media_card.dart';
 import 'package:fitness_app/core/values/app_routs_name.dart';
 import 'package:fitness_app/features/fitness/presentation/screens/exercise_screen.dart';
@@ -12,6 +13,8 @@ class UpcomingWorkoutsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _ = context.locale;
+
     return BlocBuilder<FitnessViewModel, FitnessState>(
       builder: (context, state) {
         final isLoading = state.musclesByGroupState.isLoading;

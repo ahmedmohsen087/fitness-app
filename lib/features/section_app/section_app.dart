@@ -1,10 +1,13 @@
-// lib/features/section_app/section_app.dart
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fitness_app/config/di/di.dart';
 import 'package:fitness_app/core/reusable_widgets/app_bottom_nav_bar.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
 import 'package:fitness_app/features/home/presentation/screens/home_screen.dart';
+import 'package:fitness_app/features/profile/presentation/screens/profile_screen.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
 import 'package:fitness_app/features/section_app/chat_screen.dart';
-import 'package:fitness_app/features/section_app/profile_screen.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
 import 'package:fitness_app/features/section_app/view_model/section_tab_cubit.dart';
 import 'package:flutter/material.dart';
@@ -13,15 +16,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SectionApp extends StatelessWidget {
   const SectionApp({super.key});
 
-  static const List<Widget> _pages = [
-    HomeScreen(),
-    ChatScreen(),
-    UpcomingWorkoutsScreen(),
-    ProfileScreen(),
+  static final List<Widget> _pages = [
+    const HomeScreen(),
+    const ChatScreen(),
+    const UpcomingWorkoutsScreen(),
+    BlocProvider(
+      create: (_) =>
+          getIt<GetProfileViewModel>()..doEvent(const RefreshProfileEvent()),
+      child: const ProfileScreen(),
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final _ = context.locale;
+
     return BlocProvider(
       create: (_) => SectionTabCubit(),
       child: BlocBuilder<SectionTabCubit, AppTab>(

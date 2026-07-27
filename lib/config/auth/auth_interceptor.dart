@@ -18,6 +18,7 @@ class AuthInterceptor extends Interceptor {
       final token = _authManager.token;
 
       if (token != null && token.isNotEmpty) {
+        options.headers['token'] = token;
         options.headers[ApiParameters.authorization] = 'Bearer $token';
       }
     }

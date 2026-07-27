@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/config/di/di.dart';
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
@@ -32,6 +33,8 @@ class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _ = context.locale;
+
     Widget content = AppBackgroundScaffold(
       imagePath: Assets.mainBackground,
       child: Padding(

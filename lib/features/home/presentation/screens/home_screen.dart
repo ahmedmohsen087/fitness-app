@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/config/di/di.dart';
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:fitness_app/core/reusable_widgets/custom_section_header.dart';
@@ -10,6 +11,9 @@ import 'package:fitness_app/features/fitness/presentation/view_model/fitness_vie
 import 'package:fitness_app/features/home/presentation/view_models/home_events.dart';
 import 'package:fitness_app/features/home/presentation/view_models/home_view_models.dart';
 import 'package:fitness_app/features/home/presentation/widgets/category_item.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_states.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
 import 'package:fitness_app/features/section_app/view_model/section_tab_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +30,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _ = context.locale;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeViewModel>(
@@ -34,6 +40,10 @@ class HomeScreen extends StatelessWidget {
         BlocProvider<FitnessViewModel>(
           create: (_) => getIt<FitnessViewModel>()
             ..doEvent(LoadHomeFitnessDataEvent()),
+        ),
+        BlocProvider<GetProfileViewModel>(
+          create: (_) => getIt<GetProfileViewModel>()
+            ..doEvent(const RefreshProfileEvent()),
         ),
       ],
       child: AppBackgroundScaffold(
@@ -45,7 +55,26 @@ class HomeScreen extends StatelessWidget {
               spacing: 12,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const HomeProfileInfo(),
+                BlocBuilder<GetProfileViewModel, GetProfileState>(
+                  builder: (context, state) {
+                    final profile = state.getProfileState.data;
+                    final name = profile != null
+                        ? "${profile.firstName} ${profile.lastName}".trim()
+                        : null;
+                    final image = profile?.photo;
+
+                    return HomeProfileInfo(
+                      name: name,
+                      image: image,
+                      onProfileTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutsName.profileScreen,
+                        );
+                      },
+                    );
+                  },
+                ),
                 Text(
                   AppStrings.category,
                   style: TextStyles.labelTextFieldStyle.copyWith(

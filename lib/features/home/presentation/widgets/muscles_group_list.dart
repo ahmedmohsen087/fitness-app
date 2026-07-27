@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/core/reusable_widgets/custom_filter_tab_bar.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_state.dart';
@@ -10,6 +11,8 @@ class MusclesGroupList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _ = context.locale;
+
     return BlocBuilder<FitnessViewModel, FitnessState>(
       builder: (context, state) {
         final viewModel = context.read<FitnessViewModel>();

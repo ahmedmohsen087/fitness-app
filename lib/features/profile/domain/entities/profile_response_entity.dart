@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class LoginUserEntity extends Equatable {
+class ProfileResponseEntity extends Equatable {
   final String id;
   final String firstName;
   final String lastName;
@@ -14,7 +14,7 @@ class LoginUserEntity extends Equatable {
   final String photo;
   final DateTime createdAt;
 
-  const LoginUserEntity({
+  const ProfileResponseEntity({
     required this.id,
     required this.firstName,
     required this.lastName,
