@@ -85,34 +85,40 @@ class PopularTrainingWidget extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 4),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.fitness_center_rounded,
-                                      size: 14,
-                                      color: AppColors.orange,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      '${item.totalExercises} Exercises',
-                                      style: TextStyles.bodyRegular12.copyWith(
-                                        color: Colors.white70,
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.centerLeft,
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.fitness_center_rounded,
+                                        size: 14,
+                                        color: AppColors.orange,
                                       ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    const Icon(
-                                      Icons.speed_rounded,
-                                      size: 14,
-                                      color: AppColors.orange,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      item.difficultyLevel,
-                                      style: TextStyles.bodyRegular12.copyWith(
-                                        color: Colors.white70,
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        '${item.totalExercises} Exercises',
+                                        style:
+                                            TextStyles.bodyRegular12.copyWith(
+                                          color: Colors.white70,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(width: 8),
+                                      const Icon(
+                                        Icons.speed_rounded,
+                                        size: 14,
+                                        color: AppColors.orange,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        item.difficultyLevel,
+                                        style:
+                                            TextStyles.bodyRegular12.copyWith(
+                                          color: Colors.white70,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
