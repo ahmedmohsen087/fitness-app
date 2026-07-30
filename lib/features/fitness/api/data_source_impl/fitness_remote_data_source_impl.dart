@@ -67,7 +67,7 @@ class FitnessRemoteDataSourceImpl implements FitnessRemoteDataSourceContract {
 
   @override
   Future<BaseResponse<DifficultyLevelsResponseModel>>
-      getDifficultyLevelsByPrimeMover(String primeMoverMuscleId) async {
+  getDifficultyLevelsByPrimeMover(String primeMoverMuscleId) async {
     try {
       final result = await _apiClient.getDifficultyLevelsByPrimeMover(
         primeMoverMuscleId,
@@ -80,7 +80,7 @@ class FitnessRemoteDataSourceImpl implements FitnessRemoteDataSourceContract {
 
   @override
   Future<BaseResponse<ExercisesResponseModel>>
-      getExercisesByMuscleAndDifficulty({
+  getExercisesByMuscleAndDifficulty({
     required String primeMoverMuscleId,
     required String difficultyLevelId,
   }) async {

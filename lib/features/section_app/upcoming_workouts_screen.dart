@@ -15,8 +15,7 @@ class UpcomingWorkoutsScreen extends StatefulWidget {
   const UpcomingWorkoutsScreen({super.key});
 
   @override
-  State<UpcomingWorkoutsScreen> createState() =>
-      _UpcomingWorkoutsScreenState();
+  State<UpcomingWorkoutsScreen> createState() => _UpcomingWorkoutsScreenState();
 }
 
 class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
@@ -44,10 +43,7 @@ class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
           spacing: 20,
           children: [
             Center(
-              child: Text(
-                AppStrings.workouts,
-                style: TextStyles.bodyRegular24,
-              ),
+              child: Text(AppStrings.workouts, style: TextStyles.bodyRegular24),
             ),
             WorkoutsFilterTabs(
               selectedMuscleGroupId: _selectedMuscleGroupId,
@@ -69,8 +65,8 @@ class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
     }
 
     return BlocProvider<FitnessViewModel>(
-      create: (_) => getIt<FitnessViewModel>()
-        ..doEvent(LoadHomeFitnessDataEvent()),
+      create: (_) =>
+          getIt<FitnessViewModel>()..doEvent(LoadHomeFitnessDataEvent()),
       child: content,
     );
   }

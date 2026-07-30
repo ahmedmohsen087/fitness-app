@@ -38,12 +38,8 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
           await _authManager.setAuthData(token: data.token!);
         }
         return SuccessBaseResponse<LoginUserEntity>(data: entity);
-      case ErrorBaseResponse<LoginResponse>(
-        errorMessage: final errorMessage,
-      ):
-        return ErrorBaseResponse<LoginUserEntity>(
-          errorMessage: errorMessage,
-        );
+      case ErrorBaseResponse<LoginResponse>(errorMessage: final errorMessage):
+        return ErrorBaseResponse<LoginUserEntity>(errorMessage: errorMessage);
     }
   }
 

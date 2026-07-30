@@ -1,5 +1,6 @@
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:flutter/material.dart';
+
 import '../../../../core/values/assets.dart';
 import '../widgets/forget_password_widget.dart';
 
@@ -18,7 +19,11 @@ class ForgetPasswordScreen extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.topCenter,
-              child: Image.asset(Assets.appLogo, height: 60, fit: BoxFit.contain),
+              child: Image.asset(
+                Assets.appLogo,
+                height: 60,
+                fit: BoxFit.contain,
+              ),
             ),
             const ForgetPasswordWidget(),
           ],

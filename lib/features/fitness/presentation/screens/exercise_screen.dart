@@ -154,11 +154,17 @@ class ExerciseScreen extends StatelessWidget {
                             child: CustomFilterTabBar(
                               items: [
                                 CustomFilterTabBarItem(
-                                    id: '1', title: 'Beginner'),
+                                  id: '1',
+                                  title: 'Beginner',
+                                ),
                                 CustomFilterTabBarItem(
-                                    id: '2', title: 'Intermediate'),
+                                  id: '2',
+                                  title: 'Intermediate',
+                                ),
                                 CustomFilterTabBarItem(
-                                    id: '3', title: 'Advanced'),
+                                  id: '3',
+                                  title: 'Advanced',
+                                ),
                               ],
                               selectedIndex: 0,
                               onTabSelected: _dummyOnTabSelected,
@@ -168,8 +174,10 @@ class ExerciseScreen extends StatelessWidget {
                       }
 
                       final items = levels
-                          .map((l) => CustomFilterTabBarItem(
-                              id: l.id, title: l.name))
+                          .map(
+                            (l) =>
+                                CustomFilterTabBarItem(id: l.id, title: l.name),
+                          )
                           .toList();
 
                       final activeLevelId = state.selectedLevelId;
@@ -177,8 +185,8 @@ class ExerciseScreen extends StatelessWidget {
                       final selectedIndex = activeLevelId == null
                           ? 0
                           : items
-                              .indexWhere((item) => item.id == activeLevelId)
-                              .clamp(0, items.isEmpty ? 0 : items.length - 1);
+                                .indexWhere((item) => item.id == activeLevelId)
+                                .clamp(0, items.isEmpty ? 0 : items.length - 1);
 
                       return CustomFilterTabBar(
                         padding: EdgeInsets.zero,
@@ -187,11 +195,11 @@ class ExerciseScreen extends StatelessWidget {
                         onTabSelected: (index) {
                           final level = levels[index];
                           context.read<FitnessViewModel>().doEvent(
-                                SelectDifficultyLevelEvent(
-                                  primeMoverMuscleId: args.primeMoverMuscleId,
-                                  difficultyLevelId: level.id,
-                                ),
-                              );
+                            SelectDifficultyLevelEvent(
+                              primeMoverMuscleId: args.primeMoverMuscleId,
+                              difficultyLevelId: level.id,
+                            ),
+                          );
                         },
                       );
                     },
@@ -243,13 +251,14 @@ class ExerciseScreen extends StatelessWidget {
                             }
 
                             final exercise = exercises[index];
-                            final thumbUrl =
-                                _getYoutubeThumbnail(exercise.videoUrl);
+                            final thumbUrl = _getYoutubeThumbnail(
+                              exercise.videoUrl,
+                            );
 
                             final subtitleInfo =
                                 exercise.primaryEquipment.isNotEmpty
-                                    ? exercise.primaryEquipment
-                                    : exercise.targetMuscleGroup;
+                                ? exercise.primaryEquipment
+                                : exercise.targetMuscleGroup;
 
                             return GestureDetector(
                               onTap: () {
@@ -293,9 +302,9 @@ class ExerciseScreen extends StatelessWidget {
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyles.bodyRegular16
                                                 .copyWith(
-                                              color: AppColors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                                  color: AppColors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                           ),
                                           if (subtitleInfo.isNotEmpty)
                                             Text(
@@ -304,9 +313,9 @@ class ExerciseScreen extends StatelessWidget {
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyles.bodyRegular12
                                                   .copyWith(
-                                                color: AppColors.white
-                                                    .withValues(alpha: 0.7),
-                                              ),
+                                                    color: AppColors.white
+                                                        .withValues(alpha: 0.7),
+                                                  ),
                                             ),
                                         ],
                                       ),

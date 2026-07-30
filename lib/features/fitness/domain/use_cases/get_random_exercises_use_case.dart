@@ -14,10 +14,9 @@ class GetRandomExercisesUseCase {
     String? targetMuscleGroupId,
     String? difficultyLevelId,
     int? limit,
-  }) =>
-      _repository.getRandomExercises(
-        targetMuscleGroupId: targetMuscleGroupId,
-        difficultyLevelId: difficultyLevelId,
-        limit: limit,
-      );
+  }) => _repository.getRandomExercises(
+    targetMuscleGroupId: targetMuscleGroupId,
+    difficultyLevelId: difficultyLevelId,
+    limit: limit,
+  );
 }

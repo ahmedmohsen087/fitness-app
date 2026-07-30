@@ -58,8 +58,7 @@ class _FoodView extends StatelessWidget {
               Expanded(
                 child: BlocBuilder<FoodViewModel, FoodState>(
                   buildWhen: (previous, current) =>
-                      previous.categoriesState !=
-                          current.categoriesState ||
+                      previous.categoriesState != current.categoriesState ||
                       previous.mealsState != current.mealsState,
                   builder: (context, state) => _FoodContent(state: state),
                 ),

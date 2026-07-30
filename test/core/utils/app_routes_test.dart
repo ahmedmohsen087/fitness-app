@@ -23,8 +23,9 @@ void main() {
     mockStorage = MockSecureStorageService();
     mockAuthManager = MockAuthManager();
 
-    when(mockStorage.readSeenOnboarding())
-        .thenAnswer((_) => Completer<bool>().future);
+    when(
+      mockStorage.readSeenOnboarding(),
+    ).thenAnswer((_) => Completer<bool>().future);
     when(mockAuthManager.isLoggedIn).thenReturn(false);
 
     getIt.registerSingleton<SecureStorageService>(mockStorage);

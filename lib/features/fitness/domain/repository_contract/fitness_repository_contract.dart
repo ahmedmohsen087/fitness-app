@@ -14,9 +14,9 @@ abstract class FitnessRepositoryContract {
     String? difficultyLevelId,
     int? limit,
   });
-  Future<BaseResponse<List<DifficultyLevelEntity>>> getDifficultyLevelsByPrimeMover(
-    String primeMoverMuscleId,
-  );
+
+  Future<BaseResponse<List<DifficultyLevelEntity>>>
+  getDifficultyLevelsByPrimeMover(String primeMoverMuscleId);
   Future<BaseResponse<List<ExerciseEntity>>> getExercisesByMuscleAndDifficulty({
     required String primeMoverMuscleId,
     required String difficultyLevelId,

@@ -8,6 +8,8 @@ import 'package:fitness_app/features/auth/presentation/view_models/forget_passwo
 import 'package:fitness_app/features/fitness/presentation/screens/exercise_screen.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
+import 'package:fitness_app/features/profile/domain/entities/profile_response_entity.dart';
+import 'package:fitness_app/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:fitness_app/features/profile/presentation/screens/profile_screen.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
@@ -116,8 +118,9 @@ class AppRoutes {
           return MaterialPageRoute(
             settings: settings,
             builder: (_) => BlocProvider<FitnessViewModel>(
-              create: (_) => getIt<FitnessViewModel>()
-                ..doEvent(LoadHomeFitnessDataEvent()),
+              create: (_) =>
+                  getIt<FitnessViewModel>()
+                    ..doEvent(LoadHomeFitnessDataEvent()),
               child: const UpcomingWorkoutsScreen(),
             ),
           );
@@ -150,6 +153,15 @@ class AppRoutes {
                     ..doEvent(const RefreshProfileEvent()),
               child: const ProfileScreen(),
             ),
+          );
+        case AppRoutsName.editProfileScreen:
+          final profile = settings.arguments;
+          if (profile is! ProfileResponseEntity) {
+            return _notFoundRoute(settings);
+          }
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => EditProfileScreen(profile: profile),
           );
         default:
           return _notFoundRoute(settings);

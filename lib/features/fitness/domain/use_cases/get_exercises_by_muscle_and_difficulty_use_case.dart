@@ -13,9 +13,8 @@ class GetExercisesByMuscleAndDifficultyUseCase {
   Future<BaseResponse<List<ExerciseEntity>>> execute({
     required String primeMoverMuscleId,
     required String difficultyLevelId,
-  }) =>
-      _repository.getExercisesByMuscleAndDifficulty(
-        primeMoverMuscleId: primeMoverMuscleId,
-        difficultyLevelId: difficultyLevelId,
-      );
+  }) => _repository.getExercisesByMuscleAndDifficulty(
+    primeMoverMuscleId: primeMoverMuscleId,
+    difficultyLevelId: difficultyLevelId,
+  );
 }

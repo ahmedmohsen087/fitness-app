@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/app_strings.dart';
+import '../../../../core/values/register_constants.dart';
 import 'auth_background.dart';
 import 'auth_glass_panel.dart';
 import 'auth_logo.dart';
@@ -13,6 +14,7 @@ class RegisterStepScaffold extends StatelessWidget {
   final String subtitle;
   final VoidCallback onBack;
   final Widget child;
+  final ProfileSelectionMode mode;
 
   const RegisterStepScaffold({
     super.key,
@@ -21,6 +23,7 @@ class RegisterStepScaffold extends StatelessWidget {
     required this.subtitle,
     required this.onBack,
     required this.child,
+    this.mode = ProfileSelectionMode.register,
   });
 
   @override
@@ -42,8 +45,10 @@ class RegisterStepScaffold extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _StepIndicator(step: step),
-                      const SizedBox(height: 8),
+                      if (mode == ProfileSelectionMode.register) ...[
+                        _StepIndicator(step: step),
+                        const SizedBox(height: 8),
+                      ],
                       _StepHeading(title: title, subtitle: subtitle),
                       const SizedBox(height: 8),
                       AuthGlassPanel(child: child),

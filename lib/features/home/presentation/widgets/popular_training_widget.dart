@@ -114,8 +114,9 @@ class PopularTrainingWidget extends StatelessWidget {
                                     vertical: 5,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: AppColors.lightBlack
-                                        .withValues(alpha: 0.75),
+                                    color: AppColors.lightBlack.withValues(
+                                      alpha: 0.75,
+                                    ),
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: Text(
@@ -132,8 +133,9 @@ class PopularTrainingWidget extends StatelessWidget {
                                     vertical: 5,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: AppColors.lightBlack
-                                        .withValues(alpha: 0.75),
+                                    color: AppColors.lightBlack.withValues(
+                                      alpha: 0.75,
+                                    ),
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: Text(

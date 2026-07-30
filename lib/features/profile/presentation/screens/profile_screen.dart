@@ -3,8 +3,10 @@ import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:fitness_app/core/reusable_widgets/app_toast.dart';
 import 'package:fitness_app/core/theme/app_colors.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
+import 'package:fitness_app/core/values/app_routs_name.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
+import 'package:fitness_app/features/profile/domain/entities/profile_response_entity.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_states.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
@@ -35,6 +37,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         AppToast.error(context, AppStrings.couldNotLaunchLink);
       }
     }
+  }
+
+  Future<void> _openEditProfile(ProfileResponseEntity profile) async {
+    await Navigator.pushNamed(
+      context,
+      AppRoutsName.editProfileScreen,
+      arguments: profile,
+    );
+    if (!mounted) return;
+    context.read<GetProfileViewModel>().doEvent(const RefreshProfileEvent());
   }
 
   void _showLanguageBottomSheet(BuildContext context) {
@@ -112,8 +124,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     context.read<GetProfileViewModel>().doEvent(
-                          const RefreshProfileEvent(),
-                        );
+                      const RefreshProfileEvent(),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.orange,
@@ -161,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ProfileTileItem(
                             leadingIcon: Icons.person_outline,
                             title: AppStrings.editProfile,
-                            onTap: () {},
+                            onTap: () => _openEditProfile(user),
                           ),
                           ProfileTileItem(
                             leadingIcon: Icons.lock_outline,

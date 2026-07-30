@@ -9,37 +9,26 @@ import '../entities/muscle_group_entity.dart';
 
 extension MuscleGroupModelMapper on MuscleGroupModel {
   MuscleGroupEntity toEntity() {
-    return MuscleGroupEntity(
-      id: id ?? '',
-      name: name ?? '',
-    );
+    return MuscleGroupEntity(id: id ?? '', name: name ?? '');
   }
 }
 
 extension MuscleModelMapper on MuscleModel {
   MuscleEntity toEntity() {
-    return MuscleEntity(
-      id: id ?? '',
-      name: name ?? '',
-      image: image ?? '',
-    );
+    return MuscleEntity(id: id ?? '', name: name ?? '', image: image ?? '');
   }
 }
 
 extension DifficultyLevelModelMapper on DifficultyLevelModel {
   DifficultyLevelEntity toEntity() {
-    return DifficultyLevelEntity(
-      id: id ?? '',
-      name: name ?? '',
-    );
+    return DifficultyLevelEntity(id: id ?? '', name: name ?? '');
   }
 }
 
 extension ExerciseModelMapper on ExerciseModel {
   ExerciseEntity toEntity() {
-    final video = shortYoutubeDemonstrationLink ??
-        inDepthYoutubeExplanationLink ??
-        '';
+    final video =
+        shortYoutubeDemonstrationLink ?? inDepthYoutubeExplanationLink ?? '';
 
     return ExerciseEntity(
       id: id ?? '',

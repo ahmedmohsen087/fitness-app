@@ -7,11 +7,7 @@ class CustomSectionHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onSeeAllTap;
 
-  const CustomSectionHeader({
-    super.key,
-    required this.title,
-    this.onSeeAllTap,
-  });
+  const CustomSectionHeader({super.key, required this.title, this.onSeeAllTap});
 
   @override
   Widget build(BuildContext context) {

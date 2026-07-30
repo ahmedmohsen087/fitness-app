@@ -55,13 +55,13 @@ class FitnessState extends Equatable {
 
   @override
   List<Object?> get props => [
-        muscleGroupsState,
-        musclesByGroupState,
-        recommendationToDayState,
-        popularTrainingState,
-        difficultyLevelsState,
-        exercisesByDifficultyState,
-        selectedGroupId,
-        selectedLevelId,
-      ];
+    muscleGroupsState,
+    musclesByGroupState,
+    recommendationToDayState,
+    popularTrainingState,
+    difficultyLevelsState,
+    exercisesByDifficultyState,
+    selectedGroupId,
+    selectedLevelId,
+  ];
 }

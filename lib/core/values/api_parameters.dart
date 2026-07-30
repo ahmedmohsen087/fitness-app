@@ -24,4 +24,5 @@ abstract class ApiParameters {
   static const String height = 'height';
   static const String activityLevel = 'activityLevel';
   static const String goal = 'goal';
+  static const String photo = 'photo';
 }

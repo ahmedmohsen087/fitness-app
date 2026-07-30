@@ -23,10 +23,7 @@ class OnBoardingItem extends StatelessWidget {
           alignment: const Alignment(0, -0.3),
           child: FractionallySizedBox(
             heightFactor: 0.58,
-            child: Image.asset(
-              image,
-              fit: BoxFit.contain,
-            ),
+            child: Image.asset(image, fit: BoxFit.contain),
           ),
         ),
       ),

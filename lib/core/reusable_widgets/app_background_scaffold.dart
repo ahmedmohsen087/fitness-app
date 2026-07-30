@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class AppBackgroundScaffold extends StatelessWidget {
@@ -36,17 +37,15 @@ class AppBackgroundScaffold extends StatelessWidget {
           child: Image.asset(
             imagePath,
             fit: BoxFit.cover,
-            errorBuilder: (_, _, _) => Container(color: const Color(0xFF181818)),
+            errorBuilder: (_, _, _) =>
+                Container(color: const Color(0xFF181818)),
           ),
         ),
 
         // Blur & Overlay Effect (Frosted Glass)
         Positioned.fill(
           child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: blurSigmaX,
-              sigmaY: blurSigmaY,
-            ),
+            filter: ImageFilter.blur(sigmaX: blurSigmaX, sigmaY: blurSigmaY),
             child: Container(
               color: Colors.black.withValues(alpha: overlayOpacity),
             ),

@@ -34,7 +34,7 @@ void main() {
   late MockGetRandomMusclesUseCase mockGetRandomMusclesUseCase;
   late MockGetDifficultyLevelsUseCase mockGetDifficultyLevelsUseCase;
   late MockGetExercisesByMuscleAndDifficultyUseCase
-      mockGetExercisesByMuscleAndDifficultyUseCase;
+  mockGetExercisesByMuscleAndDifficultyUseCase;
 
   setUpAll(() {
     provideDummy<BaseResponse<List<MuscleGroupEntity>>>(

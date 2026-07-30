@@ -52,7 +52,9 @@ class WorkoutsFilterTabs extends StatelessWidget {
 
         final selectedIndex = selectedMuscleGroupId == null
             ? 0
-            : items.indexWhere((item) => item.id == selectedMuscleGroupId).clamp(0, items.length - 1);
+            : items
+                  .indexWhere((item) => item.id == selectedMuscleGroupId)
+                  .clamp(0, items.length - 1);
 
         return CustomFilterTabBar(
           padding: EdgeInsets.zero,

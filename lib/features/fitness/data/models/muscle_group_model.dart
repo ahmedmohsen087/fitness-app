@@ -8,10 +8,7 @@ class MuscleGroupModel {
   final String? id;
   final String? name;
 
-  const MuscleGroupModel({
-    this.id,
-    this.name,
-  });
+  const MuscleGroupModel({this.id, this.name});
 
   factory MuscleGroupModel.fromJson(Map<String, dynamic> json) =>
       _$MuscleGroupModelFromJson(json);
@@ -24,10 +21,7 @@ class MusclesGroupResponseModel {
   final String? message;
   final List<MuscleGroupModel>? musclesGroup;
 
-  const MusclesGroupResponseModel({
-    this.message,
-    this.musclesGroup,
-  });
+  const MusclesGroupResponseModel({this.message, this.musclesGroup});
 
   factory MusclesGroupResponseModel.fromJson(Map<String, dynamic> json) =>
       _$MusclesGroupResponseModelFromJson(json);

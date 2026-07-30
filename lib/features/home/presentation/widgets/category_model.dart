@@ -14,12 +14,7 @@ class CategoryModel extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(
-          image,
-          width: 44,
-          height: 44,
-          fit: BoxFit.contain,
-        ),
+        Image.asset(image, width: 44, height: 44, fit: BoxFit.contain),
         const SizedBox(height: 4),
         Text(
           title,

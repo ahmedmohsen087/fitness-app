@@ -38,12 +38,13 @@ class HomeScreen extends StatelessWidget {
           create: (_) => getIt<HomeViewModel>()..doEvent(LoadHomeDataEvent()),
         ),
         BlocProvider<FitnessViewModel>(
-          create: (_) => getIt<FitnessViewModel>()
-            ..doEvent(LoadHomeFitnessDataEvent()),
+          create: (_) =>
+              getIt<FitnessViewModel>()..doEvent(LoadHomeFitnessDataEvent()),
         ),
         BlocProvider<GetProfileViewModel>(
-          create: (_) => getIt<GetProfileViewModel>()
-            ..doEvent(const RefreshProfileEvent()),
+          create: (_) =>
+              getIt<GetProfileViewModel>()
+                ..doEvent(const RefreshProfileEvent()),
         ),
       ],
       child: AppBackgroundScaffold(
@@ -82,29 +83,22 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const CategoryItem(),
-                CustomSectionHeader(
-                  title: AppStrings.recommendationToDay,
-                ),
+                CustomSectionHeader(title: AppStrings.recommendationToDay),
                 const RecommendationToDay(),
                 CustomSectionHeader(
                   title: AppStrings.upcomingWorkouts,
-                  onSeeAllTap: () => context
-                      .read<SectionTabCubit>()
-                      .changeTab(AppTab.workout),
+                  onSeeAllTap: () =>
+                      context.read<SectionTabCubit>().changeTab(AppTab.workout),
                 ),
                 const MusclesGroupList(),
                 const UpcomingWorkoutsWidget(),
                 CustomSectionHeader(
                   title: AppStrings.recommendationForYou,
-                  onSeeAllTap: () => Navigator.pushNamed(
-                    context,
-                    AppRoutsName.food,
-                  ),
+                  onSeeAllTap: () =>
+                      Navigator.pushNamed(context, AppRoutsName.food),
                 ),
                 const RecommendationForYouWidget(),
-                CustomSectionHeader(
-                  title: AppStrings.popularTraining,
-                ),
+                CustomSectionHeader(title: AppStrings.popularTraining),
                 const PopularTrainingWidget(),
                 const SizedBox(height: 16),
               ],

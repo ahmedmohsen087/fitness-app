@@ -25,7 +25,7 @@ class FitnessViewModel extends Cubit<FitnessState> {
   final GetRandomMusclesUseCase _getRandomMusclesUseCase;
   final GetDifficultyLevelsUseCase _getDifficultyLevelsUseCase;
   final GetExercisesByMuscleAndDifficultyUseCase
-      _getExercisesByMuscleAndDifficultyUseCase;
+  _getExercisesByMuscleAndDifficultyUseCase;
 
   FitnessViewModel(
     this._getMusclesUseCase,
@@ -102,23 +102,22 @@ class FitnessViewModel extends Cubit<FitnessState> {
 
     if (randomMusclesRes is SuccessBaseResponse<List<MuscleEntity>> &&
         randomMusclesRes.data.isNotEmpty) {
-      final musclesList =
-          List<MuscleEntity>.from(randomMusclesRes.data)..shuffle();
+      final musclesList = List<MuscleEntity>.from(randomMusclesRes.data)
+        ..shuffle();
       final selectedMuscles = musclesList.take(3).toList();
       final random = Random();
 
       final futures = selectedMuscles.map((muscle) async {
-        final levelsRes =
-            await _getDifficultyLevelsUseCase.execute(muscle.id);
+        final levelsRes = await _getDifficultyLevelsUseCase.execute(muscle.id);
         if (levelsRes is SuccessBaseResponse<List<DifficultyLevelEntity>> &&
             levelsRes.data.isNotEmpty) {
           final levelsList = levelsRes.data;
           final level = levelsList[random.nextInt(levelsList.length)];
-          final exercisesRes =
-              await _getExercisesByMuscleAndDifficultyUseCase.execute(
-            primeMoverMuscleId: muscle.id,
-            difficultyLevelId: level.id,
-          );
+          final exercisesRes = await _getExercisesByMuscleAndDifficultyUseCase
+              .execute(
+                primeMoverMuscleId: muscle.id,
+                difficultyLevelId: level.id,
+              );
           if (exercisesRes is SuccessBaseResponse<List<ExerciseEntity>>) {
             final count = exercisesRes.data.length;
             return PopularTrainingEntity(
@@ -136,14 +135,11 @@ class FitnessViewModel extends Cubit<FitnessState> {
       });
 
       final results = await Future.wait(futures);
-      final popularList =
-          results.whereType<PopularTrainingEntity>().toList();
+      final popularList = results.whereType<PopularTrainingEntity>().toList();
 
       if (popularList.isNotEmpty) {
         emit(
-          state.copyWith(
-            popularTrainingState: BaseState.success(popularList),
-          ),
+          state.copyWith(popularTrainingState: BaseState.success(popularList)),
         );
         if (firstGroupId != null) {
           await _selectMuscleGroup(firstGroupId);
@@ -154,8 +150,9 @@ class FitnessViewModel extends Cubit<FitnessState> {
 
     emit(
       state.copyWith(
-        popularTrainingState:
-            BaseState.error("Failed to load popular training"),
+        popularTrainingState: BaseState.error(
+          "Failed to load popular training",
+        ),
       ),
     );
 
@@ -178,16 +175,10 @@ class FitnessViewModel extends Cubit<FitnessState> {
     if (isClosed) return;
 
     if (res is SuccessBaseResponse<List<MuscleEntity>>) {
-      emit(
-        state.copyWith(
-          musclesByGroupState: BaseState.success(res.data),
-        ),
-      );
+      emit(state.copyWith(musclesByGroupState: BaseState.success(res.data)));
     } else if (res is ErrorBaseResponse<List<MuscleEntity>>) {
       emit(
-        state.copyWith(
-          musclesByGroupState: BaseState.error(res.errorMessage),
-        ),
+        state.copyWith(musclesByGroupState: BaseState.error(res.errorMessage)),
       );
     }
   }
@@ -198,8 +189,9 @@ class FitnessViewModel extends Cubit<FitnessState> {
   ]) async {
     emit(state.copyWith(difficultyLevelsState: BaseState.loading()));
 
-    final levelsRes =
-        await _getDifficultyLevelsUseCase.execute(primeMoverMuscleId);
+    final levelsRes = await _getDifficultyLevelsUseCase.execute(
+      primeMoverMuscleId,
+    );
     if (isClosed) return;
 
     if (levelsRes is SuccessBaseResponse<List<DifficultyLevelEntity>>) {
@@ -209,15 +201,13 @@ class FitnessViewModel extends Cubit<FitnessState> {
         ),
       );
       if (levelsRes.data.isNotEmpty) {
-        final targetLevelId = (initialDifficultyLevelId != null &&
+        final targetLevelId =
+            (initialDifficultyLevelId != null &&
                 levelsRes.data.any((l) => l.id == initialDifficultyLevelId))
             ? initialDifficultyLevelId
             : levelsRes.data.first.id;
 
-        await _selectDifficultyLevel(
-          primeMoverMuscleId,
-          targetLevelId,
-        );
+        await _selectDifficultyLevel(primeMoverMuscleId, targetLevelId);
       }
     } else if (levelsRes is ErrorBaseResponse<List<DifficultyLevelEntity>>) {
       emit(
@@ -248,9 +238,7 @@ class FitnessViewModel extends Cubit<FitnessState> {
 
     if (res is SuccessBaseResponse<List<ExerciseEntity>>) {
       emit(
-        state.copyWith(
-          exercisesByDifficultyState: BaseState.success(res.data),
-        ),
+        state.copyWith(exercisesByDifficultyState: BaseState.success(res.data)),
       );
     } else if (res is ErrorBaseResponse<List<ExerciseEntity>>) {
       emit(

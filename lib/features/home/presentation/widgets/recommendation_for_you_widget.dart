@@ -67,7 +67,9 @@ class _RecommendationList extends StatelessWidget {
         enabled: isLoading && recommendations.isEmpty,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
-          itemCount: isLoading && recommendations.isEmpty ? 5 : recommendations.length,
+          itemCount: isLoading && recommendations.isEmpty
+              ? 5
+              : recommendations.length,
           separatorBuilder: (_, _) => const SizedBox(width: 14),
           itemBuilder: (context, index) => _buildItem(context, index),
         ),

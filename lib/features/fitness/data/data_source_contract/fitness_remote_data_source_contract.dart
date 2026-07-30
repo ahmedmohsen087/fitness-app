@@ -7,17 +7,22 @@ import '../models/muscle_model.dart';
 
 abstract class FitnessRemoteDataSourceContract {
   Future<BaseResponse<MusclesGroupResponseModel>> getMuscleGroups();
-  Future<BaseResponse<MusclesResponseModel>> getMusclesByGroupId(String groupId);
+
+  Future<BaseResponse<MusclesResponseModel>> getMusclesByGroupId(
+    String groupId,
+  );
   Future<BaseResponse<MusclesResponseModel>> getRandomMuscles();
   Future<BaseResponse<ExercisesResponseModel>> getRandomExercises({
     String? targetMuscleGroupId,
     String? difficultyLevelId,
     int? limit,
   });
-  Future<BaseResponse<DifficultyLevelsResponseModel>> getDifficultyLevelsByPrimeMover(
-    String primeMoverMuscleId,
-  );
-  Future<BaseResponse<ExercisesResponseModel>> getExercisesByMuscleAndDifficulty({
+
+  Future<BaseResponse<DifficultyLevelsResponseModel>>
+  getDifficultyLevelsByPrimeMover(String primeMoverMuscleId);
+
+  Future<BaseResponse<ExercisesResponseModel>>
+  getExercisesByMuscleAndDifficulty({
     required String primeMoverMuscleId,
     required String difficultyLevelId,
   });

@@ -17,6 +17,13 @@ enum FitnessGoal {
   final String apiValue;
 
   const FitnessGoal(this.apiValue);
+
+  static FitnessGoal? fromApiValue(String value) {
+    for (final goal in values) {
+      if (goal.apiValue.toLowerCase() == value.toLowerCase()) return goal;
+    }
+    return null;
+  }
 }
 
 enum ActivityLevel {
@@ -29,7 +36,16 @@ enum ActivityLevel {
   final String apiValue;
 
   const ActivityLevel(this.apiValue);
+
+  static ActivityLevel? fromApiValue(String value) {
+    for (final level in values) {
+      if (level.apiValue.toLowerCase() == value.toLowerCase()) return level;
+    }
+    return null;
+  }
 }
+
+enum ProfileSelectionMode { register, editProfile }
 
 abstract class RegisterConstants {
   static const int minimumAge = 14;

@@ -11,10 +11,7 @@ void main() {
   ) async {
     await _pumpWidget(
       tester,
-      const ProfileHeaderWidget(
-        imageUrl: '',
-        userName: 'Mohamed Ebrahim',
-      ),
+      const ProfileHeaderWidget(imageUrl: '', userName: 'Mohamed Ebrahim'),
     );
 
     expect(find.text(AppStrings.profile), findsOneWidget);

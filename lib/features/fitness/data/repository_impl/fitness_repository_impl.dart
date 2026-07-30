@@ -20,7 +20,8 @@ class FitnessRepositoryImpl implements FitnessRepositoryContract {
     final response = await _dataSource.getMuscleGroups();
     switch (response) {
       case SuccessBaseResponse():
-        final entities = response.data.musclesGroup
+        final entities =
+            response.data.musclesGroup
                 ?.map((model) => model.toEntity())
                 .toList() ??
             [];
@@ -37,9 +38,8 @@ class FitnessRepositoryImpl implements FitnessRepositoryContract {
     final response = await _dataSource.getMusclesByGroupId(groupId);
     switch (response) {
       case SuccessBaseResponse():
-        final entities = response.data.muscles
-                ?.map((model) => model.toEntity())
-                .toList() ??
+        final entities =
+            response.data.muscles?.map((model) => model.toEntity()).toList() ??
             [];
         return SuccessBaseResponse(data: entities);
       case ErrorBaseResponse():
@@ -52,9 +52,8 @@ class FitnessRepositoryImpl implements FitnessRepositoryContract {
     final response = await _dataSource.getRandomMuscles();
     switch (response) {
       case SuccessBaseResponse():
-        final entities = response.data.muscles
-                ?.map((model) => model.toEntity())
-                .toList() ??
+        final entities =
+            response.data.muscles?.map((model) => model.toEntity()).toList() ??
             [];
         return SuccessBaseResponse(data: entities);
       case ErrorBaseResponse():
@@ -75,7 +74,8 @@ class FitnessRepositoryImpl implements FitnessRepositoryContract {
     );
     switch (response) {
       case SuccessBaseResponse():
-        final entities = response.data.exercises
+        final entities =
+            response.data.exercises
                 ?.map((model) => model.toEntity())
                 .toList() ??
             [];
@@ -87,13 +87,14 @@ class FitnessRepositoryImpl implements FitnessRepositoryContract {
 
   @override
   Future<BaseResponse<List<DifficultyLevelEntity>>>
-      getDifficultyLevelsByPrimeMover(String primeMoverMuscleId) async {
+  getDifficultyLevelsByPrimeMover(String primeMoverMuscleId) async {
     final response = await _dataSource.getDifficultyLevelsByPrimeMover(
       primeMoverMuscleId,
     );
     switch (response) {
       case SuccessBaseResponse():
-        final entities = response.data.difficultyLevels
+        final entities =
+            response.data.difficultyLevels
                 ?.map((model) => model.toEntity())
                 .toList() ??
             [];
@@ -104,8 +105,7 @@ class FitnessRepositoryImpl implements FitnessRepositoryContract {
   }
 
   @override
-  Future<BaseResponse<List<ExerciseEntity>>>
-      getExercisesByMuscleAndDifficulty({
+  Future<BaseResponse<List<ExerciseEntity>>> getExercisesByMuscleAndDifficulty({
     required String primeMoverMuscleId,
     required String difficultyLevelId,
   }) async {
@@ -115,7 +115,8 @@ class FitnessRepositoryImpl implements FitnessRepositoryContract {
     );
     switch (response) {
       case SuccessBaseResponse():
-        final entities = response.data.exercises
+        final entities =
+            response.data.exercises
                 ?.map((model) => model.toEntity())
                 .toList() ??
             [];

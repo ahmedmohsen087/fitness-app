@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/config/base_state/base_state.dart';
 import 'package:fitness_app/core/values/app_routs_name.dart';
@@ -15,7 +16,6 @@ import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../support/recording_navigator_observer.dart';
-
 @GenerateNiceMocks([MockSpec<ForgetPasswordViewModel>()])
 import 'reset_password_screen_test.mocks.dart';
 
@@ -183,9 +183,7 @@ void main() {
     await tester.pumpAndSettle();
 
     controller.add(
-      ForgetPasswordState(
-        forgetPasswordState: BaseState.error('Reset failed'),
-      ),
+      ForgetPasswordState(forgetPasswordState: BaseState.error('Reset failed')),
     );
     await tester.pumpAndSettle();
 

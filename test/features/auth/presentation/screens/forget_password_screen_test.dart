@@ -14,7 +14,6 @@ import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../support/recording_navigator_observer.dart';
-
 @GenerateNiceMocks([MockSpec<ForgetPasswordUseCase>()])
 import 'forget_password_screen_test.mocks.dart';
 
@@ -105,7 +104,13 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Please enter a valid email'), findsOneWidget);
-      verifyNever(mockUseCase.forgetPassword(forgetPasswordEmailRequestModel: anyNamed('forgetPasswordEmailRequestModel')));
+      verifyNever(
+        mockUseCase.forgetPassword(
+          forgetPasswordEmailRequestModel: anyNamed(
+            'forgetPasswordEmailRequestModel',
+          ),
+        ),
+      );
     },
   );
 
@@ -114,7 +119,9 @@ void main() {
   ) async {
     when(
       mockUseCase.forgetPassword(
-        forgetPasswordEmailRequestModel: anyNamed('forgetPasswordEmailRequestModel'),
+        forgetPasswordEmailRequestModel: anyNamed(
+          'forgetPasswordEmailRequestModel',
+        ),
       ),
     ).thenAnswer(
       (_) async => SuccessBaseResponse(
@@ -130,14 +137,13 @@ void main() {
     await tester.tap(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
 
-    final captured =
-        verify(
-          mockUseCase.forgetPassword(
-            forgetPasswordEmailRequestModel: captureAnyNamed(
-              'forgetPasswordEmailRequestModel',
-            ),
-          ),
-        ).captured.single;
+    final captured = verify(
+      mockUseCase.forgetPassword(
+        forgetPasswordEmailRequestModel: captureAnyNamed(
+          'forgetPasswordEmailRequestModel',
+        ),
+      ),
+    ).captured.single;
     expect(captured.email, 'user@example.com');
   });
 
@@ -146,7 +152,9 @@ void main() {
   ) async {
     when(
       mockUseCase.forgetPassword(
-        forgetPasswordEmailRequestModel: anyNamed('forgetPasswordEmailRequestModel'),
+        forgetPasswordEmailRequestModel: anyNamed(
+          'forgetPasswordEmailRequestModel',
+        ),
       ),
     ).thenAnswer(
       (_) async => SuccessBaseResponse(
@@ -178,11 +186,11 @@ void main() {
   testWidgets('shows an error toast when forgetPassword fails', (tester) async {
     when(
       mockUseCase.forgetPassword(
-        forgetPasswordEmailRequestModel: anyNamed('forgetPasswordEmailRequestModel'),
+        forgetPasswordEmailRequestModel: anyNamed(
+          'forgetPasswordEmailRequestModel',
+        ),
       ),
-    ).thenAnswer(
-      (_) async => ErrorBaseResponse(errorMessage: 'Network error'),
-    );
+    ).thenAnswer((_) async => ErrorBaseResponse(errorMessage: 'Network error'));
 
     await _pump(tester, const ForgetPasswordScreen(), viewModel);
 

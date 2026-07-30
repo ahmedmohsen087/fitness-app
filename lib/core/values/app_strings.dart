@@ -206,6 +206,31 @@ class AppStrings {
   static String get privacyPolicy => 'privacyPolicy'.tr();
   static String get help => 'help'.tr();
   static String get logout => 'logout'.tr();
+
+  static String get saveChanges => 'saveChanges'.tr();
+
+  static String get profileUpdatedSuccessfully =>
+      'profileUpdatedSuccessfully'.tr();
+
+  static String get profilePhotoUpdatedSuccessfully =>
+      'profilePhotoUpdatedSuccessfully'.tr();
+
+  static String get selectProfilePhoto => 'selectProfilePhoto'.tr();
+
+  static String get profilePhotoTooLarge => 'profilePhotoTooLarge'.tr();
+
+  static String get profilePhotoCompressionFailed =>
+      'profilePhotoCompressionFailed'.tr();
+
+  static String get yourWeight => 'yourWeight'.tr();
+
+  static String get yourGoal => 'yourGoal'.tr();
+
+  static String get yourActivityLevel => 'yourActivityLevel'.tr();
+
+  static String get tapToEdit => 'tapToEdit'.tr();
+
+  static String get incompleteProfileData => 'incompleteProfileData'.tr();
   // Webviews URLs
   static const String securityUrl =
       'https://elevate-flutter-team.github.io/fitness-app-webviews/security.html';

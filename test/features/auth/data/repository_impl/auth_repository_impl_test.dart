@@ -232,9 +232,7 @@ void main() {
 
     test('propagates the error message on failure', () async {
       when(
-        mockDataSource.verifyOtp(
-          verifyResetCodeRequestModel: verifyOtpRequest,
-        ),
+        mockDataSource.verifyOtp(verifyResetCodeRequestModel: verifyOtpRequest),
       ).thenAnswer(
         (_) async => ErrorBaseResponse<ForgetPasswordResponseModel>(
           errorMessage: 'bad otp',

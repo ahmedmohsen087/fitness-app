@@ -11,7 +11,6 @@ class GetDifficultyLevelsUseCase {
   GetDifficultyLevelsUseCase(this._repository);
 
   Future<BaseResponse<List<DifficultyLevelEntity>>> execute(
-    String primeMoverMuscleId,
-  ) =>
+    String primeMoverMuscleId,) =>
       _repository.getDifficultyLevelsByPrimeMover(primeMoverMuscleId);
 }

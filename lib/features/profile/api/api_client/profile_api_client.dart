@@ -7,6 +7,9 @@ import 'package:retrofit/dio.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
+import '../models/profile_message_model.dart';
+import '../request_models/edit_profile_request_model.dart';
+
 part 'profile_api_client.g.dart';
 
 @lazySingleton
@@ -18,4 +21,17 @@ abstract class ProfileApiClient {
   @GET(ApiEndpoints.getProfile)
   @Extra({ApiParameters.requiresAuth: true})
   Future<ProfileResponseModel> getProfileData();
+
+  @PUT(ApiEndpoints.editProfile)
+  @Extra({ApiParameters.requiresAuth: true})
+  Future<ProfileResponseModel> editProfile(
+    @Body() EditProfileRequestModel body,
+  );
+
+  @MultiPart()
+  @PUT(ApiEndpoints.uploadProfilePhoto)
+  @Extra({ApiParameters.requiresAuth: true})
+  Future<ProfileMessageModel> uploadProfilePhoto(
+    @Part(name: ApiParameters.photo) MultipartFile photo,
+  );
 }
