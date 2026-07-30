@@ -35,11 +35,10 @@ class ExerciseScreen extends StatelessWidget {
   const ExerciseScreen({super.key, required this.args});
 
   String _getYoutubeThumbnail(String videoUrl) {
-    final videoId = YoutubeVideoIdParser.parse(videoUrl);
-    if (videoId != null && videoId.isNotEmpty) {
-      return 'https://img.youtube.com/vi/$videoId/hqdefault.jpg';
-    }
-    return Assets.defaultExerciseImage;
+    return YoutubeVideoIdParser.getThumbnail(
+      videoUrl,
+      fallback: Assets.defaultExerciseImage,
+    );
   }
 
   @override
