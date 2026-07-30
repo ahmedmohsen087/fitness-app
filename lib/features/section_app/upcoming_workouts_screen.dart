@@ -32,7 +32,22 @@ class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = AppBackgroundScaffold(
+    final content = _buildContent();
+
+    try {
+      context.read<FitnessViewModel>();
+      return content;
+    } catch (_) {
+      return BlocProvider<FitnessViewModel>(
+        create: (_) => getIt<FitnessViewModel>()
+          ..doEvent(LoadHomeFitnessDataEvent()),
+        child: content,
+      );
+    }
+  }
+
+  Widget _buildContent() {
+    return AppBackgroundScaffold(
       imagePath: Assets.mainBackground,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -40,12 +55,7 @@ class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 20,
           children: [
-            Center(
-              child: Text(
-                AppStrings.workouts,
-                style: TextStyles.bodyRegular24,
-              ),
-            ),
+            _buildHeaderTitle(),
             WorkoutsFilterTabs(
               selectedMuscleGroupId: _selectedMuscleGroupId,
               onFullBodyTap: _onFullBodySelected,
@@ -60,15 +70,14 @@ class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
         ),
       ),
     );
+  }
 
-    if (context.read<FitnessViewModel?>() != null) {
-      return content;
-    }
-
-    return BlocProvider<FitnessViewModel>(
-      create: (_) => getIt<FitnessViewModel>()
-        ..doEvent(LoadHomeFitnessDataEvent()),
-      child: content,
+  Widget _buildHeaderTitle() {
+    return Center(
+      child: Text(
+        AppStrings.workouts,
+        style: TextStyles.bodyRegular24,
+      ),
     );
   }
 }
