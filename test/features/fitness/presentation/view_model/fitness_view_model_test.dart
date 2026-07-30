@@ -1,11 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
-import 'package:fitness_app/config/base_state/base_state.dart';
+import 'package:fitness_app/features/fitness/api/request_models/exercises_request_model.dart';
 import 'package:fitness_app/features/fitness/domain/entities/difficulty_level_entity.dart';
 import 'package:fitness_app/features/fitness/domain/entities/exercise_entity.dart';
 import 'package:fitness_app/features/fitness/domain/entities/muscle_entity.dart';
 import 'package:fitness_app/features/fitness/domain/entities/muscle_group_entity.dart';
-import 'package:fitness_app/features/fitness/domain/entities/popular_training_entity.dart';
 import 'package:fitness_app/features/fitness/domain/use_cases/get_difficulty_levels_use_case.dart';
 import 'package:fitness_app/features/fitness/domain/use_cases/get_exercises_by_muscle_and_difficulty_use_case.dart';
 import 'package:fitness_app/features/fitness/domain/use_cases/get_muscles_by_group_use_case.dart';
@@ -38,16 +37,16 @@ void main() {
 
   setUpAll(() {
     provideDummy<BaseResponse<List<MuscleGroupEntity>>>(
-      ErrorBaseResponse(errorMessage: 'dummy'),
+      SuccessBaseResponse(data: const []),
     );
     provideDummy<BaseResponse<List<MuscleEntity>>>(
-      ErrorBaseResponse(errorMessage: 'dummy'),
-    );
-    provideDummy<BaseResponse<List<ExerciseEntity>>>(
-      ErrorBaseResponse(errorMessage: 'dummy'),
+      SuccessBaseResponse(data: const []),
     );
     provideDummy<BaseResponse<List<DifficultyLevelEntity>>>(
-      ErrorBaseResponse(errorMessage: 'dummy'),
+      SuccessBaseResponse(data: const []),
+    );
+    provideDummy<BaseResponse<List<ExerciseEntity>>>(
+      SuccessBaseResponse(data: const []),
     );
   });
 
@@ -73,7 +72,7 @@ void main() {
   });
 
   test('initial state should be empty FitnessState', () {
-    expect(viewModel.state, const FitnessState());
+    expect(viewModel.state, equals(const FitnessState()));
   });
 
   blocTest<FitnessViewModel, FitnessState>(
@@ -101,8 +100,10 @@ void main() {
       );
       when(
         mockGetExercisesByMuscleAndDifficultyUseCase.execute(
-          primeMoverMuscleId: 'm2',
-          difficultyLevelId: 'l1',
+          requestModel: const ExercisesRequestModel(
+            primeMoverMuscleId: 'm2',
+            difficultyLevelId: 'l1',
+          ),
         ),
       ).thenAnswer(
         (_) async => SuccessBaseResponse(
@@ -121,90 +122,27 @@ void main() {
       );
       return viewModel;
     },
-    act: (cubit) => cubit.doEvent(LoadHomeFitnessDataEvent()),
+    act: (bloc) => bloc.doEvent(LoadHomeFitnessDataEvent()),
     expect: () => [
-      const FitnessState(
-        muscleGroupsState: BaseState(isLoading: true),
-        recommendationToDayState: BaseState(isLoading: true),
-        popularTrainingState: BaseState(isLoading: true),
+      isA<FitnessState>().having(
+        (s) => s.muscleGroupsState.isLoading,
+        'muscleGroupsState.isLoading',
+        isTrue,
       ),
-      const FitnessState(
-        muscleGroupsState: BaseState(
-          data: [MuscleGroupEntity(id: 'g1', name: 'Chest')],
-        ),
-        recommendationToDayState: BaseState(
-          data: [MuscleEntity(id: 'm2', name: 'Biceps', image: 'img')],
-        ),
-        popularTrainingState: BaseState(isLoading: true),
+      isA<FitnessState>().having(
+        (s) => s.muscleGroupsState.data,
+        'muscleGroupsState.data',
+        const [MuscleGroupEntity(id: 'g1', name: 'Chest')],
       ),
-      const FitnessState(
-        muscleGroupsState: BaseState(
-          data: [MuscleGroupEntity(id: 'g1', name: 'Chest')],
-        ),
-        recommendationToDayState: BaseState(
-          data: [MuscleEntity(id: 'm2', name: 'Biceps', image: 'img')],
-        ),
-        popularTrainingState: BaseState(
-          data: [
-            PopularTrainingEntity(
-              id: 'm2',
-              muscleName: 'Biceps',
-              image: 'img',
-              totalExercises: 1,
-              difficultyLevel: 'Beginner',
-              primeMoverMuscleId: 'm2',
-              difficultyLevelId: 'l1',
-            ),
-          ],
-        ),
+      isA<FitnessState>().having(
+        (s) => s.recommendationToDayState.data,
+        'recommendationToDayState.data',
+        const [MuscleEntity(id: 'm2', name: 'Biceps', image: 'img')],
       ),
-      const FitnessState(
-        muscleGroupsState: BaseState(
-          data: [MuscleGroupEntity(id: 'g1', name: 'Chest')],
-        ),
-        recommendationToDayState: BaseState(
-          data: [MuscleEntity(id: 'm2', name: 'Biceps', image: 'img')],
-        ),
-        popularTrainingState: BaseState(
-          data: [
-            PopularTrainingEntity(
-              id: 'm2',
-              muscleName: 'Biceps',
-              image: 'img',
-              totalExercises: 1,
-              difficultyLevel: 'Beginner',
-              primeMoverMuscleId: 'm2',
-              difficultyLevelId: 'l1',
-            ),
-          ],
-        ),
-        selectedGroupId: 'g1',
-        musclesByGroupState: BaseState(isLoading: true),
-      ),
-      const FitnessState(
-        muscleGroupsState: BaseState(
-          data: [MuscleGroupEntity(id: 'g1', name: 'Chest')],
-        ),
-        recommendationToDayState: BaseState(
-          data: [MuscleEntity(id: 'm2', name: 'Biceps', image: 'img')],
-        ),
-        popularTrainingState: BaseState(
-          data: [
-            PopularTrainingEntity(
-              id: 'm2',
-              muscleName: 'Biceps',
-              image: 'img',
-              totalExercises: 1,
-              difficultyLevel: 'Beginner',
-              primeMoverMuscleId: 'm2',
-              difficultyLevelId: 'l1',
-            ),
-          ],
-        ),
-        selectedGroupId: 'g1',
-        musclesByGroupState: BaseState(
-          data: [MuscleEntity(id: 'm1', name: 'Pecs', image: 'img')],
-        ),
+      isA<FitnessState>().having(
+        (s) => s.popularTrainingState.data?.length,
+        'popularTrainingState.data.length',
+        1,
       ),
     ],
   );

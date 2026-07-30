@@ -1,6 +1,8 @@
 import 'package:fitness_app/config/base_response/base_response.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../api/request_models/exercises_request_model.dart';
+import '../../api/request_models/random_exercises_request_model.dart';
 import '../../domain/entities/difficulty_level_entity.dart';
 import '../../domain/entities/exercise_entity.dart';
 import '../../domain/entities/muscle_entity.dart';
@@ -64,14 +66,10 @@ class FitnessRepositoryImpl implements FitnessRepositoryContract {
 
   @override
   Future<BaseResponse<List<ExerciseEntity>>> getRandomExercises({
-    String? targetMuscleGroupId,
-    String? difficultyLevelId,
-    int? limit,
+    RandomExercisesRequestModel? requestModel,
   }) async {
     final response = await _dataSource.getRandomExercises(
-      targetMuscleGroupId: targetMuscleGroupId,
-      difficultyLevelId: difficultyLevelId,
-      limit: limit,
+      requestModel: requestModel,
     );
     switch (response) {
       case SuccessBaseResponse():
@@ -106,12 +104,10 @@ class FitnessRepositoryImpl implements FitnessRepositoryContract {
   @override
   Future<BaseResponse<List<ExerciseEntity>>>
       getExercisesByMuscleAndDifficulty({
-    required String primeMoverMuscleId,
-    required String difficultyLevelId,
+    required ExercisesRequestModel requestModel,
   }) async {
     final response = await _dataSource.getExercisesByMuscleAndDifficulty(
-      primeMoverMuscleId: primeMoverMuscleId,
-      difficultyLevelId: difficultyLevelId,
+      requestModel: requestModel,
     );
     switch (response) {
       case SuccessBaseResponse():

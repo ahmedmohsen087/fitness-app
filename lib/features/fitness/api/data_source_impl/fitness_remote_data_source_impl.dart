@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
+import 'package:fitness_app/core/utils/error/error_handler.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/data_source_contract/fitness_remote_data_source_contract.dart';
@@ -8,6 +8,8 @@ import '../../data/models/exercise_model.dart';
 import '../../data/models/muscle_group_model.dart';
 import '../../data/models/muscle_model.dart';
 import '../api_client/fitness_api_client.dart';
+import '../request_models/exercises_request_model.dart';
+import '../request_models/random_exercises_request_model.dart';
 
 @Injectable(as: FitnessRemoteDataSourceContract)
 class FitnessRemoteDataSourceImpl implements FitnessRemoteDataSourceContract {
@@ -21,7 +23,8 @@ class FitnessRemoteDataSourceImpl implements FitnessRemoteDataSourceContract {
       final result = await _apiClient.getMuscleGroups();
       return SuccessBaseResponse(data: result);
     } catch (e) {
-      return ErrorBaseResponse(errorMessage: _handleError(e));
+      final String message = ErrorHandler.handle(e);
+      return ErrorBaseResponse(errorMessage: message);
     }
   }
 
@@ -33,7 +36,8 @@ class FitnessRemoteDataSourceImpl implements FitnessRemoteDataSourceContract {
       final result = await _apiClient.getMusclesByMuscleGroupQuery(groupId);
       return SuccessBaseResponse(data: result);
     } catch (e) {
-      return ErrorBaseResponse(errorMessage: _handleError(e));
+      final String message = ErrorHandler.handle(e);
+      return ErrorBaseResponse(errorMessage: message);
     }
   }
 
@@ -43,25 +47,25 @@ class FitnessRemoteDataSourceImpl implements FitnessRemoteDataSourceContract {
       final result = await _apiClient.getRandomMuscles();
       return SuccessBaseResponse(data: result);
     } catch (e) {
-      return ErrorBaseResponse(errorMessage: _handleError(e));
+      final String message = ErrorHandler.handle(e);
+      return ErrorBaseResponse(errorMessage: message);
     }
   }
 
   @override
   Future<BaseResponse<ExercisesResponseModel>> getRandomExercises({
-    String? targetMuscleGroupId,
-    String? difficultyLevelId,
-    int? limit,
+    RandomExercisesRequestModel? requestModel,
   }) async {
     try {
       final result = await _apiClient.getRandomExercises(
-        targetMuscleGroupId,
-        difficultyLevelId,
-        limit,
+        requestModel?.targetMuscleGroupId,
+        requestModel?.difficultyLevelId,
+        requestModel?.limit,
       );
       return SuccessBaseResponse(data: result);
     } catch (e) {
-      return ErrorBaseResponse(errorMessage: _handleError(e));
+      final String message = ErrorHandler.handle(e);
+      return ErrorBaseResponse(errorMessage: message);
     }
   }
 
@@ -74,35 +78,25 @@ class FitnessRemoteDataSourceImpl implements FitnessRemoteDataSourceContract {
       );
       return SuccessBaseResponse(data: result);
     } catch (e) {
-      return ErrorBaseResponse(errorMessage: _handleError(e));
+      final String message = ErrorHandler.handle(e);
+      return ErrorBaseResponse(errorMessage: message);
     }
   }
 
   @override
   Future<BaseResponse<ExercisesResponseModel>>
       getExercisesByMuscleAndDifficulty({
-    required String primeMoverMuscleId,
-    required String difficultyLevelId,
+    required ExercisesRequestModel requestModel,
   }) async {
     try {
       final result = await _apiClient.getExercisesByMuscleAndDifficulty(
-        primeMoverMuscleId,
-        difficultyLevelId,
+        requestModel.primeMoverMuscleId,
+        requestModel.difficultyLevelId,
       );
       return SuccessBaseResponse(data: result);
     } catch (e) {
-      return ErrorBaseResponse(errorMessage: _handleError(e));
+      final String message = ErrorHandler.handle(e);
+      return ErrorBaseResponse(errorMessage: message);
     }
-  }
-
-  String _handleError(Object error) {
-    if (error is DioException) {
-      if (error.response?.data is Map &&
-          (error.response?.data as Map).containsKey('message')) {
-        return error.response?.data['message'].toString() ?? 'Network Error';
-      }
-      return error.message ?? 'Connection Failure';
-    }
-    return error.toString();
   }
 }

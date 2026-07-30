@@ -38,9 +38,6 @@ class PopularTrainingWidget extends StatelessWidget {
                 }
 
                 final item = items[index];
-                final imageUrl = item.image.isNotEmpty
-                    ? item.image
-                    : 'https://iili.io/33p7bcv.png';
 
                 return GestureDetector(
                   onTap: () {},
@@ -57,7 +54,7 @@ class PopularTrainingWidget extends StatelessWidget {
                         fit: StackFit.expand,
                         children: [
                           CustomNetworkImage(
-                            imageUrl: imageUrl,
+                            imageUrl: item.image,
                             fit: BoxFit.cover,
                           ),
                           Container(
@@ -67,70 +64,55 @@ class PopularTrainingWidget extends StatelessWidget {
                                 end: Alignment.bottomCenter,
                                 colors: [
                                   Colors.transparent,
-                                  AppColors.black.withValues(alpha: 0.85),
+                                  Colors.black.withValues(alpha: 0.85),
                                 ],
-                                stops: const [0.2, 1.0],
                               ),
                             ),
                           ),
-                          Positioned(
-                            left: 12,
-                            right: 12,
-                            bottom: 44,
-                            child: Text(
-                              "Exercises That\nStrengthen Your ${item.muscleName}",
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyles.bodyRegular12.copyWith(
-                                color: AppColors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 10,
-                            right: 10,
-                            bottom: 10,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5,
+                                Text(
+                                  item.muscleName,
+                                  style: TextStyles.bodyMedium18.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 16,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.lightBlack
-                                        .withValues(alpha: 0.75),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Text(
-                                    "${item.totalExercises} Tasks",
-                                    style: TextStyles.bodyRegular12.copyWith(
-                                      fontSize: 10,
-                                      color: AppColors.white,
-                                    ),
-                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.lightBlack
-                                        .withValues(alpha: 0.75),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Text(
-                                    item.difficultyLevel,
-                                    style: TextStyles.bodyRegular12.copyWith(
-                                      fontSize: 10,
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.fitness_center_rounded,
+                                      size: 14,
                                       color: AppColors.orange,
-                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      '${item.totalExercises} Exercises',
+                                      style: TextStyles.bodyRegular12.copyWith(
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Icon(
+                                      Icons.speed_rounded,
+                                      size: 14,
+                                      color: AppColors.orange,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      item.difficultyLevel,
+                                      style: TextStyles.bodyRegular12.copyWith(
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

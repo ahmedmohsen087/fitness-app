@@ -1,5 +1,7 @@
 import 'package:fitness_app/config/base_response/base_response.dart';
 
+import '../../api/request_models/exercises_request_model.dart';
+import '../../api/request_models/random_exercises_request_model.dart';
 import '../entities/difficulty_level_entity.dart';
 import '../entities/exercise_entity.dart';
 import '../entities/muscle_entity.dart';
@@ -10,15 +12,12 @@ abstract class FitnessRepositoryContract {
   Future<BaseResponse<List<MuscleEntity>>> getMusclesByGroupId(String groupId);
   Future<BaseResponse<List<MuscleEntity>>> getRandomMuscles();
   Future<BaseResponse<List<ExerciseEntity>>> getRandomExercises({
-    String? targetMuscleGroupId,
-    String? difficultyLevelId,
-    int? limit,
+    RandomExercisesRequestModel? requestModel,
   });
   Future<BaseResponse<List<DifficultyLevelEntity>>> getDifficultyLevelsByPrimeMover(
     String primeMoverMuscleId,
   );
   Future<BaseResponse<List<ExerciseEntity>>> getExercisesByMuscleAndDifficulty({
-    required String primeMoverMuscleId,
-    required String difficultyLevelId,
+    required ExercisesRequestModel requestModel,
   });
 }

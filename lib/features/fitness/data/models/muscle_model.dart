@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'muscle_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class MuscleModel {
   @JsonKey(name: '_id')
   final String? id;
@@ -17,11 +17,9 @@ class MuscleModel {
 
   factory MuscleModel.fromJson(Map<String, dynamic> json) =>
       _$MuscleModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$MuscleModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class MusclesResponseModel {
   final String? message;
   final int? totalMuscles;
@@ -35,6 +33,4 @@ class MusclesResponseModel {
 
   factory MusclesResponseModel.fromJson(Map<String, dynamic> json) =>
       _$MusclesResponseModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$MusclesResponseModelToJson(this);
 }

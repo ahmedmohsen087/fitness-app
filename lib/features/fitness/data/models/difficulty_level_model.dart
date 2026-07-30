@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'difficulty_level_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class DifficultyLevelModel {
   final String? id;
   final String? name;
@@ -14,11 +14,9 @@ class DifficultyLevelModel {
 
   factory DifficultyLevelModel.fromJson(Map<String, dynamic> json) =>
       _$DifficultyLevelModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DifficultyLevelModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class DifficultyLevelsResponseModel {
   final String? message;
   final int? totalLevels;
@@ -33,6 +31,4 @@ class DifficultyLevelsResponseModel {
 
   factory DifficultyLevelsResponseModel.fromJson(Map<String, dynamic> json) =>
       _$DifficultyLevelsResponseModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DifficultyLevelsResponseModelToJson(this);
 }

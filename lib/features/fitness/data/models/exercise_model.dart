@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'exercise_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ExerciseModel {
   @JsonKey(name: '_id')
   final String? id;
@@ -39,11 +39,9 @@ class ExerciseModel {
 
   factory ExerciseModel.fromJson(Map<String, dynamic> json) =>
       _$ExerciseModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ExerciseModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ExercisesResponseModel {
   final String? message;
   final List<ExerciseModel>? exercises;
@@ -55,6 +53,4 @@ class ExercisesResponseModel {
 
   factory ExercisesResponseModel.fromJson(Map<String, dynamic> json) =>
       _$ExercisesResponseModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ExercisesResponseModelToJson(this);
 }
