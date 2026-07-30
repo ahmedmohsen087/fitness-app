@@ -19,32 +19,32 @@ class CategoryItem extends StatelessWidget {
     ];
 
     return Container(
-      height: 100,
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
       decoration: BoxDecoration(
-        color: AppColors.lightBlack.withValues(alpha: .80),
-        borderRadius: BorderRadius.circular(50),
+        color: AppColors.lightBlack.withValues(alpha: .85),
+        borderRadius: BorderRadius.circular(24),
       ),
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: categories.length,
-        separatorBuilder: (_, _) => const SizedBox(
-          width: 20,
-          child: VerticalDivider(
-            color: AppColors.lightGray,
-            thickness: .5,
-            indent: 10,
-            endIndent: 10,
-          ),
-        ),
-        itemBuilder: (context, index) {
+      child: Row(
+        children: List.generate(categories.length, (index) {
           final item = categories[index];
-
-          return Padding(
-            padding: const EdgeInsets.all(10),
-            child: CategoryModel(image: item.image, title: item.title),
+          return Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: CategoryModel(image: item.image, title: item.title),
+                ),
+                if (index < categories.length - 1)
+                  const SizedBox(
+                    height: 36,
+                    child: VerticalDivider(
+                      color: AppColors.lightGray,
+                      thickness: 0.5,
+                    ),
+                  ),
+              ],
+            ),
           );
-        },
+        }),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/config/base_state/base_state.dart';
 import 'package:fitness_app/config/di/di.dart';
+import 'package:fitness_app/core/reusable_widgets/custom_media_card.dart';
 import 'package:fitness_app/core/theme/app_theme.dart';
 import 'package:fitness_app/core/utils/app_routes.dart';
 import 'package:fitness_app/features/food/domain/entities/category_food/category_food_entity.dart';
@@ -64,7 +65,7 @@ void main() {
 
     states.add(HomeState(recommendationFoodState: BaseState.loading()));
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.byType(RecommendationItemWidget), findsNWidgets(5));
+    expect(find.byType(CustomMediaCard), findsNWidgets(5));
 
     states.add(
       HomeState(
@@ -73,8 +74,8 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
-    expect(find.byType(RecommendationItemWidget), findsNothing);
+    await tester.pump();
+    expect(find.byType(CustomMediaCard), findsNothing);
 
     states.add(
       HomeState(
@@ -92,7 +93,7 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
 
     await tester.tap(find.text('Seafood'));
     await tester.pumpAndSettle();
@@ -156,7 +157,7 @@ Future<void> _pumpRecommendation(
       ),
     ),
   );
-  await tester.pumpAndSettle();
+  await tester.pump();
 }
 
 void _stubFoodViewModel(MockFoodViewModel viewModel) {

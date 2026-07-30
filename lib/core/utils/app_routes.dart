@@ -5,6 +5,8 @@ import 'package:fitness_app/features/auth/presentation/screens/email_verificatio
 import 'package:fitness_app/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:fitness_app/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:fitness_app/features/auth/presentation/view_models/forget_password_view_model/forget_password_view_model.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,9 +42,18 @@ class AppRoutes {
         case AppRoutsName.sectionApp:
           return MaterialPageRoute(
             settings: settings,
-            builder: (_) => BlocProvider(
-              create: (_) =>
-                  getIt<HomeViewModel>()..doEvent(LoadHomeDataEvent()),
+            builder: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider<HomeViewModel>(
+                  create: (_) =>
+                      getIt<HomeViewModel>()..doEvent(LoadHomeDataEvent()),
+                ),
+                BlocProvider<FitnessViewModel>(
+                  create: (_) =>
+                      getIt<FitnessViewModel>()
+                        ..doEvent(LoadHomeFitnessDataEvent()),
+                ),
+              ],
               child: const SectionApp(),
             ),
           );
