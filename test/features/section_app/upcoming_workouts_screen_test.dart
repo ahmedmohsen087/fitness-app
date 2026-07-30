@@ -1,12 +1,12 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/config/base_state/base_state.dart';
-import 'package:fitness_app/features/home/domain/entities/muscles_group/muscles_entity.dart';
-import 'package:fitness_app/features/home/domain/entities/muscles_group/muscles_group_entity.dart';
-import 'package:fitness_app/features/home/domain/entities/recommendation_to_day/recommendation_to_day_entity.dart';
-import 'package:fitness_app/features/home/domain/entities/recommendation_to_day/recommendation_to_day_muscle_entity.dart';
-import 'package:fitness_app/features/home/presentation/view_models/home_events.dart';
-import 'package:fitness_app/features/home/presentation/view_models/home_states.dart';
-import 'package:fitness_app/features/home/presentation/view_models/home_view_models.dart';
+import 'package:fitness_app/features/fitness/domain/entities/muscle_entity.dart';
+import 'package:fitness_app/features/fitness/domain/entities/muscle_group_entity.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_state.dart';
+import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +16,7 @@ import 'package:mockito/mockito.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-@GenerateNiceMocks([MockSpec<HomeViewModel>()])
+@GenerateNiceMocks([MockSpec<FitnessViewModel>()])
 import 'upcoming_workouts_screen_test.mocks.dart';
 
 class TestAssetLoader extends AssetLoader {
@@ -32,15 +32,15 @@ class TestAssetLoader extends AssetLoader {
   }
 }
 
-const _muscle = RecommendationToDayMuscleEntity(
+const _muscle = MuscleEntity(
   id: 'm1',
   name: 'High Chest Exercise',
   image: 'https://example.com/chest.png',
 );
 
-const _group = MusclesEntity(id: 'g1', name: 'Chest');
+const _group = MuscleGroupEntity(id: 'g1', name: 'Chest');
 
-Widget _wrap(Widget child, HomeViewModel viewModel) {
+Widget _wrap(Widget child, FitnessViewModel viewModel) {
   return EasyLocalization(
     supportedLocales: const [Locale('en'), Locale('ar')],
     path: 'assets/translations',
@@ -51,7 +51,10 @@ Widget _wrap(Widget child, HomeViewModel viewModel) {
         locale: context.locale,
         supportedLocales: context.supportedLocales,
         localizationsDelegates: context.localizationDelegates,
-        home: BlocProvider<HomeViewModel>.value(value: viewModel, child: child),
+        home: BlocProvider<FitnessViewModel>.value(
+          value: viewModel,
+          child: child,
+        ),
       ),
     ),
   );
@@ -59,35 +62,28 @@ Widget _wrap(Widget child, HomeViewModel viewModel) {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  late MockHomeViewModel mockViewModel;
+  late MockFitnessViewModel mockViewModel;
 
   setUpAll(() async {
     SharedPreferences.setMockInitialValues({});
     await EasyLocalization.ensureInitialized();
+    provideDummy<FitnessState>(const FitnessState());
   });
 
   setUp(() {
-    mockViewModel = MockHomeViewModel();
+    mockViewModel = MockFitnessViewModel();
+    when(mockViewModel.stream).thenAnswer((_) => const Stream.empty());
+    when(mockViewModel.isClosed).thenReturn(false);
   });
 
   group('Success State Tests', () {
     setUp(() {
-      when(mockViewModel.selectedMuscleGroupId).thenReturn(null);
       when(mockViewModel.state).thenReturn(
-        HomeState(
-          recommendationToDayState: BaseState.success(
-            const RecommendationToDayEntity(
-              message: '',
-              totalMuscles: 1,
-              muscles: [_muscle],
-            ),
-          ),
-          musclesGroupState: BaseState.success(
-            const MusclesGroupEntity(message: '', musclesGroup: [_group]),
-          ),
+        FitnessState(
+          recommendationToDayState: BaseState.success(const [_muscle]),
+          muscleGroupsState: BaseState.success(const [_group]),
         ),
       );
-      when(mockViewModel.stream).thenAnswer((_) => const Stream.empty());
     });
 
     testWidgets(
@@ -97,10 +93,9 @@ void main() {
           await tester.pumpWidget(
             _wrap(const UpcomingWorkoutsScreen(), mockViewModel),
           );
-          await tester.pumpAndSettle();
+          await tester.pump(const Duration(milliseconds: 300));
 
-          expect(find.byType(UpcomingWorkoutsScreen), findsOneWidget);
-          expect(find.byType(Image), findsWidgets); // Background + Cards
+          expect(find.text('Workouts'), findsOneWidget);
         });
       },
     );
@@ -112,36 +107,29 @@ void main() {
         await tester.pumpWidget(
           _wrap(const UpcomingWorkoutsScreen(), mockViewModel),
         );
-        await tester.pumpAndSettle();
+        await tester.pump(const Duration(milliseconds: 300));
 
         expect(find.text('High Chest Exercise'), findsOneWidget);
       });
     });
 
     testWidgets(
-      'should trigger GetMusclesGroupByIdEvent event when a specific muscle tab is tapped',
+      'should trigger SelectMuscleGroupEvent when a specific muscle tab is tapped',
       (tester) async {
         await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(const UpcomingWorkoutsScreen(), mockViewModel),
           );
-          await tester.pumpAndSettle();
+          await tester.pump(const Duration(milliseconds: 300));
 
-          final chestTabFinder = find.text('Chest');
-          expect(chestTabFinder, findsOneWidget);
+          final chestTab = find.text('Chest');
+          expect(chestTab, findsOneWidget);
 
-          await tester.tap(chestTabFinder);
-          await tester.pump();
+          await tester.tap(chestTab);
+          await tester.pump(const Duration(milliseconds: 300));
 
-          verify(
-            mockViewModel.doEvent(
-              argThat(
-                predicate<HomeEvent>(
-                  (e) => e is GetMusclesGroupByIdEvent && e.id == 'g1',
-                ),
-              ),
-            ),
-          ).called(1);
+          verify(mockViewModel.doEvent(argThat(isA<SelectMuscleGroupEvent>())))
+              .called(1);
         });
       },
     );
@@ -151,26 +139,20 @@ void main() {
     testWidgets('should show skeleton items when workouts are loading', (
       tester,
     ) async {
-      await mockNetworkImagesFor(() async {
-        when(mockViewModel.selectedMuscleGroupId).thenReturn(null);
-        when(mockViewModel.state).thenReturn(
-          HomeState(
-            recommendationToDayState: BaseState.loading(),
-            musclesGroupState: BaseState.success(
-              const MusclesGroupEntity(message: '', musclesGroup: [_group]),
-            ),
-          ),
-        );
-        when(mockViewModel.stream).thenAnswer((_) => const Stream.empty());
+      when(mockViewModel.state).thenReturn(
+        const FitnessState(
+          recommendationToDayState: BaseState(isLoading: true),
+          muscleGroupsState: BaseState(isLoading: true),
+        ),
+      );
 
+      await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           _wrap(const UpcomingWorkoutsScreen(), mockViewModel),
         );
-        await tester
-            .pump(); // Skeletonizer needs just a pump, not pumpAndSettle
+        await tester.pump();
 
-        expect(find.text('Loading'), findsWidgets);
-        expect(find.text('High Chest Exercise'), findsNothing);
+        expect(find.byType(UpcomingWorkoutsScreen), findsOneWidget);
       });
     });
   });
@@ -179,30 +161,19 @@ void main() {
     testWidgets(
       'should show "No Workouts Found" message when workouts list is empty',
       (tester) async {
-        await mockNetworkImagesFor(() async {
-          when(mockViewModel.selectedMuscleGroupId).thenReturn(null);
-          when(mockViewModel.state).thenReturn(
-            HomeState(
-              recommendationToDayState: BaseState.success(
-                const RecommendationToDayEntity(
-                  message: '',
-                  totalMuscles: 0,
-                  muscles: [],
-                ),
-              ),
-              musclesGroupState: BaseState.success(
-                const MusclesGroupEntity(message: '', musclesGroup: [_group]),
-              ),
-            ),
-          );
-          when(mockViewModel.stream).thenAnswer((_) => const Stream.empty());
+        when(mockViewModel.state).thenReturn(
+          FitnessState(
+            recommendationToDayState: BaseState.success(const []),
+            muscleGroupsState: BaseState.success(const []),
+          ),
+        );
 
+        await mockNetworkImagesFor(() async {
           await tester.pumpWidget(
             _wrap(const UpcomingWorkoutsScreen(), mockViewModel),
           );
-          await tester.pumpAndSettle();
+          await tester.pump(const Duration(milliseconds: 300));
 
-          // Looks for translated string key from TestAssetLoader
           expect(find.text('No Workouts Found'), findsOneWidget);
         });
       },

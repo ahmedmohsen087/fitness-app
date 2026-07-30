@@ -27,126 +27,154 @@ import '../values/app_strings.dart';
 class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     try {
-      switch (settings.name) {
-        case AppRoutsName.splashScreen:
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => const SplashScreen(),
-          );
-        case AppRoutsName.onBoarding:
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => const OnBoarding(),
-          );
-
-        case AppRoutsName.sectionApp:
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider<HomeViewModel>(
-                  create: (_) =>
-                      getIt<HomeViewModel>()..doEvent(LoadHomeDataEvent()),
-                ),
-                BlocProvider<FitnessViewModel>(
-                  create: (_) =>
-                      getIt<FitnessViewModel>()
-                        ..doEvent(LoadHomeFitnessDataEvent()),
-                ),
-              ],
-              child: const SectionApp(),
-            ),
-          );
-        case AppRoutsName.register:
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => const RegisterScreen(),
-          );
-        case AppRoutsName.loginScreen:
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => BlocProvider<LoginViewModel>(
-              create: (_) => getIt<LoginViewModel>(),
-              child: const LoginScreen(),
-            ),
-          );
-        case AppRoutsName.forgetPasswordScreen:
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => BlocProvider(
-              create: (_) => getIt<ForgetPasswordViewModel>(),
-              child: const ForgetPasswordScreen(),
-            ),
-          );
-
-        case AppRoutsName.emailVerificationScreen:
-          final viewModel = settings.arguments as ForgetPasswordViewModel;
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => BlocProvider.value(
-              value: viewModel,
-              child: const EmailVerificationScreen(),
-            ),
-          );
-
-        case AppRoutsName.resetPassword:
-          final viewModel = settings.arguments as ForgetPasswordViewModel;
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => BlocProvider.value(
-              value: viewModel,
-              child: const ResetPasswordScreen(),
-            ),
-          );
-        case AppRoutsName.food:
-          final initialCategory =
-              settings.arguments is String &&
-                  (settings.arguments! as String).trim().isNotEmpty
-              ? settings.arguments! as String
-              : null;
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => FoodScreen(initialCategory: initialCategory),
-          );
-        case AppRoutsName.foodDetails:
-          final mealId = settings.arguments is String
-              ? (settings.arguments! as String).trim()
-              : '';
-          if (mealId.isEmpty) return _notFoundRoute(settings);
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => FoodDetailsScreen(mealId: mealId),
-          );
-        case AppRoutsName.upcomingWorkout:
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => BlocProvider<HomeViewModel>(
-              create: (_) => getIt<HomeViewModel>(),
-              child: const UpcomingWorkoutsScreen(),
-            ),
-          );
-        default:
-          return _notFoundRoute(settings);
-      }
+      final route = _matchRoute(settings);
+      return route ?? _notFoundRoute(settings);
     } catch (e) {
-      debugPrint("Routing Exception caught: $e");
-
-      final errorMessage = ErrorHandler.handle(e);
-
-      return MaterialPageRoute(
-        settings: settings,
-        builder: (context) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            AppToast.error(context, errorMessage, position: ToastPosition.top);
-          });
-
-          return const Scaffold(
-            backgroundColor: Colors.transparent,
-            body: SizedBox.shrink(),
-          );
-        },
-      );
+      return _handleRouteError(settings, e);
     }
+  }
+
+  static Route<dynamic>? _matchRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case AppRoutsName.splashScreen:
+        return _pageRoute(settings, const SplashScreen());
+      case AppRoutsName.onBoarding:
+        return _pageRoute(settings, const OnBoarding());
+      case AppRoutsName.sectionApp:
+        return _buildSectionAppRoute(settings);
+      case AppRoutsName.register:
+        return _pageRoute(settings, const RegisterScreen());
+      case AppRoutsName.loginScreen:
+        return _buildLoginRoute(settings);
+      case AppRoutsName.forgetPasswordScreen:
+        return _buildForgetPasswordRoute(settings);
+      case AppRoutsName.emailVerificationScreen:
+        return _buildEmailVerificationRoute(settings);
+      case AppRoutsName.resetPassword:
+        return _buildResetPasswordRoute(settings);
+      case AppRoutsName.food:
+        return _buildFoodRoute(settings);
+      case AppRoutsName.foodDetails:
+        return _buildFoodDetailsRoute(settings);
+      case AppRoutsName.upcomingWorkout:
+        return _buildUpcomingWorkoutRoute(settings);
+      default:
+        return null;
+    }
+  }
+
+  static Route<dynamic> _pageRoute(RouteSettings settings, Widget page) {
+    return MaterialPageRoute(settings: settings, builder: (_) => page);
+  }
+
+  static Route<dynamic> _buildSectionAppRoute(RouteSettings settings) {
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider<HomeViewModel>(
+            create: (_) => getIt<HomeViewModel>()..doEvent(LoadHomeDataEvent()),
+          ),
+          BlocProvider<FitnessViewModel>(
+            create: (_) => getIt<FitnessViewModel>()
+              ..doEvent(LoadHomeFitnessDataEvent()),
+          ),
+        ],
+        child: const SectionApp(),
+      ),
+    );
+  }
+
+  static Route<dynamic> _buildLoginRoute(RouteSettings settings) {
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => BlocProvider<LoginViewModel>(
+        create: (_) => getIt<LoginViewModel>(),
+        child: const LoginScreen(),
+      ),
+    );
+  }
+
+  static Route<dynamic> _buildForgetPasswordRoute(RouteSettings settings) {
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => BlocProvider(
+        create: (_) => getIt<ForgetPasswordViewModel>(),
+        child: const ForgetPasswordScreen(),
+      ),
+    );
+  }
+
+  static Route<dynamic> _buildEmailVerificationRoute(RouteSettings settings) {
+    final viewModel = settings.arguments as ForgetPasswordViewModel;
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => BlocProvider.value(
+        value: viewModel,
+        child: const EmailVerificationScreen(),
+      ),
+    );
+  }
+
+  static Route<dynamic> _buildResetPasswordRoute(RouteSettings settings) {
+    final viewModel = settings.arguments as ForgetPasswordViewModel;
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => BlocProvider.value(
+        value: viewModel,
+        child: const ResetPasswordScreen(),
+      ),
+    );
+  }
+
+  static Route<dynamic> _buildFoodRoute(RouteSettings settings) {
+    final initialCategory = settings.arguments is String &&
+            (settings.arguments! as String).trim().isNotEmpty
+        ? settings.arguments! as String
+        : null;
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => FoodScreen(initialCategory: initialCategory),
+    );
+  }
+
+  static Route<dynamic> _buildFoodDetailsRoute(RouteSettings settings) {
+    final mealId = settings.arguments is String
+        ? (settings.arguments! as String).trim()
+        : '';
+    if (mealId.isEmpty) return _notFoundRoute(settings);
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => FoodDetailsScreen(mealId: mealId),
+    );
+  }
+
+  static Route<dynamic> _buildUpcomingWorkoutRoute(RouteSettings settings) {
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => BlocProvider<FitnessViewModel>(
+        create: (_) => getIt<FitnessViewModel>()
+          ..doEvent(LoadHomeFitnessDataEvent()),
+        child: const UpcomingWorkoutsScreen(),
+      ),
+    );
+  }
+
+  static Route<dynamic> _handleRouteError(RouteSettings settings, Object e) {
+    debugPrint("Routing Exception caught: $e");
+    final errorMessage = ErrorHandler.handle(e);
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (context) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          AppToast.error(context, errorMessage, position: ToastPosition.top);
+        });
+        return const Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SizedBox.shrink(),
+        );
+      },
+    );
   }
 
   static Route<dynamic> _notFoundRoute(RouteSettings settings) =>
