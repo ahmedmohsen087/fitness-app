@@ -4,6 +4,8 @@ import 'package:fitness_app/config/base_state/base_state.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../api/request_models/exercises_request_model.dart';
+import '../../domain/entities/difficulty_level_entity.dart';
+import '../../domain/entities/exercise_entity.dart';
 import '../../domain/entities/muscle_entity.dart';
 import '../../domain/entities/popular_training_entity.dart';
 import '../../domain/use_cases/get_difficulty_levels_use_case.dart';
@@ -56,11 +58,13 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
         muscleGroupsState: BaseState.loading(),
         recommendationToDayState: BaseState.loading(),
         popularTrainingState: BaseState.loading(),
+        musclesByGroupState: BaseState.loading(),
       ),
     );
     await Future.wait([
       _loadMuscleGroups(),
       _loadRecommendationToDay(),
+      _fetchPopularTrainingsFlow(),
     ]);
   }
 
@@ -74,13 +78,13 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
           ),
         );
         if (response.data.isNotEmpty) {
-          await _loadPopularTraining(response.data.first.id);
+          await _selectMuscleGroup(response.data.first.id);
         }
       case ErrorBaseResponse():
         emit(
           state.copyWith(
             muscleGroupsState: BaseState.error(response.errorMessage),
-            popularTrainingState: BaseState.error(response.errorMessage),
+            musclesByGroupState: BaseState.error(response.errorMessage),
           ),
         );
     }
@@ -105,39 +109,69 @@ class FitnessViewModel extends BaseCubit<FitnessState> {
     }
   }
 
-  Future<void> _loadPopularTraining(String targetGroupId) async {
-    final response = await _getMusclesByGroupUseCase.execute(targetGroupId);
-    switch (response) {
-      case SuccessBaseResponse():
-        final popular = _mapMusclesToPopularTrainings(response.data);
-        emit(
-          state.copyWith(
-            popularTrainingState: BaseState.success(popular),
-          ),
-        );
-      case ErrorBaseResponse():
-        emit(
-          state.copyWith(
-            popularTrainingState: BaseState.error(response.errorMessage),
-          ),
-        );
+  Future<void> _fetchPopularTrainingsFlow() async {
+    final randomMusclesRes = await _getRandomMusclesUseCase.execute();
+    if (randomMusclesRes is ErrorBaseResponse<List<MuscleEntity>>) {
+      emit(state.copyWith(
+        popularTrainingState: BaseState.error(randomMusclesRes.errorMessage),
+      ));
+      return;
     }
+
+    final muscles = (randomMusclesRes as SuccessBaseResponse<List<MuscleEntity>>)
+        .data
+        .take(4)
+        .toList();
+
+    final List<PopularTrainingEntity> result = [];
+    for (int i = 0; i < muscles.length; i++) {
+      final item = await _buildPopularItemForMuscle(muscles[i], i);
+      if (item != null) result.add(item);
+    }
+
+    emit(state.copyWith(popularTrainingState: BaseState.success(result)));
   }
 
-  List<PopularTrainingEntity> _mapMusclesToPopularTrainings(
-    List<MuscleEntity> muscles,
-  ) {
-    return muscles.map((m) {
-      return PopularTrainingEntity(
-        id: m.id,
-        muscleName: m.name,
-        image: m.image,
-        totalExercises: 10,
-        difficultyLevel: 'Medium',
-        primeMoverMuscleId: m.id,
-        difficultyLevelId: '1',
-      );
-    }).toList();
+  Future<PopularTrainingEntity?> _buildPopularItemForMuscle(
+    MuscleEntity muscle,
+    int index,
+  ) async {
+    final levelsRes = await _getDifficultyLevelsUseCase.execute(muscle.id);
+    if (levelsRes is! SuccessBaseResponse<List<DifficultyLevelEntity>> ||
+        levelsRes.data.isEmpty) {
+      return null;
+    }
+
+    final levels = levelsRes.data;
+    final selectedLevel = levels[index % levels.length];
+    final count = await _fetchExercisesCount(muscle.id, selectedLevel.id);
+
+    return PopularTrainingEntity(
+      id: muscle.id,
+      muscleName: 'Exercises That Strengthen Your ${muscle.name}',
+      image: muscle.image,
+      totalExercises: count,
+      difficultyLevel: selectedLevel.name,
+      primeMoverMuscleId: muscle.id,
+      difficultyLevelId: selectedLevel.id,
+    );
+  }
+
+  Future<int> _fetchExercisesCount(
+    String muscleId,
+    String levelId,
+  ) async {
+    final req = ExercisesRequestModel(
+      primeMoverMuscleId: muscleId,
+      difficultyLevelId: levelId,
+    );
+    final res = await _getExercisesByMuscleAndDifficultyUseCase.execute(
+      requestModel: req,
+    );
+    if (res is SuccessBaseResponse<List<ExerciseEntity>>) {
+      return res.data.length;
+    }
+    return 0;
   }
 
   Future<void> _selectMuscleGroup(String? groupId) async {

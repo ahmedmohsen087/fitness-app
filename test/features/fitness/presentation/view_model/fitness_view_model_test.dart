@@ -1,6 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
-import 'package:fitness_app/features/fitness/api/request_models/exercises_request_model.dart';
 import 'package:fitness_app/features/fitness/domain/entities/difficulty_level_entity.dart';
 import 'package:fitness_app/features/fitness/domain/entities/exercise_entity.dart';
 import 'package:fitness_app/features/fitness/domain/entities/muscle_entity.dart';
@@ -100,10 +99,7 @@ void main() {
       );
       when(
         mockGetExercisesByMuscleAndDifficultyUseCase.execute(
-          requestModel: const ExercisesRequestModel(
-            primeMoverMuscleId: 'm2',
-            difficultyLevelId: 'l1',
-          ),
+          requestModel: anyNamed('requestModel'),
         ),
       ).thenAnswer(
         (_) async => SuccessBaseResponse(
@@ -123,27 +119,11 @@ void main() {
       return viewModel;
     },
     act: (bloc) => bloc.doEvent(LoadHomeFitnessDataEvent()),
-    expect: () => [
-      isA<FitnessState>().having(
-        (s) => s.muscleGroupsState.isLoading,
-        'muscleGroupsState.isLoading',
-        isTrue,
-      ),
-      isA<FitnessState>().having(
-        (s) => s.muscleGroupsState.data,
-        'muscleGroupsState.data',
-        const [MuscleGroupEntity(id: 'g1', name: 'Chest')],
-      ),
-      isA<FitnessState>().having(
-        (s) => s.recommendationToDayState.data,
-        'recommendationToDayState.data',
-        const [MuscleEntity(id: 'm2', name: 'Biceps', image: 'img')],
-      ),
-      isA<FitnessState>().having(
-        (s) => s.popularTrainingState.data?.length,
-        'popularTrainingState.data.length',
-        1,
-      ),
-    ],
+    verify: (bloc) {
+      expect(bloc.state.muscleGroupsState.data?.length, 1);
+      expect(bloc.state.recommendationToDayState.data?.length, 1);
+      expect(bloc.state.popularTrainingState.data?.length, 1);
+      expect(bloc.state.musclesByGroupState.data?.length, 1);
+    },
   );
 }

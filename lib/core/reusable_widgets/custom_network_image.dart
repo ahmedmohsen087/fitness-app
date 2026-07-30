@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
 import '../theme/app_colors.dart';
 import '../utils/app_responsive.dart';
 import '../values/app_strings.dart';
@@ -23,6 +24,19 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (imageUrl.startsWith('assets/')) {
+      final assetWidget = Image.asset(
+        imageUrl,
+        width: width,
+        height: height,
+        fit: fit,
+      );
+      if (borderRadius != null) {
+        return ClipRRect(borderRadius: borderRadius!, child: assetWidget);
+      }
+      return assetWidget;
+    }
+
     final mediaQuery = MediaQuery.maybeOf(context);
     final devicePixelRatio = mediaQuery?.devicePixelRatio ?? 1.0;
     final size = mediaQuery?.size ?? const Size(360, 640);
@@ -84,29 +98,76 @@ class _ImageErrorState extends State<_ImageError> {
       width: widget.width,
       height: widget.height,
       color: AppColors.lightBlack,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.image_not_supported_outlined,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxHeight < 80 || constraints.maxWidth < 80) {
+            return _buildCompactErrorWidget();
+          }
+          return _buildFullErrorWidget();
+        },
+      ),
+    );
+  }
+
+  Widget _buildCompactErrorWidget() {
+    return Center(
+      child: InkWell(
+        onTap: _retry,
+        borderRadius: BorderRadius.circular(20),
+        child: const Padding(
+          padding: EdgeInsets.all(6),
+          child: Icon(
+            Icons.refresh_rounded,
             color: AppColors.placeHolder,
-            size: 28,
+            size: 20,
           ),
-          const SizedBox(height: 4),
-          Text(
-            AppStrings.somethingWentWrong,
-            style: const TextStyle(fontSize: 10, color: AppColors.placeHolder),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFullErrorWidget() {
+    return Center(
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.image_not_supported_outlined,
+                color: AppColors.placeHolder,
+                size: 22,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                AppStrings.somethingWentWrong,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: AppColors.placeHolder,
+                ),
+              ),
+              const SizedBox(height: 2),
+              InkWell(
+                onTap: _retry,
+                borderRadius: BorderRadius.circular(16),
+                child: const Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Icon(
+                    Icons.refresh_rounded,
+                    color: AppColors.placeHolder,
+                    size: 18,
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 6),
-          IconButton(
-            onPressed: _retry,
-            icon: const Icon(
-              Icons.refresh,
-              color: AppColors.placeHolder,
-              size: 20,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -53,6 +53,14 @@ abstract class YoutubeVideoIdParser {
     }
     return normalized;
   }
+
+  static String getThumbnail(String videoUrl, {String fallback = ''}) {
+    final videoId = parse(videoUrl);
+    if (videoId != null && videoId.isNotEmpty) {
+      return YoutubePlayerController.getThumbnail(videoId: videoId);
+    }
+    return fallback;
+  }
 }
 
 class _VideoDialog extends StatefulWidget {

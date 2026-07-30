@@ -138,9 +138,6 @@ abstract class TextStyles {
     fontSize: 12,
     fontWeight: FontWeight.w600,
     color: AppColors.orange,
-    decoration: TextDecoration.underline,
-    decorationColor: AppColors.orange,
-    decorationThickness: 1.5,
   );
   static final TextStyle bodyRegular13 = GoogleFonts.inter(
     fontSize: 13,
