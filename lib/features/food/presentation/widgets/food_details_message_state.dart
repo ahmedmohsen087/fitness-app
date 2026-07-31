@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/app_strings.dart';
+import '../../../../core/values/assets.dart';
 import '../view_model/food_events.dart';
 import '../view_model/food_view_model.dart';
 
@@ -22,9 +24,15 @@ class FoodDetailsMessageState extends StatelessWidget {
             child: IconButton(
               tooltip: AppStrings.back,
               onPressed: () => Navigator.maybePop(context),
-              icon: const Icon(
-                Icons.arrow_back_rounded,
-                color: AppColors.white,
+              icon: SvgPicture.asset(
+                Assets.backArrowIcon,
+                width: 20,
+                height: 20,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.white,
+                  BlendMode.srcIn,
+                ),
+                matchTextDirection: true,
               ),
             ),
           ),

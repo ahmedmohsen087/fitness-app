@@ -152,5 +152,17 @@
   "noMealDetails": "Meal details are unavailable",
   "fullBody": "Full Body",
   "noWorkoutsFound": "No workouts found",
-  "exercises": "Exercises"
+  "exercises": "Exercises",
+  "language": "language",
+  "selectLanguage": "Select Language",
+  "English": "English",
+  "Arabic": "Arabic",
+  "couldNotLaunchLink": "Could not launch link",
+  "noProfileDataAvailable": "No profile data available",
+  "editProfile": "Edit Profile",
+  "changePassword": "Change Password",
+  "security": "Security",
+  "privacyPolicy": "Privacy Policy",
+  "help": "Help",
+  "logout": "Logout"
 }

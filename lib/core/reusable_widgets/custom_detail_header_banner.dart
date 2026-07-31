@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/text_styles.dart';
 import '../values/app_strings.dart';
+import '../values/assets.dart';
 import 'custom_network_image.dart';
 
 class CustomDetailHeaderBanner extends StatelessWidget {
@@ -41,9 +43,10 @@ class CustomDetailHeaderBanner extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
+          Positioned.directional(
+            textDirection: Directionality.of(context),
             top: 16,
-            left: 16,
+            start: 16,
             child: SafeArea(
               child: Semantics(
                 button: true,
@@ -51,13 +54,14 @@ class CustomDetailHeaderBanner extends StatelessWidget {
                 child: InkWell(
                   customBorder: const CircleBorder(),
                   onTap: () => Navigator.maybePop(context),
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 18,
                     backgroundColor: AppColors.orange,
-                    child: Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      size: 16,
-                      color: AppColors.white,
+                    child: SvgPicture.asset(
+                      Assets.backArrowIcon,
+                      width: 16,
+                      height: 16,
+                      matchTextDirection: true,
                     ),
                   ),
                 ),

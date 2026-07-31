@@ -150,7 +150,19 @@
   "createNewPasswordTitle": "إنشاء كلمة مرور جديدة",
   "doneButton": "تم",
   "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح",
-  "fullBody": "الجسم بالكامل",
+  "fullBody": "Full Body",
   "noWorkoutsFound": "لا توجد تمارين",
-  "exercises": "التمارين"
+  "exercises": "التمارين",
+  "language": "اللغة",
+  "selectLanguage": "اختر اللغة",
+  "English": "الإنجليزية",
+  "Arabic": "العربية",
+  "couldNotLaunchLink": "تعذر فتح الرابط",
+  "noProfileDataAvailable": "لا توجد بيانات للملف الشخصي متاحة",
+  "editProfile": "تعديل الملف الشخصي",
+  "changePassword": "تغيير كلمة المرور",
+  "security": "الأمان",
+  "privacyPolicy": "سياسة الخصوصية",
+  "help": "المساعدة",
+  "logout": "تسجيل الخروج"
 }

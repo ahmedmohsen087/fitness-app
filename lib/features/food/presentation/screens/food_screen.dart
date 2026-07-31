@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../config/di/di.dart';
 import '../../../../core/reusable_widgets/app_toast.dart';
@@ -22,6 +24,8 @@ class FoodScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     return BlocProvider(
       create: (_) =>
           getIt<FoodViewModel>()
@@ -36,6 +40,8 @@ class _FoodView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     return BlocListener<FoodViewModel, FoodState>(
       listenWhen: (previous, current) =>
           previous.categoriesState.msg != current.categoriesState.msg ||
@@ -90,13 +96,14 @@ class _FoodHeader extends StatelessWidget {
               child: InkWell(
                 customBorder: const CircleBorder(),
                 onTap: () => Navigator.maybePop(context),
-                child: const CircleAvatar(
-                  radius: 12,
+                child: CircleAvatar(
+                  radius: 14,
                   backgroundColor: AppColors.orange,
-                  child: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    size: 12,
-                    color: AppColors.white,
+                  child: SvgPicture.asset(
+                    Assets.backArrowIcon,
+                    width: 14,
+                    height: 14,
+                    matchTextDirection: true,
                   ),
                 ),
               ),

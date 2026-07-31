@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:fitness_app/core/reusable_widgets/custom_section_header.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
@@ -20,6 +21,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     return AppBackgroundScaffold(
       imagePath: Assets.mainBackground,
       child: Padding(
@@ -29,7 +32,11 @@ class HomeScreen extends StatelessWidget {
             spacing: 12,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const HomeProfileInfo(),
+              HomeProfileInfo(
+                onProfileTap: () {
+                  context.read<SectionTabCubit>().changeTab(AppTab.profile);
+                },
+              ),
               Text(
                 AppStrings.category,
                 style: TextStyles.labelTextFieldStyle.copyWith(
