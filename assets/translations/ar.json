@@ -167,5 +167,10 @@
   "logout": "تسجيل الخروج",
   "areYouSureYouWantToLogout": "هل أنت متاكد أنك تريد تسجيل الخروج؟",
   "no": "لا",
-  "yes": "نعم"
+  "yes": "نعم",
+  "oldPassword": "كلمة المرور القديمة",
+  "pleaseEnterOldPassword": "يرجى إدخال كلمة المرور القديمة",
+  "passwordMustBeAtLeast8Chars": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "success": "نجاح"
 }

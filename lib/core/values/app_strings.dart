@@ -211,6 +211,12 @@ class AppStrings {
       'areYouSureYouWantToLogout'.tr();
   static String get no => 'no'.tr();
   static String get yes => 'yes'.tr();
+  static String get oldPassword => 'oldPassword'.tr();
+  static String get pleaseEnterOldPassword => 'pleaseEnterOldPassword'.tr();
+  static String get passwordMustBeAtLeast8Chars =>
+      'passwordMustBeAtLeast8Chars'.tr();
+  static String get passwordsDoNotMatch => 'passwordsDoNotMatch'.tr();
+  static String get success => 'success'.tr();
 
   // Webviews URLs
   static const String securityUrl =

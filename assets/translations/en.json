@@ -167,5 +167,10 @@
   "logout": "Logout",
   "areYouSureYouWantToLogout": "Are you sure you want to logout?",
   "no": "No",
-  "yes": "Yes"
+  "yes": "Yes",
+  "oldPassword": "Old Password",
+  "pleaseEnterOldPassword": "Please enter your old password",
+  "passwordMustBeAtLeast8Chars": "Password must be at least 8 characters",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "success": "Success"
 }

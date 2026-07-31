@@ -4,6 +4,7 @@ import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:fitness_app/core/reusable_widgets/app_toast.dart';
 import 'package:fitness_app/core/theme/app_colors.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
+import 'package:fitness_app/core/values/app_routs_name.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
 import 'package:fitness_app/features/auth/presentation/view_models/logout_view_model/logout_view_model.dart';
@@ -152,7 +153,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ProfileTileItem(
             leadingIcon: Icons.sync_rounded,
             title: AppStrings.changePassword,
-            onTap: _dummyTap,
+            onTap: () => Navigator.pushNamed(
+              context,
+              AppRoutsName.changePasswordScreen,
+            ),
           ),
           _buildDivider(),
           _buildLanguageTile(context),
