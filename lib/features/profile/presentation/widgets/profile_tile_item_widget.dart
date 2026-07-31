@@ -1,4 +1,5 @@
 import 'package:fitness_app/core/theme/app_colors.dart';
+import 'package:fitness_app/core/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class ProfileTileItem extends StatelessWidget {
@@ -29,18 +30,16 @@ class ProfileTileItem extends StatelessWidget {
       leading: Icon(leadingIcon, color: iconColor),
       title: Text(
         title,
-        style: TextStyle(
+        style: TextStyles.bodyRegular16.copyWith(
           color: textColor,
-          fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
       ),
-      trailing:
-          trailing ??
+      trailing: trailing ??
           const Icon(
-            Icons.arrow_forward_ios,
+            Icons.chevron_right_rounded,
             color: AppColors.orange,
-            size: 18,
+            size: 22,
           ),
     );
   }

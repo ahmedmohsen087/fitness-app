@@ -21,7 +21,7 @@ void main() {
 
       expect(find.text('Personal Info'), findsOneWidget);
       expect(find.byIcon(Icons.person), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward_ios), findsOneWidget);
+      expect(find.byIcon(Icons.chevron_right_rounded), findsOneWidget);
 
       await tester.tap(find.byType(ListTile));
       expect(tapped, isTrue);
@@ -47,7 +47,7 @@ void main() {
       expect(find.text('Logout'), findsOneWidget);
       expect(find.byIcon(Icons.logout), findsOneWidget);
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_forward_ios), findsNothing);
+      expect(find.byIcon(Icons.chevron_right_rounded), findsNothing);
       expect(tester.takeException(), isNull);
     },
   );

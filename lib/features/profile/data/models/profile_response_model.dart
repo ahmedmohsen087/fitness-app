@@ -1,5 +1,5 @@
 import 'package:fitness_app/features/auth/data/models/login_user_dto.dart';
-import 'package:fitness_app/features/profile/domain/entities/profile_response_entity.dart';
+import 'package:fitness_app/features/profile/domain/entities/profile_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'profile_response_model.g.dart';
@@ -17,8 +17,9 @@ class ProfileResponseModel {
       _$ProfileResponseModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileResponseModelToJson(this);
-  ProfileResponseEntity toProfileEntity() {
-    return ProfileResponseEntity(
+
+  ProfileEntity toProfileEntity() {
+    return ProfileEntity(
       id: user?.id ?? '',
       firstName: user?.firstName ?? '',
       lastName: user?.lastName ?? '',

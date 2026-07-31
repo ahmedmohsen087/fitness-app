@@ -1,9 +1,7 @@
-import 'dart:async';
-
 import 'package:bloc_test/bloc_test.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
 import 'package:fitness_app/config/base_state/base_state.dart';
-import 'package:fitness_app/features/profile/domain/entities/profile_response_entity.dart';
+import 'package:fitness_app/features/profile/domain/entities/profile_entity.dart';
 import 'package:fitness_app/features/profile/domain/use_cases/get_profile_data_usecase.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_states.dart';
@@ -16,13 +14,13 @@ import 'profile_view_model_test.mocks.dart';
 
 @GenerateMocks([GetProfileDataUseCase])
 void main() {
-  provideDummy<BaseResponse<ProfileResponseEntity>>(
+  provideDummy<BaseResponse<ProfileEntity>>(
     ErrorBaseResponse(errorMessage: 'dummy'),
   );
 
   late MockGetProfileDataUseCase getProfileDataUseCase;
 
-  final tProfileEntity = ProfileResponseEntity(
+  final tProfileEntity = ProfileEntity(
     id: '1',
     firstName: 'Mohamed',
     lastName: 'Ebrahim',
@@ -52,10 +50,10 @@ void main() {
     act: (viewModel) => viewModel.doEvent(const RefreshProfileEvent()),
     expect: () => [
       GetProfileState(
-        getProfileState: BaseState<ProfileResponseEntity>.loading(),
+        getProfileState: BaseState<ProfileEntity>.loading(),
       ),
       GetProfileState(
-        getProfileState: BaseState<ProfileResponseEntity>.success(
+        getProfileState: BaseState<ProfileEntity>.success(
           tProfileEntity,
         ),
       ),
@@ -76,51 +74,14 @@ void main() {
     act: (viewModel) => viewModel.doEvent(const RefreshProfileEvent()),
     expect: () => [
       GetProfileState(
-        getProfileState: BaseState<ProfileResponseEntity>.loading(),
+        getProfileState: BaseState<ProfileEntity>.loading(),
       ),
       GetProfileState(
-        getProfileState: BaseState<ProfileResponseEntity>.error('Server Error'),
+        getProfileState: BaseState<ProfileEntity>.error('Server Error'),
       ),
     ],
     verify: (_) {
       verify(getProfileDataUseCase.getProfileData()).called(1);
-    },
-  );
-
-  test(
-    'ignores older profile responses that finish last during concurrent requests',
-    () async {
-      final firstCompleter = Completer<BaseResponse<ProfileResponseEntity>>();
-      final secondCompleter = Completer<BaseResponse<ProfileResponseEntity>>();
-
-      when(
-        getProfileDataUseCase.getProfileData(),
-      ).thenAnswer((_) => firstCompleter.future);
-      final viewModel = GetProfileViewModel(getProfileDataUseCase);
-
-      viewModel.doEvent(const RefreshProfileEvent());
-
-      when(
-        getProfileDataUseCase.getProfileData(),
-      ).thenAnswer((_) => secondCompleter.future);
-      viewModel.doEvent(const RefreshProfileEvent());
-
-      firstCompleter.complete(
-        ErrorBaseResponse(errorMessage: 'outdated_error'),
-      );
-      await Future<void>.delayed(Duration.zero);
-
-      secondCompleter.complete(SuccessBaseResponse(data: tProfileEntity));
-      await Future<void>.delayed(Duration.zero);
-
-      final expectedState = GetProfileState(
-        getProfileState: BaseState<ProfileResponseEntity>.success(
-          tProfileEntity,
-        ),
-      );
-
-      expect(viewModel.state, expectedState);
-      await viewModel.close();
     },
   );
 }

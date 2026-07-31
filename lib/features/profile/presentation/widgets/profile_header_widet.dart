@@ -1,5 +1,8 @@
+import 'package:fitness_app/core/reusable_widgets/custom_network_image.dart';
 import 'package:fitness_app/core/theme/app_colors.dart';
+import 'package:fitness_app/core/theme/text_styles.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
+import 'package:fitness_app/core/values/assets.dart';
 import 'package:flutter/material.dart';
 
 class ProfileHeaderWidget extends StatelessWidget {
@@ -18,47 +21,73 @@ class ProfileHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-              icon: Icon(
-                Icons.arrow_circle_left,
-                color: AppColors.orange,
-                size: 32,
-              ),
-              onPressed: onBackPressed,
-            ),
-            Text(
-              AppStrings.profile,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(width: 48),
-          ],
-        ),
+        _buildTopBar(context),
         const SizedBox(height: 24),
-        CircleAvatar(
-          radius: 55,
-          backgroundColor: Colors.grey[800],
-          backgroundImage: imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
-          child: imageUrl.isEmpty
-              ? const Icon(Icons.person, size: 55, color: Colors.white)
-              : null,
-        ),
+        _buildAvatar(),
         const SizedBox(height: 16),
+        _buildName(),
+      ],
+    );
+  }
+
+  Widget _buildTopBar(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        GestureDetector(
+          onTap: onBackPressed,
+          child: Container(
+            width: 36,
+            height: 36,
+            decoration: const BoxDecoration(
+              color: AppColors.orange,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Directionality.of(context) == TextDirection.rtl
+                  ? Icons.arrow_forward_ios_rounded
+                  : Icons.arrow_back_ios_new_rounded,
+              color: AppColors.white,
+              size: 18,
+            ),
+          ),
+        ),
         Text(
-          userName,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
+          AppStrings.profile,
+          style: TextStyles.bodyRegular24.copyWith(
+            color: AppColors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
+        const SizedBox(width: 36),
       ],
+    );
+  }
+
+  Widget _buildAvatar() {
+    return Container(
+      width: 110,
+      height: 110,
+      decoration: const BoxDecoration(
+        color: AppColors.lightBlack,
+        shape: BoxShape.circle,
+      ),
+      child: ClipOval(
+        child: CustomNetworkImage(
+          imageUrl: imageUrl.isNotEmpty ? imageUrl : Assets.defaultExerciseImage,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildName() {
+    return Text(
+      userName,
+      style: TextStyles.bodyRegular20.copyWith(
+        color: AppColors.white,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }
