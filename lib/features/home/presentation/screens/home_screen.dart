@@ -62,8 +62,6 @@ class HomeScreen extends StatelessWidget {
               const RecommendationForYouWidget(),
               CustomSectionHeader(
                 title: AppStrings.popularTraining,
-                onSeeAllTap: () =>
-                    context.read<SectionTabCubit>().changeTab(AppTab.workout),
               ),
               const PopularTrainingWidget(),
             ],
