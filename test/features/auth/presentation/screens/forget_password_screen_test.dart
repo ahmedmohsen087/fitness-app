@@ -15,6 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../support/recording_navigator_observer.dart';
 
+import '../../../../support/test_asset_loader.dart';
+
 @GenerateNiceMocks([MockSpec<ForgetPasswordUseCase>()])
 import 'forget_password_screen_test.mocks.dart';
 
@@ -36,6 +38,7 @@ Future<void> _pump(
       fallbackLocale: const Locale('en'),
       startLocale: const Locale('en'),
       saveLocale: false,
+      assetLoader: const TestAssetLoader(),
       child: Builder(
         builder: (context) => MaterialApp(
           locale: context.locale,
@@ -188,8 +191,9 @@ void main() {
 
     await tester.enterText(find.byType(TextFormField), 'user@example.com');
     await tester.tap(find.byType(ElevatedButton));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 100));
 
-    expect(find.text('Network error', skipOffstage: false), findsOneWidget);
+    expect(find.text('Network error'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 4));
   });
 }

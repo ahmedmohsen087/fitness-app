@@ -29,6 +29,9 @@ abstract class AuthApiClient {
   @Extra({ApiParameters.requiresAuth: false})
   Future<LoginResponse> login(@Body() LoginRequestModel body);
 
+  @GET(ApiEndpoints.logout)
+  Future<RegisterResponseModel> logout();
+
   @Extra({ApiParameters.requiresAuth: false})
   @POST(ApiEndpoints.forgetPassword)
   Future<ForgetPasswordResponseModel> forgetPassword(

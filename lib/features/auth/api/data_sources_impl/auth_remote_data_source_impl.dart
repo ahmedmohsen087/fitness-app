@@ -49,6 +49,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
   }
 
   @override
+  Future<BaseResponse<RegisterResponseModel>> logout() async {
+    try {
+      final response = await _authApiClient.logout();
+      return SuccessBaseResponse(data: response);
+    } catch (e) {
+      return ErrorBaseResponse(errorMessage: ErrorHandler.handle(e));
+    }
+  }
+
+  @override
   Future<BaseResponse<ForgetPasswordResponseModel>> forgetPassword({
     required ForgetPasswordEmailRequestModel forgetPasswordEmailRequestModel,
   }) async {

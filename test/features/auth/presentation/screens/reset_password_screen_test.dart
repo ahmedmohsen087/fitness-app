@@ -16,6 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../support/recording_navigator_observer.dart';
 
+import '../../../../support/test_asset_loader.dart';
+
 @GenerateNiceMocks([MockSpec<ForgetPasswordViewModel>()])
 import 'reset_password_screen_test.mocks.dart';
 
@@ -30,6 +32,7 @@ Widget _wrap(
     fallbackLocale: const Locale('en'),
     startLocale: const Locale('en'),
     saveLocale: false,
+    assetLoader: const TestAssetLoader(),
     child: Builder(
       builder: (context) => MaterialApp(
         locale: context.locale,
@@ -172,7 +175,7 @@ void main() {
 
     await tester.pumpWidget(_wrap(const ResetPasswordScreen(), mockViewModel));
     await tester.pump(const Duration(milliseconds: 300));
-    await tester.pumpAndSettle();
+    await tester.pump();
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
@@ -187,9 +190,9 @@ void main() {
         forgetPasswordState: BaseState.error('Reset failed'),
       ),
     );
-    await tester.pumpAndSettle();
-
+    await tester.pump(const Duration(milliseconds: 100));
     expect(find.text('Reset failed'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 4));
   });
 
   testWidgets('navigates to the login screen on successful reset', (
@@ -209,7 +212,8 @@ void main() {
     controller.add(
       ForgetPasswordState(forgetPasswordState: BaseState.success(entity)),
     );
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump(const Duration(seconds: 4));
 
     expect(observer.pushedRoutes, contains(AppRoutsName.loginScreen));
   });

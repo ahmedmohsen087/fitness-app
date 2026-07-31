@@ -164,5 +164,8 @@
   "security": "الأمان",
   "privacyPolicy": "سياسة الخصوصية",
   "help": "المساعدة",
-  "logout": "تسجيل الخروج"
+  "logout": "تسجيل الخروج",
+  "areYouSureYouWantToLogout": "هل أنت متاكد أنك تريد تسجيل الخروج؟",
+  "no": "لا",
+  "yes": "نعم"
 }
