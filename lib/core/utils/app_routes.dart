@@ -12,7 +12,7 @@ import 'package:fitness_app/features/profile/presentation/screens/profile_screen
 import 'package:fitness_app/features/profile/presentation/view_models/change_password_view_model/change_password_view_model.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
-import 'package:fitness_app/features/profile/presentation/widgets/change_password_screen.dart';
+import 'package:fitness_app/features/profile/presentation/screens/change_password_screen.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

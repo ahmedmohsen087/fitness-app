@@ -59,6 +59,50 @@ class AppTheme {
     );
   }
 
+  static InputDecoration roundedInputDecoration({
+    required String hintText,
+    required IconData prefixIcon,
+    Widget? suffixIcon,
+  }) {
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(25),
+      borderSide: BorderSide(
+        color: AppColors.white.withValues(alpha: .3),
+        width: 1,
+      ),
+    );
+
+    return InputDecoration(
+      filled: true,
+      fillColor: AppColors.black.withValues(alpha: .25),
+      hintText: hintText,
+      hintStyle: TextStyle(
+        color: AppColors.white.withValues(alpha: .5),
+        fontSize: 14,
+      ),
+      prefixIcon: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14.0),
+        child: Icon(
+          prefixIcon,
+          color: AppColors.white.withValues(alpha: .6),
+          size: 18,
+        ),
+      ),
+      suffixIcon: suffixIcon,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      enabledBorder: border,
+      focusedBorder: border.copyWith(
+        borderSide: const BorderSide(color: AppColors.orange, width: 1.5),
+      ),
+      errorBorder: border.copyWith(
+        borderSide: const BorderSide(color: AppColors.red, width: 1.5),
+      ),
+      focusedErrorBorder: border.copyWith(
+        borderSide: const BorderSide(color: AppColors.red, width: 2),
+      ),
+    );
+  }
+
   static ThemeData lightTheme = ThemeData(
     primaryColor: AppColors.orange,
     elevatedButtonTheme: ElevatedButtonThemeData(

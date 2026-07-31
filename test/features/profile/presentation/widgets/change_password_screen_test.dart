@@ -4,7 +4,7 @@ import 'package:fitness_app/features/profile/domain/entities/change_password_ent
 import 'package:fitness_app/features/profile/presentation/view_models/change_password_view_model/change_password_events.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/change_password_view_model/change_password_states.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/change_password_view_model/change_password_view_model.dart';
-import 'package:fitness_app/features/profile/presentation/widgets/change_password_screen.dart';
+import 'package:fitness_app/features/profile/presentation/screens/change_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -88,8 +88,8 @@ void main() {
 
       final textFields = find.byType(TextFormField);
       await tester.enterText(textFields.at(0), 'oldPassword123');
-      await tester.enterText(textFields.at(1), 'newPassword123');
-      await tester.enterText(textFields.at(2), 'newPassword123');
+      await tester.enterText(textFields.at(1), 'Password123!');
+      await tester.enterText(textFields.at(2), 'Password123!');
 
       await tester.tap(find.text(AppStrings.done));
       await tester.pump();
@@ -99,7 +99,7 @@ void main() {
           argThat(
             isA<ChangePasswordRequestEvent>()
                 .having((e) => e.password, 'password', 'oldPassword123')
-                .having((e) => e.newPassword, 'newPassword', 'newPassword123'),
+                .having((e) => e.newPassword, 'newPassword', 'Password123!'),
           ),
         ),
       ).called(1);
