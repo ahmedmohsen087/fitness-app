@@ -129,7 +129,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ProfileHeaderWidget(
             imageUrl: user.photo,
             userName: '${user.firstName} ${user.lastName}',
-            onBackPressed: () => Navigator.pop(context),
           ),
           _buildTilesList(context),
         ],

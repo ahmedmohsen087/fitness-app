@@ -9,13 +9,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ProfileHeaderWidget extends StatelessWidget {
   final String imageUrl;
   final String userName;
-  final VoidCallback onBackPressed;
+  final VoidCallback? onBackPressed;
 
   const ProfileHeaderWidget({
     super.key,
     required this.imageUrl,
     required this.userName,
-    required this.onBackPressed,
+    this.onBackPressed,
   });
 
   @override
@@ -32,6 +32,18 @@ class ProfileHeaderWidget extends StatelessWidget {
   }
 
   Widget _buildTopBar(BuildContext context) {
+    if (onBackPressed == null) {
+      return Center(
+        child: Text(
+          AppStrings.profile,
+          style: TextStyles.bodyRegular24.copyWith(
+            color: AppColors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

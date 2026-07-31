@@ -49,6 +49,23 @@ void main() {
       expect(customImage.imageUrl, 'https://via.placeholder.com/150');
     },
   );
+
+  testWidgets(
+    'renders profile header without back button when onBackPressed is null',
+    (tester) async {
+      await _pumpWidget(
+        tester,
+        const ProfileHeaderWidget(
+          imageUrl: '',
+          userName: 'Mohamed Ebrahim',
+        ),
+      );
+
+      expect(find.text(AppStrings.profile), findsOneWidget);
+      expect(find.text('Mohamed Ebrahim'), findsOneWidget);
+      expect(find.byType(SvgPicture), findsNothing);
+    },
+  );
 }
 
 Future<void> _pumpWidget(WidgetTester tester, Widget child) async {
