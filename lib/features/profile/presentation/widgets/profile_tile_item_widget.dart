@@ -22,25 +22,28 @@ class ProfileTileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      tileColor: AppColors.black,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      leading: Icon(leadingIcon, color: iconColor),
-      title: Text(
-        title,
-        style: TextStyles.bodyRegular16.copyWith(
-          color: textColor,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      trailing: trailing ??
-          const Icon(
-            Icons.chevron_right_rounded,
-            color: AppColors.orange,
-            size: 22,
+    return Material(
+      color: AppColors.black,
+      borderRadius: BorderRadius.circular(16),
+      clipBehavior: Clip.antiAlias,
+      child: ListTile(
+        onTap: onTap,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        leading: Icon(leadingIcon, color: iconColor),
+        title: Text(
+          title,
+          style: TextStyles.bodyRegular16.copyWith(
+            color: textColor,
+            fontWeight: FontWeight.w500,
           ),
+        ),
+        trailing: trailing ??
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: AppColors.orange,
+              size: 22,
+            ),
+      ),
     );
   }
 }

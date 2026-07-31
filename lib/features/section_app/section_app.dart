@@ -1,11 +1,8 @@
-import 'package:fitness_app/config/di/di.dart';
 import 'package:fitness_app/core/reusable_widgets/app_bottom_nav_bar.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
 import 'package:fitness_app/features/home/presentation/screens/home_screen.dart';
 import 'package:fitness_app/features/profile/presentation/screens/profile_screen.dart';
-import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
-import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
 import 'package:fitness_app/features/section_app/chat_screen.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
 import 'package:fitness_app/features/section_app/view_model/section_tab_cubit.dart';
@@ -19,11 +16,7 @@ class SectionApp extends StatelessWidget {
     const HomeScreen(),
     const ChatScreen(),
     const UpcomingWorkoutsScreen(),
-    BlocProvider(
-      create: (_) =>
-          getIt<GetProfileViewModel>()..doEvent(const RefreshProfileEvent()),
-      child: const ProfileScreen(),
-    ),
+    const ProfileScreen(),
   ];
 
   @override

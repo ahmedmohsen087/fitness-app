@@ -87,6 +87,10 @@ class AppRoutes {
             create: (_) => getIt<FitnessViewModel>()
               ..doEvent(LoadHomeFitnessDataEvent()),
           ),
+          BlocProvider<GetProfileViewModel>(
+            create: (_) => getIt<GetProfileViewModel>()
+              ..doEvent(const RefreshProfileEvent()),
+          ),
         ],
         child: const SectionApp(),
       ),

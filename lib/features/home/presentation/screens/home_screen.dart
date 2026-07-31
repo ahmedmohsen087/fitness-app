@@ -31,10 +31,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               HomeProfileInfo(
                 onProfileTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoutsName.profileScreen,
-                  );
+                  context.read<SectionTabCubit>().changeTab(AppTab.profile);
                 },
               ),
               Text(

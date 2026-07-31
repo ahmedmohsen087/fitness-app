@@ -204,49 +204,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       backgroundColor: AppColors.lightBlack,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (_) => _LanguageSheetContent(currentLocale: currentLocale),
     );
   }
 }
 
-class _LanguageSheetContent extends StatelessWidget {
+class _LanguageSheetContent extends StatefulWidget {
   final Locale currentLocale;
 
   const _LanguageSheetContent({required this.currentLocale});
 
   @override
+  State<_LanguageSheetContent> createState() => _LanguageSheetContentState();
+}
+
+class _LanguageSheetContentState extends State<_LanguageSheetContent> {
+  late String _selectedCode;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCode = widget.currentLocale.languageCode;
+  }
+
+  Future<void> _changeLanguage(String code) async {
+    if (_selectedCode == code) return;
+    setState(() {
+      _selectedCode = code;
+    });
+    await context.setLocale(Locale(code));
+    if (mounted) {
+      Navigator.pop(context);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+      decoration: const BoxDecoration(
+        color: AppColors.lightBlack,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppColors.placeHolder,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
           Text(
             AppStrings.language,
-            style: TextStyles.bodyRegular16.copyWith(
+            style: TextStyles.bodyRegular20.copyWith(
               color: AppColors.white,
+              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 16),
-          _LanguageOption(
+          _LanguageOptionCard(
             label: AppStrings.english,
-            selected: currentLocale.languageCode == 'en',
-            onTap: () {
-              context.setLocale(const Locale('en'));
-              Navigator.pop(context);
-            },
+            selected: _selectedCode == 'en',
+            onTap: () => _changeLanguage('en'),
           ),
-          const Divider(color: AppColors.placeHolder, height: 1),
-          _LanguageOption(
+          const SizedBox(height: 10),
+          _LanguageOptionCard(
             label: AppStrings.arabic,
-            selected: currentLocale.languageCode == 'ar',
-            onTap: () {
-              context.setLocale(const Locale('ar'));
-              Navigator.pop(context);
-            },
+            selected: _selectedCode == 'ar',
+            onTap: () => _changeLanguage('ar'),
           ),
         ],
       ),
@@ -254,12 +288,12 @@ class _LanguageSheetContent extends StatelessWidget {
   }
 }
 
-class _LanguageOption extends StatelessWidget {
+class _LanguageOptionCard extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
 
-  const _LanguageOption({
+  const _LanguageOptionCard({
     required this.label,
     required this.selected,
     required this.onTap,
@@ -267,28 +301,39 @@ class _LanguageOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-        child: Row(
-          children: [
-            Text(
-              label,
-              style: TextStyles.bodyRegular14.copyWith(
-                color: selected ? AppColors.orange : AppColors.placeHolder,
-                fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
-              ),
+    return Material(
+      color: selected ? AppColors.orange.withAlpha(38) : AppColors.black,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: selected ? AppColors.orange : AppColors.lightBlack,
+              width: 1.5,
             ),
-            const Spacer(),
-            if (selected)
-              const Icon(
-                Icons.check_rounded,
-                color: AppColors.orange,
-                size: 20,
+          ),
+          child: Row(
+            children: [
+              Text(
+                label,
+                style: TextStyles.bodyRegular16.copyWith(
+                  color: selected ? AppColors.orange : AppColors.white,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+                ),
               ),
-          ],
+              const Spacer(),
+              if (selected)
+                const Icon(
+                  Icons.check_circle_rounded,
+                  color: AppColors.orange,
+                  size: 22,
+                ),
+            ],
+          ),
         ),
       ),
     );
