@@ -12,12 +12,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SectionApp extends StatelessWidget {
   const SectionApp({super.key});
 
-  static final List<Widget> _pages = [
-    const HomeScreen(),
-    const ChatScreen(),
-    const UpcomingWorkoutsScreen(),
-    const ProfileScreen(),
-  ];
+  List<Widget> get _pages => const [
+        HomeScreen(),
+        ChatScreen(),
+        UpcomingWorkoutsScreen(),
+        ProfileScreen(),
+      ];
 
   @override
   Widget build(BuildContext context) {

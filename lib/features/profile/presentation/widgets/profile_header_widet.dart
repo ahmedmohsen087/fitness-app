@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/core/reusable_widgets/custom_network_image.dart';
 import 'package:fitness_app/core/theme/app_colors.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
@@ -31,6 +32,11 @@ class ProfileHeaderWidget extends StatelessWidget {
   }
 
   Widget _buildTopBar(BuildContext context) {
+    bool isRtl = false;
+    try {
+      isRtl = context.locale.languageCode == 'ar';
+    } catch (_) {}
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -44,7 +50,7 @@ class ProfileHeaderWidget extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Icon(
-              Directionality.of(context) == TextDirection.rtl
+              isRtl
                   ? Icons.arrow_forward_ios_rounded
                   : Icons.arrow_back_ios_new_rounded,
               color: AppColors.white,
