@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class ProfileTileItem extends StatelessWidget {
   final IconData leadingIcon;
   final String title;
+  final Widget? titleWidget;
   final VoidCallback onTap;
   final Widget? trailing;
   final Color textColor;
@@ -13,7 +14,8 @@ class ProfileTileItem extends StatelessWidget {
   const ProfileTileItem({
     super.key,
     required this.leadingIcon,
-    required this.title,
+    this.title = '',
+    this.titleWidget,
     required this.onTap,
     this.trailing,
     this.textColor = AppColors.white,
@@ -22,28 +24,25 @@ class ProfileTileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.black,
-      borderRadius: BorderRadius.circular(16),
-      clipBehavior: Clip.antiAlias,
-      child: ListTile(
-        onTap: onTap,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        leading: Icon(leadingIcon, color: iconColor),
-        title: Text(
-          title,
-          style: TextStyles.bodyRegular16.copyWith(
-            color: textColor,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        trailing: trailing ??
-            const Icon(
-              Icons.chevron_right_rounded,
-              color: AppColors.orange,
-              size: 22,
+    return ListTile(
+      onTap: onTap,
+      tileColor: Colors.transparent,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+      leading: Icon(leadingIcon, color: iconColor),
+      title: titleWidget ??
+          Text(
+            title,
+            style: TextStyles.bodyRegular16.copyWith(
+              color: textColor,
+              fontWeight: FontWeight.w500,
             ),
-      ),
+          ),
+      trailing: trailing ??
+          const Icon(
+            Icons.chevron_right_rounded,
+            color: AppColors.orange,
+            size: 22,
+          ),
     );
   }
 }

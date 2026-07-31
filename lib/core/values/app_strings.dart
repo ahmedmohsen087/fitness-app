@@ -196,6 +196,7 @@ class AppStrings {
 
   // Profile screen
   static String get language => 'language'.tr();
+  static String get selectLanguage => 'selectLanguage'.tr();
   static String get english => 'English'.tr();
   static String get arabic => 'Arabic'.tr();
   static String get couldNotLaunchLink => 'couldNotLaunchLink'.tr();

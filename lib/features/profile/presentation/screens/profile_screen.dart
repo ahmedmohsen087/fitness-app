@@ -134,41 +134,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildTilesList(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.lightBlack,
-        borderRadius: BorderRadius.circular(16),
-      ),
+    return Material(
+      color: AppColors.lightBlack,
+      borderRadius: BorderRadius.circular(20),
+      clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
           ProfileTileItem(
-            leadingIcon: Icons.person_outline,
+            leadingIcon: Icons.person_outline_rounded,
             title: AppStrings.editProfile,
             onTap: _dummyTap,
           ),
+          _buildDivider(),
           ProfileTileItem(
-            leadingIcon: Icons.lock_outline,
+            leadingIcon: Icons.sync_rounded,
             title: AppStrings.changePassword,
             onTap: _dummyTap,
           ),
+          _buildDivider(),
           _buildLanguageTile(context),
+          _buildDivider(),
           ProfileTileItem(
-            leadingIcon: Icons.security,
+            leadingIcon: Icons.settings_outlined,
             title: AppStrings.security,
             onTap: () => _launchUrl(AppStrings.securityUrl),
           ),
+          _buildDivider(),
           ProfileTileItem(
-            leadingIcon: Icons.privacy_tip_outlined,
+            leadingIcon: Icons.shield_outlined,
             title: AppStrings.privacyPolicy,
             onTap: () => _launchUrl(AppStrings.privacyPolicyUrl),
           ),
+          _buildDivider(),
           ProfileTileItem(
-            leadingIcon: Icons.help_outline,
+            leadingIcon: Icons.help_outline_rounded,
             title: AppStrings.help,
             onTap: () => _launchUrl(AppStrings.helpUrl),
           ),
+          _buildDivider(),
           ProfileTileItem(
-            leadingIcon: Icons.logout,
+            leadingIcon: Icons.logout_rounded,
             title: AppStrings.logout,
             textColor: AppColors.orange,
             iconColor: AppColors.orange,
@@ -179,20 +184,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget _buildDivider() {
+    return const Divider(
+      color: AppColors.placeHolder,
+      height: 1,
+      thickness: 0.2,
+      indent: 52,
+    );
+  }
+
   static void _dummyTap() {}
 
   Widget _buildLanguageTile(BuildContext context) {
+    final currentLang = context.locale.languageCode == 'ar'
+        ? AppStrings.arabic
+        : AppStrings.english;
+
     return ProfileTileItem(
-      leadingIcon: Icons.language,
+      leadingIcon: Icons.language_rounded,
       title: AppStrings.language,
-      trailing: Text(
-        context.locale.languageCode == 'ar'
-            ? AppStrings.arabic
-            : AppStrings.english,
-        style: TextStyles.bodyRegular14.copyWith(
-          color: AppColors.orange,
-          fontWeight: FontWeight.w500,
-        ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            currentLang,
+            style: TextStyles.bodyRegular14.copyWith(
+              color: AppColors.orange,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(width: 4),
+          const Icon(
+            Icons.chevron_right_rounded,
+            color: AppColors.orange,
+            size: 22,
+          ),
+        ],
       ),
       onTap: () => _showLanguageBottomSheet(context),
     );
@@ -211,31 +238,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-class _LanguageSheetContent extends StatefulWidget {
+class _LanguageSheetContent extends StatelessWidget {
   final Locale currentLocale;
 
   const _LanguageSheetContent({required this.currentLocale});
 
-  @override
-  State<_LanguageSheetContent> createState() => _LanguageSheetContentState();
-}
-
-class _LanguageSheetContentState extends State<_LanguageSheetContent> {
-  late String _selectedCode;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedCode = widget.currentLocale.languageCode;
-  }
-
-  Future<void> _changeLanguage(String code) async {
-    if (_selectedCode == code) return;
-    setState(() {
-      _selectedCode = code;
-    });
+  Future<void> _selectLanguage(BuildContext context, String code) async {
     await context.setLocale(Locale(code));
-    if (mounted) {
+    if (context.mounted) {
       Navigator.pop(context);
     }
   }
@@ -271,16 +281,20 @@ class _LanguageSheetContentState extends State<_LanguageSheetContent> {
             ),
           ),
           const SizedBox(height: 16),
-          _LanguageOptionCard(
+          _LanguageItemTile(
             label: AppStrings.english,
-            selected: _selectedCode == 'en',
-            onTap: () => _changeLanguage('en'),
+            selected: currentLocale.languageCode == 'en',
+            onTap: () => _selectLanguage(context, 'en'),
           ),
-          const SizedBox(height: 10),
-          _LanguageOptionCard(
+          const Divider(
+            color: AppColors.placeHolder,
+            height: 1,
+            thickness: 0.2,
+          ),
+          _LanguageItemTile(
             label: AppStrings.arabic,
-            selected: _selectedCode == 'ar',
-            onTap: () => _changeLanguage('ar'),
+            selected: currentLocale.languageCode == 'ar',
+            onTap: () => _selectLanguage(context, 'ar'),
           ),
         ],
       ),
@@ -288,12 +302,12 @@ class _LanguageSheetContentState extends State<_LanguageSheetContent> {
   }
 }
 
-class _LanguageOptionCard extends StatelessWidget {
+class _LanguageItemTile extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
 
-  const _LanguageOptionCard({
+  const _LanguageItemTile({
     required this.label,
     required this.selected,
     required this.onTap,
@@ -301,39 +315,28 @@ class _LanguageOptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: selected ? AppColors.orange.withAlpha(38) : AppColors.black,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: selected ? AppColors.orange : AppColors.lightBlack,
-              width: 1.5,
-            ),
-          ),
-          child: Row(
-            children: [
-              Text(
-                label,
-                style: TextStyles.bodyRegular16.copyWith(
-                  color: selected ? AppColors.orange : AppColors.white,
-                  fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
-                ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+        child: Row(
+          children: [
+            Text(
+              label,
+              style: TextStyles.bodyRegular16.copyWith(
+                color: selected ? AppColors.orange : AppColors.white,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
               ),
-              const Spacer(),
-              if (selected)
-                const Icon(
-                  Icons.check_circle_rounded,
-                  color: AppColors.orange,
-                  size: 22,
-                ),
-            ],
-          ),
+            ),
+            const Spacer(),
+            if (selected)
+              const Icon(
+                Icons.check_rounded,
+                color: AppColors.orange,
+                size: 22,
+              ),
+          ],
         ),
       ),
     );
