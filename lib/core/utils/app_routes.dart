@@ -9,8 +9,10 @@ import 'package:fitness_app/features/fitness/presentation/screens/exercise_scree
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:fitness_app/features/profile/presentation/screens/profile_screen.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/change_password_view_model/change_password_view_model.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
+import 'package:fitness_app/features/profile/presentation/widgets/change_password_screen.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,6 +68,8 @@ class AppRoutes {
         return _buildExerciseRoute(settings);
       case AppRoutsName.profileScreen:
         return _buildProfileRoute(settings);
+      case AppRoutsName.changePasswordScreen:
+        return _buildChangePasswordRoute(settings);
       default:
         return null;
     }
@@ -190,6 +194,16 @@ class AppRoutes {
         create: (_) =>
             getIt<GetProfileViewModel>()..doEvent(const RefreshProfileEvent()),
         child: const ProfileScreen(),
+      ),
+    );
+  }
+
+  static Route<dynamic> _buildChangePasswordRoute(RouteSettings settings) {
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => BlocProvider(
+        create: (_) => getIt<ChangePasswordViewModel>(),
+        child: const ChangePasswordScreen(),
       ),
     );
   }

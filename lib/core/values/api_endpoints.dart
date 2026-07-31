@@ -9,6 +9,7 @@ abstract class ApiEndpoints {
   static const String forgetPassword = "auth/forgotPassword";
   static const String verifyOtp = "auth/verifyResetCode";
   static const String resetPassword = "auth/resetPassword";
+  static const String changePassword = "auth/change-password";
   static const String getProfile = "auth/profile-data";
 
   static const String muscles = "muscles/random";
