@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/core/reusable_widgets/custom_network_image.dart';
 import 'package:fitness_app/core/theme/app_colors.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
@@ -15,6 +16,8 @@ class HomeProfileInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     return BlocBuilder<GetProfileViewModel, GetProfileState>(
       buildWhen: (previous, current) =>
           previous.getProfileState.data != current.getProfileState.data,

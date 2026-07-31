@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/core/reusable_widgets/app_bottom_nav_bar.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
@@ -21,6 +22,8 @@ class SectionApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     return BlocProvider(
       create: (_) => SectionTabCubit(),
       child: BlocBuilder<SectionTabCubit, AppTab>(

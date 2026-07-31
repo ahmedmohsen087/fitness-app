@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/features/home/presentation/widgets/category_model.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,8 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     final categories = [
       CategoryModel(image: Assets.gymAvatar, title: AppStrings.gym),
       CategoryModel(image: Assets.fitnessAvatar, title: AppStrings.fitness),

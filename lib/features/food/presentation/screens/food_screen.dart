@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,8 @@ class FoodScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     return BlocProvider(
       create: (_) =>
           getIt<FoodViewModel>()
@@ -77,6 +80,8 @@ class _FoodHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isRtl = context.locale.languageCode == 'ar';
+
     return SizedBox(
       height: 32,
       child: Stack(
@@ -90,11 +95,13 @@ class _FoodHeader extends StatelessWidget {
               child: InkWell(
                 customBorder: const CircleBorder(),
                 onTap: () => Navigator.maybePop(context),
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   radius: 12,
                   backgroundColor: AppColors.orange,
                   child: Icon(
-                    Icons.arrow_back_ios_new_rounded,
+                    isRtl
+                        ? Icons.arrow_forward_ios_rounded
+                        : Icons.arrow_back_ios_new_rounded,
                     size: 12,
                     color: AppColors.white,
                   ),
