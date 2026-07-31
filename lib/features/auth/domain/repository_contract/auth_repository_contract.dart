@@ -26,4 +26,6 @@ abstract interface class AuthRepositoryContract {
   Future<BaseResponse<ForgetPasswordEntity>> resetPassword({
     required ResetPasswordRequestModel resetPasswordRequestModel,
   });
+
+  Future<BaseResponse<RegisterResponseEntity>> logout();
 }

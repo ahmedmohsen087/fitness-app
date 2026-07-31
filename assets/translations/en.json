@@ -164,5 +164,8 @@
   "security": "Security",
   "privacyPolicy": "Privacy Policy",
   "help": "Help",
-  "logout": "Logout"
+  "logout": "Logout",
+  "areYouSureYouWantToLogout": "Are you sure you want to logout?",
+  "no": "No",
+  "yes": "Yes"
 }

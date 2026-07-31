@@ -1,14 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fitness_app/config/di/di.dart';
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:fitness_app/core/reusable_widgets/app_toast.dart';
 import 'package:fitness_app/core/theme/app_colors.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
+import 'package:fitness_app/features/auth/presentation/view_models/logout_view_model/logout_view_model.dart';
 import 'package:fitness_app/features/profile/domain/entities/profile_entity.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_states.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
+import 'package:fitness_app/features/profile/presentation/widgets/logout_dialog_widget.dart';
 import 'package:fitness_app/features/profile/presentation/widgets/profile_header_widet.dart';
 import 'package:fitness_app/features/profile/presentation/widgets/profile_tile_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -177,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             title: AppStrings.logout,
             textColor: AppColors.orange,
             iconColor: AppColors.orange,
-            onTap: _dummyTap,
+            onTap: () => LogoutDialog.show(context, getIt<LogoutViewModel>()),
           ),
         ],
       ),

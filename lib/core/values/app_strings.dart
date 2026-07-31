@@ -207,6 +207,10 @@ class AppStrings {
   static String get privacyPolicy => 'privacyPolicy'.tr();
   static String get help => 'help'.tr();
   static String get logout => 'logout'.tr();
+  static String get areYouSureYouWantToLogout =>
+      'areYouSureYouWantToLogout'.tr();
+  static String get no => 'no'.tr();
+  static String get yes => 'yes'.tr();
 
   // Webviews URLs
   static const String securityUrl =

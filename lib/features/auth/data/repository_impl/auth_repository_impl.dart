@@ -1,3 +1,4 @@
+import 'package:fitness_app/features/auth/api/models/register_response_model.dart';
 import 'package:fitness_app/features/auth/api/request_models/forget_password_email_request_model.dart';
 import 'package:fitness_app/features/auth/api/request_models/reset_password_request_model.dart';
 import 'package:fitness_app/features/auth/api/request_models/verify_reset_code_request_model.dart';
@@ -38,12 +39,8 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
           await _authManager.setAuthData(token: data.token!);
         }
         return SuccessBaseResponse<LoginUserEntity>(data: entity);
-      case ErrorBaseResponse<LoginResponse>(
-        errorMessage: final errorMessage,
-      ):
-        return ErrorBaseResponse<LoginUserEntity>(
-          errorMessage: errorMessage,
-        );
+      case ErrorBaseResponse<LoginResponse>(errorMessage: final errorMessage):
+        return ErrorBaseResponse<LoginUserEntity>(errorMessage: errorMessage);
     }
   }
 
@@ -136,6 +133,24 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
         errorMessage: final errorMessage,
       ):
         return ErrorBaseResponse<ForgetPasswordEntity>(
+          errorMessage: errorMessage,
+        );
+    }
+  }
+
+  @override
+  Future<BaseResponse<RegisterResponseEntity>> logout() async {
+    final response = await _remoteDataSource.logout();
+    await _authManager.logout();
+    switch (response) {
+      case SuccessBaseResponse<RegisterResponseModel>(data: final data):
+        return SuccessBaseResponse<RegisterResponseEntity>(
+          data: data.toEntity(),
+        );
+      case ErrorBaseResponse<RegisterResponseModel>(
+        errorMessage: final errorMessage,
+      ):
+        return ErrorBaseResponse<RegisterResponseEntity>(
           errorMessage: errorMessage,
         );
     }

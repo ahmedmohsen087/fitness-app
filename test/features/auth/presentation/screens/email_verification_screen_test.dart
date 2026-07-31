@@ -17,6 +17,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../support/recording_navigator_observer.dart';
 
+import '../../../../support/test_asset_loader.dart';
+
 @GenerateNiceMocks([MockSpec<ForgetPasswordViewModel>()])
 import 'email_verification_screen_test.mocks.dart';
 
@@ -31,6 +33,7 @@ Widget _wrap(
     fallbackLocale: const Locale('en'),
     startLocale: const Locale('en'),
     saveLocale: false,
+    assetLoader: const TestAssetLoader(),
     child: Builder(
       builder: (context) => MaterialApp(
         locale: context.locale,
@@ -188,7 +191,7 @@ void main() {
       _wrap(const EmailVerificationScreen(), mockViewModel),
     );
     await tester.pump(const Duration(milliseconds: 300));
-    await tester.pumpAndSettle();
+    await tester.pump();
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
@@ -205,9 +208,9 @@ void main() {
         forgetPasswordState: BaseState.error('Invalid code'),
       ),
     );
-    await tester.pumpAndSettle();
-
+    await tester.pump(const Duration(milliseconds: 100));
     expect(find.text('Invalid code'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 4));
   });
 
   testWidgets('navigates to reset password screen when verifyOtp succeeds', (

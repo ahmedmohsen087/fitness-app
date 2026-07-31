@@ -17,6 +17,8 @@ abstract interface class AuthRemoteDataSourceContract {
     required LoginRequestModel loginRequestModel,
   });
 
+  Future<BaseResponse<RegisterResponseModel>> logout();
+
   Future<BaseResponse<ForgetPasswordResponseModel>> forgetPassword({
     required ForgetPasswordEmailRequestModel forgetPasswordEmailRequestModel,
   });
