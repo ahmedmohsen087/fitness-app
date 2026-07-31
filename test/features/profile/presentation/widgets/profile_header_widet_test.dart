@@ -3,6 +3,7 @@ import 'package:fitness_app/core/theme/app_theme.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/features/profile/presentation/widgets/profile_header_widet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -22,10 +23,10 @@ void main() {
 
     expect(find.text(AppStrings.profile), findsOneWidget);
     expect(find.text('Mohamed Ebrahim'), findsOneWidget);
-    expect(find.byIcon(Icons.arrow_back_ios_new_rounded), findsOneWidget);
+    expect(find.byType(SvgPicture), findsOneWidget);
     expect(find.byType(CustomNetworkImage), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.tap(find.byType(SvgPicture));
     expect(backPressedCalled, isTrue);
     expect(tester.takeException(), isNull);
   });

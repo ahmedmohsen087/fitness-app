@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/config/di/di.dart';
 import 'package:fitness_app/core/reusable_widgets/app_background_scaffold.dart';
 import 'package:fitness_app/core/reusable_widgets/app_video_dialog.dart';
@@ -13,6 +14,7 @@ import 'package:fitness_app/features/fitness/presentation/view_model/fitness_sta
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ExerciseScreenArgs {
@@ -43,6 +45,8 @@ class ExerciseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+
     return BlocProvider<FitnessViewModel>(
       create: (_) => _createViewModel(),
       child: AppBackgroundScaffold(
@@ -132,13 +136,14 @@ class ExerciseScreen extends StatelessWidget {
         child: InkWell(
           customBorder: const CircleBorder(),
           onTap: () => Navigator.maybePop(context),
-          child: const CircleAvatar(
+          child: CircleAvatar(
             radius: 18,
             backgroundColor: AppColors.orange,
-            child: Icon(
-              Icons.arrow_back_ios_new_rounded,
-              size: 16,
-              color: AppColors.white,
+            child: SvgPicture.asset(
+              Assets.backArrowIcon,
+              width: 16,
+              height: 16,
+              matchTextDirection: true,
             ),
           ),
         ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/text_styles.dart';
 import '../../../../core/values/app_strings.dart';
+import '../../../../core/values/assets.dart';
 
 class FoodDetailsNavigationBar extends StatelessWidget {
   static const _animationDuration = Duration(milliseconds: 260);
@@ -37,16 +39,17 @@ class FoodDetailsNavigationBar extends StatelessWidget {
                 child: InkWell(
                   customBorder: const CircleBorder(),
                   onTap: () => Navigator.maybePop(context),
-                  child: const SizedBox.square(
+                  child: SizedBox.square(
                     dimension: 40,
                     child: Center(
                       child: CircleAvatar(
-                        radius: 12,
+                        radius: 14,
                         backgroundColor: AppColors.orange,
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          size: 12,
-                          color: AppColors.white,
+                        child: SvgPicture.asset(
+                          Assets.backArrowIcon,
+                          width: 14,
+                          height: 14,
+                          matchTextDirection: true,
                         ),
                       ),
                     ),

@@ -1,10 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/core/reusable_widgets/custom_network_image.dart';
 import 'package:fitness_app/core/theme/app_colors.dart';
 import 'package:fitness_app/core/theme/text_styles.dart';
 import 'package:fitness_app/core/values/app_strings.dart';
 import 'package:fitness_app/core/values/assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileHeaderWidget extends StatelessWidget {
   final String imageUrl;
@@ -32,11 +32,6 @@ class ProfileHeaderWidget extends StatelessWidget {
   }
 
   Widget _buildTopBar(BuildContext context) {
-    bool isRtl = false;
-    try {
-      isRtl = context.locale.languageCode == 'ar';
-    } catch (_) {}
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -45,16 +40,16 @@ class ProfileHeaderWidget extends StatelessWidget {
           child: Container(
             width: 36,
             height: 36,
+            alignment: Alignment.center,
             decoration: const BoxDecoration(
               color: AppColors.orange,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              isRtl
-                  ? Icons.arrow_forward_ios_rounded
-                  : Icons.arrow_back_ios_new_rounded,
-              color: AppColors.white,
-              size: 18,
+            child: SvgPicture.asset(
+              Assets.backArrowIcon,
+              width: 16,
+              height: 16,
+              matchTextDirection: true,
             ),
           ),
         ),

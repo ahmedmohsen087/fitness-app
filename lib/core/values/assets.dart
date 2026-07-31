@@ -18,6 +18,7 @@ class Assets {
   static const String chatIcon = "assets/icons/chat.svg";
   static const String workoutsIcon = "assets/icons/workouts.svg";
   static const String profileIcon = "assets/icons/profile.svg";
+  static const String backArrowIcon = "assets/icons/back_arrow.svg";
 
   static const String facebookLogo = "assets/icons/facebook.svg";
   static const String googleLogo = "assets/icons/google.svg";
