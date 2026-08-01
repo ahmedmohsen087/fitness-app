@@ -172,5 +172,16 @@
   "pleaseEnterOldPassword": "يرجى إدخال كلمة المرور القديمة",
   "passwordMustBeAtLeast8Chars": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
   "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
-  "success": "نجاح"
+  "success": "نجاح",
+  "smartCoach": "المدرب الذكي",
+  "iAmYourSmartCoach": "أنا مدربك الذكي",
+  "howCanIAssistYouToday": "كيف يمكنني مساعدتك اليوم ؟",
+  "getStarted": "ابدأ الآن",
+  "previousConversations": "المحادثات السابقة",
+  "newChat": "محادثة جديدة",
+  "typeYourMessage": "اكتب رسالتك...",
+  "goToDetails": "عرض التفاصيل",
+  "chooseImageSource": "اختر مصدر الصورة",
+  "camera": "الكاميرا",
+  "gallery": "المعرض"
 }

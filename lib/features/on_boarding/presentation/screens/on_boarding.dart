@@ -48,10 +48,18 @@ class _OnBoardingState extends State<OnBoarding> {
     super.dispose();
   }
 
+  bool _isNavigating = false;
+
   Future<void> _finishOnboarding() async {
+    if (_isNavigating) return;
+    _isNavigating = true;
     await getIt<SecureStorageService>().writeSeenOnboarding(true);
     if (!mounted) return;
-    Navigator.pushReplacementNamed(context, AppRoutsName.loginScreen);
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoutsName.loginScreen,
+      (route) => false,
+    );
   }
 
   @override

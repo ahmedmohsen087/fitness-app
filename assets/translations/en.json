@@ -172,5 +172,16 @@
   "pleaseEnterOldPassword": "Please enter your old password",
   "passwordMustBeAtLeast8Chars": "Password must be at least 8 characters",
   "passwordsDoNotMatch": "Passwords do not match",
-  "success": "Success"
+  "success": "Success",
+  "smartCoach": "Smart Coach",
+  "iAmYourSmartCoach": "I Am Your Smart Coach",
+  "howCanIAssistYouToday": "How Can I Assist You Today ?",
+  "getStarted": "Get Started",
+  "previousConversations": "Previous Conversations",
+  "newChat": "New Chat",
+  "typeYourMessage": "Type your message...",
+  "goToDetails": "Go To Details",
+  "chooseImageSource": "Choose Image Source",
+  "camera": "Camera",
+  "gallery": "Gallery"
 }

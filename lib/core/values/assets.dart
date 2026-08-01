@@ -31,6 +31,7 @@ class Assets {
   static const String yogaAvatar = "assets/avatars/yoga_avatar.png";
   static const String aerobicsAvatar = "assets/avatars/aerobics_avatar.png";
   static const String trainerAvatar = "assets/avatars/trainer_avatar.png";
+  static const String botAvatar = "assets/avatars/bot_avatar.png";
 
   static const String defaultExerciseImage = "assets/images/default_exercise.png";
 }

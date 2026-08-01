@@ -24,4 +24,20 @@ abstract class ApiParameters {
   static const String height = 'height';
   static const String activityLevel = 'activityLevel';
   static const String goal = 'goal';
+
+  static const String contentType = 'Content-Type';
+  static const String applicationJson = 'application/json';
+
+  static const String messages = 'messages';
+  static const String role = 'role';
+  static const String content = 'content';
+  static const String images = 'images';
+  static const String model = 'model';
+  static const String stream = 'stream';
+  static const String message = 'message';
+  static const String type = 'type';
+  static const String title = 'title';
+  static const String params = 'params';
+  static const String exerciseId = 'exerciseId';
+  static const String workoutId = 'workoutId';
 }

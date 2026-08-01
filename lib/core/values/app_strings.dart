@@ -217,6 +217,16 @@ class AppStrings {
       'passwordMustBeAtLeast8Chars'.tr();
   static String get passwordsDoNotMatch => 'passwordsDoNotMatch'.tr();
   static String get success => 'success'.tr();
+  static String get smartCoach => 'smartCoach'.tr();
+  static String get iAmYourSmartCoach => 'iAmYourSmartCoach'.tr();
+  static String get howCanIAssistYouToday => 'howCanIAssistYouToday'.tr();
+  static String get previousConversations => 'previousConversations'.tr();
+  static String get newChat => 'newChat'.tr();
+  static String get typeYourMessage => 'typeYourMessage'.tr();
+  static String get goToDetails => 'goToDetails'.tr();
+  static String get chooseImageSource => 'chooseImageSource'.tr();
+  static String get camera => 'camera'.tr();
+  static String get gallery => 'gallery'.tr();
 
   // Webviews URLs
   static const String securityUrl =

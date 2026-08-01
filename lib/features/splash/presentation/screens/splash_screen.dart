@@ -10,6 +10,8 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/values/app_routs_name.dart';
 import '../../../../core/values/assets.dart';
 
+import '../../../profile/domain/use_cases/get_profile_data_usecase.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -24,15 +26,18 @@ class _SplashScreenState extends State<SplashScreen> {
     unawaited(_navigateAfterSplash());
   }
 
+  bool _isNavigating = false;
+
   Future<void> _navigateAfterSplash() async {
     final results = await Future.wait([
       Future<void>.delayed(const Duration(milliseconds: 1500)),
       _resolveDestination(),
     ]);
 
-    if (!mounted) return;
+    if (!mounted || _isNavigating) return;
+    _isNavigating = true;
     final destination = results[1] as String;
-    Navigator.pushReplacementNamed(context, destination);
+    Navigator.pushNamedAndRemoveUntil(context, destination, (route) => false);
   }
 
   Future<String> _resolveDestination() async {
@@ -44,9 +49,14 @@ class _SplashScreenState extends State<SplashScreen> {
       return AppRoutsName.onBoarding;
     }
 
-    return authManager.isLoggedIn
-        ? AppRoutsName.sectionApp
-        : AppRoutsName.loginScreen;
+    if (authManager.isLoggedIn) {
+      try {
+        await getIt<GetProfileDataUseCase>().getProfileData();
+      } catch (_) {}
+      return AppRoutsName.sectionApp;
+    }
+
+    return AppRoutsName.loginScreen;
   }
 
   @override

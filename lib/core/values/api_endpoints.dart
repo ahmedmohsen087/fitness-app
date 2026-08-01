@@ -2,6 +2,8 @@ abstract class ApiEndpoints {
   static const String baseUrl = "https://fitness.elevateegy.com/api/v1/";
   static const String fitnessBaseUrl = baseUrl;
   static const String mealDbBaseUrl = "https://www.themealdb.com/api/json/v1/1/";
+  static const String ollamaBaseUrl = "http://10.0.2.2:11434/";
+  static const String ollamaChat = "api/chat";
 
   static const String signUp = "auth/signup";
   static const String login = "auth/signin";
