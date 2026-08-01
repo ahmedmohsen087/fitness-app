@@ -27,10 +27,7 @@ class CustomDetailHeaderBanner extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          CustomNetworkImage(
-            imageUrl: image,
-            fit: BoxFit.cover,
-          ),
+          CustomNetworkImage(imageUrl: image, fit: BoxFit.cover),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(

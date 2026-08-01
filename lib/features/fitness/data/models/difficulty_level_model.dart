@@ -7,10 +7,7 @@ class DifficultyLevelModel {
   final String? id;
   final String? name;
 
-  const DifficultyLevelModel({
-    this.id,
-    this.name,
-  });
+  const DifficultyLevelModel({this.id, this.name});
 
   factory DifficultyLevelModel.fromJson(Map<String, dynamic> json) =>
       _$DifficultyLevelModelFromJson(json);

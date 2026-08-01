@@ -1,14 +1,12 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/text_styles.dart';
 import 'custom_network_image.dart';
 
-enum CustomMediaCardStyle {
-  pillOverlay,
-  fullGradient,
-}
+enum CustomMediaCardStyle { pillOverlay, fullGradient }
 
 class CustomMediaCard extends StatelessWidget {
   final String image;
@@ -46,10 +44,7 @@ class CustomMediaCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              CustomNetworkImage(
-                imageUrl: image,
-                fit: BoxFit.cover,
-              ),
+              CustomNetworkImage(imageUrl: image, fit: BoxFit.cover),
               if (style == CustomMediaCardStyle.fullGradient) ...[
                 Container(
                   decoration: BoxDecoration(

@@ -26,25 +26,33 @@ void main() {
 
   test('should return list of MuscleGroupEntity on success', () async {
     const tList = [MuscleGroupEntity(id: '1', name: 'Chest')];
-    when(mockRepository.getMuscleGroups())
-        .thenAnswer((_) async => SuccessBaseResponse(data: tList));
+    when(
+      mockRepository.getMuscleGroups(),
+    ).thenAnswer((_) async => SuccessBaseResponse(data: tList));
 
     final result = await useCase.execute();
 
     expect(result, isA<SuccessBaseResponse<List<MuscleGroupEntity>>>());
-    expect((result as SuccessBaseResponse<List<MuscleGroupEntity>>).data, tList);
+    expect(
+      (result as SuccessBaseResponse<List<MuscleGroupEntity>>).data,
+      tList,
+    );
     verify(mockRepository.getMuscleGroups());
     verifyNoMoreInteractions(mockRepository);
   });
 
   test('should return ErrorBaseResponse on failure', () async {
-    when(mockRepository.getMuscleGroups())
-        .thenAnswer((_) async => ErrorBaseResponse(errorMessage: 'Error'));
+    when(
+      mockRepository.getMuscleGroups(),
+    ).thenAnswer((_) async => ErrorBaseResponse(errorMessage: 'Error'));
 
     final result = await useCase.execute();
 
     expect(result, isA<ErrorBaseResponse<List<MuscleGroupEntity>>>());
-    expect((result as ErrorBaseResponse<List<MuscleGroupEntity>>).errorMessage, 'Error');
+    expect(
+      (result as ErrorBaseResponse<List<MuscleGroupEntity>>).errorMessage,
+      'Error',
+    );
     verify(mockRepository.getMuscleGroups());
     verifyNoMoreInteractions(mockRepository);
   });

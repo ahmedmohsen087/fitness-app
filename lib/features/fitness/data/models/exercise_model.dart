@@ -46,10 +46,7 @@ class ExercisesResponseModel {
   final String? message;
   final List<ExerciseModel>? exercises;
 
-  const ExercisesResponseModel({
-    this.message,
-    this.exercises,
-  });
+  const ExercisesResponseModel({this.message, this.exercises});
 
   factory ExercisesResponseModel.fromJson(Map<String, dynamic> json) =>
       _$ExercisesResponseModelFromJson(json);

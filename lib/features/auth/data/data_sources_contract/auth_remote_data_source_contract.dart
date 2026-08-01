@@ -9,9 +9,7 @@ import 'package:fitness_app/features/auth/data/models/forget_password_response_m
 import 'package:fitness_app/features/auth/data/models/login_response.dart';
 
 abstract interface class AuthRemoteDataSourceContract {
-  Future<BaseResponse<RegisterResponseModel>> signUp(
-    RegisterRequestModel body,
-  );
+  Future<BaseResponse<RegisterResponseModel>> signUp(RegisterRequestModel body);
 
   Future<BaseResponse<LoginResponse>> login({
     required LoginRequestModel loginRequestModel,

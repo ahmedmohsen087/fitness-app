@@ -201,8 +201,9 @@ class _OnBoardingState extends State<OnBoarding> {
                                   ),
                                   onPressed: () {
                                     boardController.previousPage(
-                                      duration:
-                                          const Duration(milliseconds: 500),
+                                      duration: const Duration(
+                                        milliseconds: 500,
+                                      ),
                                       curve: Curves.easeInOut,
                                     );
                                   },
@@ -235,8 +236,9 @@ class _OnBoardingState extends State<OnBoarding> {
                                       _finishOnboarding();
                                     } else {
                                       boardController.nextPage(
-                                        duration:
-                                            const Duration(milliseconds: 500),
+                                        duration: const Duration(
+                                          milliseconds: 500,
+                                        ),
                                         curve: Curves.easeInOut,
                                       );
                                     }

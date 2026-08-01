@@ -56,9 +56,7 @@ class _FoodDetailsView extends StatelessWidget {
 
             final meals = state.mealDetailsState.data?.meals ?? const [];
             if (meals.isEmpty) {
-              return FoodDetailsMessageState(
-                message: AppStrings.noMealDetails,
-              );
+              return FoodDetailsMessageState(message: AppStrings.noMealDetails);
             }
 
             return FoodDetailsContent(meal: meals.first);

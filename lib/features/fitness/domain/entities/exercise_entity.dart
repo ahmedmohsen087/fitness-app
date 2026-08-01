@@ -21,12 +21,12 @@ class ExerciseEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        exercise,
-        difficultyLevel,
-        targetMuscleGroup,
-        primeMoverMuscle,
-        primaryEquipment,
-        videoUrl,
-      ];
+    id,
+    exercise,
+    difficultyLevel,
+    targetMuscleGroup,
+    primeMoverMuscle,
+    primaryEquipment,
+    videoUrl,
+  ];
 }

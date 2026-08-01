@@ -7,10 +7,7 @@ class CustomFilterTabBarItem {
   final String id;
   final String title;
 
-  const CustomFilterTabBarItem({
-    required this.id,
-    required this.title,
-  });
+  const CustomFilterTabBarItem({required this.id, required this.title});
 }
 
 class CustomFilterTabBar extends StatefulWidget {
@@ -58,7 +55,9 @@ class _CustomFilterTabBarState extends State<CustomFilterTabBar> {
   }
 
   void _scrollToIndex(int index) {
-    if (!_scrollController.hasClients || index < 0 || index >= widget.items.length) {
+    if (!_scrollController.hasClients ||
+        index < 0 ||
+        index >= widget.items.length) {
       return;
     }
     const itemEstimateWidth = 100.0;
@@ -94,7 +93,9 @@ class _CustomFilterTabBarState extends State<CustomFilterTabBar> {
               curve: Curves.easeInOut,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.orange : AppColors.lightBlack.withValues(alpha: 0.85),
+                color: isSelected
+                    ? AppColors.orange
+                    : AppColors.lightBlack.withValues(alpha: 0.85),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isSelected ? AppColors.orange : Colors.transparent,
@@ -105,8 +106,12 @@ class _CustomFilterTabBarState extends State<CustomFilterTabBar> {
                 child: Text(
                   item.title,
                   style: isSelected
-                      ? TextStyles.buttonTextStyle.copyWith(fontWeight: FontWeight.bold)
-                      : TextStyles.bodyRegular16.copyWith(color: AppColors.white),
+                      ? TextStyles.buttonTextStyle.copyWith(
+                          fontWeight: FontWeight.bold,
+                        )
+                      : TextStyles.bodyRegular16.copyWith(
+                          color: AppColors.white,
+                        ),
                 ),
               ),
             ),

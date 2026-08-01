@@ -24,6 +24,7 @@ abstract class ApiParameters {
   static const String height = 'height';
   static const String activityLevel = 'activityLevel';
   static const String goal = 'goal';
+  static const String photo = 'photo';
 
   static const String contentType = 'Content-Type';
   static const String applicationJson = 'application/json';

@@ -1,5 +1,5 @@
 import 'package:fitness_app/config/base_response/base_response.dart';
-import 'package:fitness_app/features/profile/domain/entities/profile_entity.dart';
+import 'package:fitness_app/features/profile/domain/entities/profile_response_entity.dart';
 import 'package:fitness_app/features/profile/domain/repository_contract/profile_repository_contract.dart';
 import 'package:injectable/injectable.dart';
 
@@ -9,7 +9,7 @@ class GetProfileDataUseCase {
 
   GetProfileDataUseCase(this._profileRepositoryContract);
 
-  Future<BaseResponse<ProfileEntity>> getProfileData() {
+  Future<BaseResponse<ProfileResponseEntity>> getProfileData() {
     return _profileRepositoryContract.getProfileData();
   }
 }

@@ -1,11 +1,9 @@
 import 'package:fitness_app/core/theme/app_colors.dart';
-import 'package:fitness_app/core/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class ProfileTileItem extends StatelessWidget {
   final IconData leadingIcon;
   final String title;
-  final Widget? titleWidget;
   final VoidCallback onTap;
   final Widget? trailing;
   final Color textColor;
@@ -14,8 +12,7 @@ class ProfileTileItem extends StatelessWidget {
   const ProfileTileItem({
     super.key,
     required this.leadingIcon,
-    this.title = '',
-    this.titleWidget,
+    required this.title,
     required this.onTap,
     this.trailing,
     this.textColor = AppColors.white,
@@ -26,22 +23,24 @@ class ProfileTileItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      tileColor: Colors.transparent,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+      tileColor: AppColors.black,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       leading: Icon(leadingIcon, color: iconColor),
-      title: titleWidget ??
-          Text(
-            title,
-            style: TextStyles.bodyRegular16.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-      trailing: trailing ??
+      title: Text(
+        title,
+        style: TextStyle(
+          color: textColor,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      trailing:
+          trailing ??
           const Icon(
-            Icons.chevron_right_rounded,
+            Icons.arrow_forward_ios,
             color: AppColors.orange,
-            size: 22,
+            size: 18,
           ),
     );
   }

@@ -13,4 +13,5 @@ abstract class AppRoutsName {
   static const String exercise = '/exercise';
   static const String profileScreen = '/profileScreen';
   static const String changePasswordScreen = '/changePasswordScreen';
+  static const String editProfileScreen = '/editProfileScreen';
 }

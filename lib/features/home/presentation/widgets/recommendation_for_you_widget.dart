@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/core/reusable_widgets/custom_media_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,13 +59,17 @@ class _RecommendationList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _ = context.locale;
+
     return SizedBox(
       height: 110,
       child: Skeletonizer(
         enabled: isLoading && recommendations.isEmpty,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
-          itemCount: isLoading && recommendations.isEmpty ? 5 : recommendations.length,
+          itemCount: isLoading && recommendations.isEmpty
+              ? 5
+              : recommendations.length,
           separatorBuilder: (_, _) => const SizedBox(width: 14),
           itemBuilder: (context, index) => _buildItem(context, index),
         ),

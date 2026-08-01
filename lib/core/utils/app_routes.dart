@@ -8,11 +8,13 @@ import 'package:fitness_app/features/auth/presentation/view_models/forget_passwo
 import 'package:fitness_app/features/fitness/presentation/screens/exercise_screen.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_events.dart';
 import 'package:fitness_app/features/fitness/presentation/view_model/fitness_view_model.dart';
+import 'package:fitness_app/features/profile/domain/entities/profile_response_entity.dart';
+import 'package:fitness_app/features/profile/presentation/screens/change_password_screen.dart';
+import 'package:fitness_app/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:fitness_app/features/profile/presentation/screens/profile_screen.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/change_password_view_model/change_password_view_model.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
-import 'package:fitness_app/features/profile/presentation/screens/change_password_screen.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,6 +70,8 @@ class AppRoutes {
         return _buildExerciseRoute(settings);
       case AppRoutsName.profileScreen:
         return _buildProfileRoute(settings);
+      case AppRoutsName.editProfileScreen:
+        return _buildEditProfileRoute(settings);
       case AppRoutsName.changePasswordScreen:
         return _buildChangePasswordRoute(settings);
       default:
@@ -183,6 +187,17 @@ class AppRoutes {
         settings: settings,
         builder: (_) => ExerciseScreen(args: args),
       );
+    } else if (args is String && args.isNotEmpty) {
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => ExerciseScreen(
+          args: ExerciseScreenArgs(
+            primeMoverMuscleId: args,
+            muscleName: '',
+            image: '',
+          ),
+        ),
+      );
     }
     return _notFoundRoute(settings);
   }
@@ -195,6 +210,17 @@ class AppRoutes {
             getIt<GetProfileViewModel>()..doEvent(const RefreshProfileEvent()),
         child: const ProfileScreen(),
       ),
+    );
+  }
+
+  static Route<dynamic> _buildEditProfileRoute(RouteSettings settings) {
+    final profile = settings.arguments;
+    if (profile is! ProfileResponseEntity) {
+      return _notFoundRoute(settings);
+    }
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (_) => EditProfileScreen(profile: profile),
     );
   }
 

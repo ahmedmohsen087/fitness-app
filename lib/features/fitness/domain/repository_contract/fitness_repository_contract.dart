@@ -14,9 +14,9 @@ abstract class FitnessRepositoryContract {
   Future<BaseResponse<List<ExerciseEntity>>> getRandomExercises({
     RandomExercisesRequestModel? requestModel,
   });
-  Future<BaseResponse<List<DifficultyLevelEntity>>> getDifficultyLevelsByPrimeMover(
-    String primeMoverMuscleId,
-  );
+
+  Future<BaseResponse<List<DifficultyLevelEntity>>>
+  getDifficultyLevelsByPrimeMover(String primeMoverMuscleId);
   Future<BaseResponse<List<ExerciseEntity>>> getExercisesByMuscleAndDifficulty({
     required ExercisesRequestModel requestModel,
   });

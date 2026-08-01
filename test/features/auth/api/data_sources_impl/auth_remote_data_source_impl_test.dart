@@ -133,7 +133,11 @@ void main() {
         forgetPasswordEmailRequestModel: forgetPasswordRequest,
       );
 
-      verifyNever(mockAuthApiClient.forgetPassword(argThat(isA<ForgetPasswordEmailRequestModel>())));
+      verifyNever(
+        mockAuthApiClient.forgetPassword(
+          argThat(isA<ForgetPasswordEmailRequestModel>()),
+        ),
+      );
     });
   });
 
@@ -152,7 +156,11 @@ void main() {
     test('does not invoke AuthApiClient.verifyOtp', () async {
       await dataSource.verifyOtp(verifyResetCodeRequestModel: verifyOtpRequest);
 
-      verifyNever(mockAuthApiClient.verifyOtp(argThat(isA<VerifyResetCodeRequestModel>())));
+      verifyNever(
+        mockAuthApiClient.verifyOtp(
+          argThat(isA<VerifyResetCodeRequestModel>()),
+        ),
+      );
     });
   });
 
@@ -173,7 +181,11 @@ void main() {
         resetPasswordRequestModel: resetPasswordRequest,
       );
 
-      verifyNever(mockAuthApiClient.resetPassword(argThat(isA<ResetPasswordRequestModel>())));
+      verifyNever(
+        mockAuthApiClient.resetPassword(
+          argThat(isA<ResetPasswordRequestModel>()),
+        ),
+      );
     });
   });
 }
