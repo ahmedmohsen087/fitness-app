@@ -5,7 +5,9 @@ import 'package:fitness_app/features/profile/data/data_sources_contract/profile_
 import 'package:fitness_app/features/profile/data/models/profile_response_model.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../data/models/change_password_response_model.dart';
 import '../models/profile_message_model.dart';
+import '../request_models/change_password_request_model.dart';
 import '../request_models/edit_profile_request_model.dart';
 import '../request_models/upload_profile_photo_request_model.dart';
 
@@ -43,6 +45,18 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSourceContract {
   ) async {
     try {
       final response = await _profileApiClient.uploadProfilePhoto(body.photo);
+      return SuccessBaseResponse(data: response);
+    } catch (e) {
+      return ErrorBaseResponse(errorMessage: ErrorHandler.handle(e));
+    }
+  }
+
+  @override
+  Future<BaseResponse<ChangePasswordResponseModel>> changePassword(
+    ChangePasswordRequestModel body,
+  ) async {
+    try {
+      final response = await _profileApiClient.changePassword(body);
       return SuccessBaseResponse(data: response);
     } catch (e) {
       return ErrorBaseResponse(errorMessage: ErrorHandler.handle(e));

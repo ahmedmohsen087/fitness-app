@@ -19,6 +19,10 @@ abstract class AppStrings {
       'fitnessHasNeverBeenSoMuchFun'.tr();
   static String get noMoreExcusesDoItNow => 'NoMoreExcusesDoItNow'.tr();
   static String get onBoardingDescription => 'onBoardingDescription'.tr();
+  static String get titleOnBoarding1 => 'ThePriceOfExcellenceIsDiscipline'.tr();
+  static String get titleOnBoarding2 => 'fitnessHasNeverBeenSoMuchFun'.tr();
+  static String get titleOnBoarding3 => 'NoMoreExcusesDoItNow'.tr();
+  static String get titleOnBoarding => 'onBoardingDescription'.tr();
 
   // Storage / Session Keys
   static String get tokenEmpty => 'tokenEmpty'.tr();
@@ -134,11 +138,13 @@ abstract class AppStrings {
   static String get heyThere => 'heyThere'.tr();
   static String get welcomeBACK => 'welcomeBACK'.tr();
   static String get login => 'login'.tr();
-  static String get don'tHaveAnAccountYet => 'don\'tHaveAnAccountYet'.tr();
+  static String get dontHaveAnAccountYet => 'don\'tHaveAnAccountYet'.tr();
+  static String get doNotHaveAnAccountYet => 'don\'tHaveAnAccountYet'.tr();
   static String get register => 'register'.tr();
   static String get or => 'or'.tr();
   static String get rememberMe => 'rememberMe'.tr();
   static String get loggedInSuccessfully => 'loggedInSuccessfully'.tr();
+  static String get loggedSuccessfully => 'loggedInSuccessfully'.tr();
 
   // Categories
   static String get gym => 'gym'.tr();
