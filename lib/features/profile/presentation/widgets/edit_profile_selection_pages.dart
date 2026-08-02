@@ -11,10 +11,17 @@ import '../view_models/edit_profile_view_models/edit_profile_events.dart';
 import '../view_models/edit_profile_view_models/edit_profile_states.dart';
 import '../view_models/edit_profile_view_models/edit_profile_view_model.dart';
 
+enum EditProfilePage { weight, goal, activity }
+
 class EditProfileSelectionPage extends StatelessWidget {
   final EditProfilePage page;
+  final VoidCallback onClose;
 
-  const EditProfileSelectionPage({super.key, required this.page});
+  const EditProfileSelectionPage({
+    super.key,
+    required this.page,
+    required this.onClose,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,42 +32,36 @@ class EditProfileSelectionPage extends StatelessWidget {
         EditProfilePage.weight => AppStrings.whatIsYourWeight,
         EditProfilePage.goal => AppStrings.whatIsYourGoal,
         EditProfilePage.activity => AppStrings.regularPhysicalActivity,
-        EditProfilePage.details => '',
       },
       subtitle: page == EditProfilePage.activity
           ? ''
           : AppStrings.personalizedPlanSubtitle,
-      onBack: () => _showDetails(context),
+      onBack: onClose,
       child: switch (page) {
-        EditProfilePage.weight => const _WeightSelectionContent(),
-        EditProfilePage.goal => const _GoalSelectionContent(),
-        EditProfilePage.activity => const _ActivitySelectionContent(),
-        EditProfilePage.details => const SizedBox.shrink(),
+        EditProfilePage.weight => _WeightSelectionContent(onDone: onClose),
+        EditProfilePage.goal => _GoalSelectionContent(onDone: onClose),
+        EditProfilePage.activity => _ActivitySelectionContent(onDone: onClose),
       },
-    );
-  }
-
-  void _showDetails(BuildContext context) {
-    context.read<EditProfileViewModel>().doEvent(
-      const ChangeEditProfilePageEvent(page: EditProfilePage.details),
     );
   }
 }
 
 class _WeightSelectionContent extends StatelessWidget {
-  const _WeightSelectionContent();
+  final VoidCallback onDone;
+
+  const _WeightSelectionContent({required this.onDone});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditProfileViewModel, EditProfileState>(
-      buildWhen: (previous, current) => previous.weight != current.weight,
-      builder: (context, state) {
+    return BlocSelector<EditProfileViewModel, EditProfileState, int?>(
+      selector: (state) => state.weight,
+      builder: (context, weight) {
         return Column(
           children: [
             RegisterNumberPicker(
               min: RegisterConstants.minimumWeight,
               max: RegisterConstants.maximumWeight,
-              value: state.weight ?? RegisterConstants.defaultWeight,
+              value: weight ?? RegisterConstants.defaultWeight,
               unit: AppStrings.kilogram,
               onChanged: (weight) {
                 context.read<EditProfileViewModel>().doEvent(
@@ -69,10 +70,7 @@ class _WeightSelectionContent extends StatelessWidget {
               },
             ),
             const SizedBox(height: 24),
-            AuthPrimaryButton(
-              label: AppStrings.done,
-              onPressed: () => _showDetails(context),
-            ),
+            AuthPrimaryButton(label: AppStrings.done, onPressed: onDone),
           ],
         );
       },
@@ -81,7 +79,9 @@ class _WeightSelectionContent extends StatelessWidget {
 }
 
 class _GoalSelectionContent extends StatelessWidget {
-  const _GoalSelectionContent();
+  final VoidCallback onDone;
+
+  const _GoalSelectionContent({required this.onDone});
 
   @override
   Widget build(BuildContext context) {
@@ -93,15 +93,15 @@ class _GoalSelectionContent extends StatelessWidget {
       (FitnessGoal.learnTheBasic, AppStrings.goalLearnTheBasic),
     ];
 
-    return BlocBuilder<EditProfileViewModel, EditProfileState>(
-      buildWhen: (previous, current) => previous.goal != current.goal,
-      builder: (context, state) {
+    return BlocSelector<EditProfileViewModel, EditProfileState, FitnessGoal?>(
+      selector: (state) => state.goal,
+      builder: (context, goal) {
         return Column(
           children: [
             for (var index = 0; index < options.length; index++) ...[
               RegisterOptionTile(
                 label: options[index].$2,
-                selected: state.goal == options[index].$1,
+                selected: goal == options[index].$1,
                 onTap: () {
                   context.read<EditProfileViewModel>().doEvent(
                     SelectEditGoalEvent(goal: options[index].$1),
@@ -113,9 +113,7 @@ class _GoalSelectionContent extends StatelessWidget {
             const SizedBox(height: 24),
             AuthPrimaryButton(
               label: AppStrings.done,
-              onPressed: state.goal == null
-                  ? null
-                  : () => _showDetails(context),
+              onPressed: goal == null ? null : onDone,
             ),
           ],
         );
@@ -125,7 +123,9 @@ class _GoalSelectionContent extends StatelessWidget {
 }
 
 class _ActivitySelectionContent extends StatelessWidget {
-  const _ActivitySelectionContent();
+  final VoidCallback onDone;
+
+  const _ActivitySelectionContent({required this.onDone});
 
   @override
   Widget build(BuildContext context) {
@@ -137,16 +137,15 @@ class _ActivitySelectionContent extends StatelessWidget {
       (ActivityLevel.level5, AppStrings.activityLevelTrueBeast),
     ];
 
-    return BlocBuilder<EditProfileViewModel, EditProfileState>(
-      buildWhen: (previous, current) =>
-          previous.activityLevel != current.activityLevel,
-      builder: (context, state) {
+    return BlocSelector<EditProfileViewModel, EditProfileState, ActivityLevel?>(
+      selector: (state) => state.activityLevel,
+      builder: (context, activityLevel) {
         return Column(
           children: [
             for (var index = 0; index < options.length; index++) ...[
               RegisterOptionTile(
                 label: options[index].$2,
-                selected: state.activityLevel == options[index].$1,
+                selected: activityLevel == options[index].$1,
                 onTap: () {
                   context.read<EditProfileViewModel>().doEvent(
                     SelectEditActivityLevelEvent(
@@ -160,19 +159,11 @@ class _ActivitySelectionContent extends StatelessWidget {
             const SizedBox(height: 24),
             AuthPrimaryButton(
               label: AppStrings.done,
-              onPressed: state.activityLevel == null
-                  ? null
-                  : () => _showDetails(context),
+              onPressed: activityLevel == null ? null : onDone,
             ),
           ],
         );
       },
     );
   }
-}
-
-void _showDetails(BuildContext context) {
-  context.read<EditProfileViewModel>().doEvent(
-    const ChangeEditProfilePageEvent(page: EditProfilePage.details),
-  );
 }

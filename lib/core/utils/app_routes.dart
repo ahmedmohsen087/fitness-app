@@ -11,6 +11,8 @@ import 'package:fitness_app/features/fitness/presentation/view_model/fitness_vie
 import 'package:fitness_app/features/profile/domain/entities/profile_response_entity.dart';
 import 'package:fitness_app/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:fitness_app/features/profile/presentation/screens/profile_screen.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/edit_profile_view_models/edit_profile_events.dart';
+import 'package:fitness_app/features/profile/presentation/view_models/edit_profile_view_models/edit_profile_view_model.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_events.dart';
 import 'package:fitness_app/features/profile/presentation/view_models/profile_view_models/profile_view_model.dart';
 import 'package:fitness_app/features/section_app/upcoming_workouts_screen.dart';
@@ -161,7 +163,12 @@ class AppRoutes {
           }
           return MaterialPageRoute(
             settings: settings,
-            builder: (_) => EditProfileScreen(profile: profile),
+            builder: (_) => BlocProvider(
+              create: (_) =>
+                  getIt<EditProfileViewModel>()
+                    ..doEvent(InitializeEditProfileEvent(profile: profile)),
+              child: EditProfileScreen(profile: profile),
+            ),
           );
         default:
           return _notFoundRoute(settings);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
 import 'package:fitness_app/core/values/register_constants.dart';
@@ -5,6 +7,7 @@ import 'package:fitness_app/features/profile/domain/entities/edit_profile_params
 import 'package:fitness_app/features/profile/domain/entities/profile_message_entity.dart';
 import 'package:fitness_app/features/profile/domain/entities/profile_response_entity.dart';
 import 'package:fitness_app/features/profile/domain/entities/upload_profile_photo_params.dart';
+import 'package:fitness_app/features/profile/domain/services/profile_image_compressor_service.dart';
 import 'package:fitness_app/features/profile/domain/use_cases/edit_profile_use_case.dart';
 import 'package:fitness_app/features/profile/domain/use_cases/pick_profile_photo_use_case.dart';
 import 'package:fitness_app/features/profile/domain/use_cases/upload_profile_photo_use_case.dart';
@@ -98,17 +101,11 @@ void main() {
         'loading',
         isTrue,
       ),
-      isA<EditProfileState>()
-          .having(
-            (state) => state.submitState.data,
-            'updated profile',
-            _updatedProfile,
-          )
-          .having(
-            (state) => state.page,
-            'details page',
-            EditProfilePage.details,
-          ),
+      isA<EditProfileState>().having(
+        (state) => state.submitState.data,
+        'updated profile',
+        _updatedProfile,
+      ),
     ],
     verify: (_) {
       final captured =
@@ -167,6 +164,107 @@ void main() {
     verify: (_) {
       verify(pickProfilePhotoUseCase.execute()).called(1);
       verifyNever(uploadProfilePhotoUseCase.execute(any));
+    },
+  );
+
+  blocTest<EditProfileViewModel, EditProfileState>(
+    'does not upload when the selected photo path is empty',
+    build: () {
+      when(pickProfilePhotoUseCase.execute()).thenAnswer(
+        (_) async =>
+            const UploadProfilePhotoParams(path: ' ', fileName: 'photo.jpg'),
+      );
+      return buildViewModel();
+    },
+    act: (viewModel) => viewModel.doEvent(const SelectEditProfilePhotoEvent()),
+    expect: () => <EditProfileState>[],
+    verify: (_) {
+      verify(pickProfilePhotoUseCase.execute()).called(1);
+      verifyNever(uploadProfilePhotoUseCase.execute(any));
+    },
+  );
+
+  blocTest<EditProfileViewModel, EditProfileState>(
+    'clears the local path and localizes compression failures',
+    build: () {
+      when(pickProfilePhotoUseCase.execute()).thenAnswer(
+        (_) async => const UploadProfilePhotoParams(
+          path: 'photo.jpg',
+          fileName: 'photo.jpg',
+        ),
+      );
+      when(uploadProfilePhotoUseCase.execute(any)).thenAnswer(
+        (_) async => ErrorBaseResponse(
+          errorMessage: ProfileImageCompressionFailure.photoTooLarge.name,
+        ),
+      );
+      return buildViewModel();
+    },
+    act: (viewModel) => viewModel.doEvent(const SelectEditProfilePhotoEvent()),
+    expect: () => [
+      isA<EditProfileState>().having(
+        (state) => state.localPhotoPath,
+        'selected path',
+        'photo.jpg',
+      ),
+      isA<EditProfileState>()
+          .having((state) => state.localPhotoPath, 'cleared path', isNull)
+          .having(
+            (state) => state.uploadPhotoState.msg,
+            'localized error',
+            isNotEmpty,
+          ),
+    ],
+  );
+
+  test(
+    'does not emit when submit finishes after the ViewModel closes',
+    () async {
+      final response = Completer<BaseResponse<ProfileResponseEntity>>();
+      when(editProfileUseCase.execute(any)).thenAnswer((_) => response.future);
+      final viewModel = buildViewModel()
+        ..doEvent(InitializeEditProfileEvent(profile: _profile));
+
+      final operation = viewModel.doEvent(
+        const SubmitEditProfileEvent(
+          firstName: 'Updated',
+          lastName: 'User',
+          email: 'updated@example.com',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+      await viewModel.close();
+      response.complete(SuccessBaseResponse(data: _updatedProfile));
+
+      await expectLater(operation, completes);
+    },
+  );
+
+  test(
+    'does not emit when upload finishes after the ViewModel closes',
+    () async {
+      final response = Completer<BaseResponse<ProfileMessageEntity>>();
+      when(pickProfilePhotoUseCase.execute()).thenAnswer(
+        (_) async => const UploadProfilePhotoParams(
+          path: 'photo.jpg',
+          fileName: 'photo.jpg',
+        ),
+      );
+      when(
+        uploadProfilePhotoUseCase.execute(any),
+      ).thenAnswer((_) => response.future);
+      final viewModel = buildViewModel();
+
+      final operation = viewModel.doEvent(const SelectEditProfilePhotoEvent());
+      await Future<void>.delayed(Duration.zero);
+      await viewModel.close();
+      response.complete(
+        SuccessBaseResponse(
+          data: const ProfileMessageEntity(message: 'success'),
+        ),
+      );
+
+      await expectLater(operation, completes);
     },
   );
 }

@@ -8,6 +8,8 @@ import '../../../../../core/values/register_constants.dart';
 import '../../../domain/entities/edit_profile_params.dart';
 import '../../../domain/entities/profile_message_entity.dart';
 import '../../../domain/entities/profile_response_entity.dart';
+import '../../../domain/entities/upload_profile_photo_params.dart';
+import '../../../domain/services/profile_image_compressor_service.dart';
 import '../../../domain/use_cases/edit_profile_use_case.dart';
 import '../../../domain/use_cases/pick_profile_photo_use_case.dart';
 import '../../../domain/use_cases/upload_profile_photo_use_case.dart';
@@ -36,8 +38,6 @@ class EditProfileViewModel extends Cubit<EditProfileState> {
         emit(state.copyWith(goal: event.goal));
       case SelectEditActivityLevelEvent():
         emit(state.copyWith(activityLevel: event.activityLevel));
-      case ChangeEditProfilePageEvent():
-        emit(state.copyWith(page: event.page));
       case SubmitEditProfileEvent():
         await _submit(event);
       case SelectEditProfilePhotoEvent():
@@ -85,6 +85,7 @@ class EditProfileViewModel extends Cubit<EditProfileState> {
         activityLevel: activityLevel,
       ),
     );
+    if (isClosed) return;
 
     switch (response) {
       case SuccessBaseResponse<ProfileResponseEntity>(data: final profile):
@@ -96,7 +97,6 @@ class EditProfileViewModel extends Cubit<EditProfileState> {
             activityLevel:
                 ActivityLevel.fromApiValue(profile.activityLevel) ??
                 activityLevel,
-            page: EditProfilePage.details,
             submitState: BaseState.success(profile),
           ),
         );
@@ -109,15 +109,25 @@ class EditProfileViewModel extends Cubit<EditProfileState> {
 
   Future<void> _pickAndUploadPhoto() async {
     final photo = await _pickProfilePhotoUseCase.execute();
+    if (isClosed) return;
     if (photo == null) return;
+    final path = photo.path.trim();
+    if (path.isEmpty) return;
+    final normalizedPhoto = UploadProfilePhotoParams(
+      path: path,
+      fileName: photo.fileName.trim().isEmpty
+          ? 'profile-photo.jpg'
+          : photo.fileName.trim(),
+    );
 
     emit(
       state.copyWith(
-        localPhotoPath: photo.path,
+        localPhotoPath: path,
         uploadPhotoState: BaseState.loading(),
       ),
     );
-    final response = await _uploadProfilePhotoUseCase.execute(photo);
+    final response = await _uploadProfilePhotoUseCase.execute(normalizedPhoto);
+    if (isClosed) return;
 
     switch (response) {
       case SuccessBaseResponse<ProfileMessageEntity>(data: final message):
@@ -127,10 +137,22 @@ class EditProfileViewModel extends Cubit<EditProfileState> {
       ):
         emit(
           state.copyWith(
-            localPhotoPath: '',
-            uploadPhotoState: BaseState.error(errorMessage),
+            clearLocalPhotoPath: true,
+            uploadPhotoState: BaseState.error(_displayError(errorMessage)),
           ),
         );
     }
+  }
+
+  String _displayError(String message) {
+    return switch (message) {
+      final value
+          when value == ProfileImageCompressionFailure.compressionFailed.name =>
+        AppStrings.profilePhotoCompressionFailed,
+      final value
+          when value == ProfileImageCompressionFailure.photoTooLarge.name =>
+        AppStrings.profilePhotoTooLarge,
+      _ => message,
+    };
   }
 }

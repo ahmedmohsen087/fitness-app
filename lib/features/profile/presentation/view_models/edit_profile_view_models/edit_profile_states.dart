@@ -4,14 +4,12 @@ import '../../../../../config/base_state/base_state.dart';
 import '../../../../../core/values/register_constants.dart';
 import '../../../domain/entities/profile_message_entity.dart';
 import '../../../domain/entities/profile_response_entity.dart';
-import 'edit_profile_events.dart';
 
 class EditProfileState extends Equatable {
   final ProfileResponseEntity? profile;
   final int? weight;
   final FitnessGoal? goal;
   final ActivityLevel? activityLevel;
-  final EditProfilePage page;
   final String? localPhotoPath;
   final BaseState<ProfileResponseEntity> submitState;
   final BaseState<ProfileMessageEntity> uploadPhotoState;
@@ -21,7 +19,6 @@ class EditProfileState extends Equatable {
     this.weight,
     this.goal,
     this.activityLevel,
-    this.page = EditProfilePage.details,
     this.localPhotoPath,
     this.submitState = const BaseState(),
     this.uploadPhotoState = const BaseState(),
@@ -32,8 +29,8 @@ class EditProfileState extends Equatable {
     int? weight,
     FitnessGoal? goal,
     ActivityLevel? activityLevel,
-    EditProfilePage? page,
     String? localPhotoPath,
+    bool clearLocalPhotoPath = false,
     BaseState<ProfileResponseEntity>? submitState,
     BaseState<ProfileMessageEntity>? uploadPhotoState,
   }) {
@@ -42,8 +39,9 @@ class EditProfileState extends Equatable {
       weight: weight ?? this.weight,
       goal: goal ?? this.goal,
       activityLevel: activityLevel ?? this.activityLevel,
-      page: page ?? this.page,
-      localPhotoPath: localPhotoPath ?? this.localPhotoPath,
+      localPhotoPath: clearLocalPhotoPath
+          ? null
+          : localPhotoPath ?? this.localPhotoPath,
       submitState: submitState ?? this.submitState,
       uploadPhotoState: uploadPhotoState ?? this.uploadPhotoState,
     );
@@ -55,7 +53,6 @@ class EditProfileState extends Equatable {
     weight,
     goal,
     activityLevel,
-    page,
     localPhotoPath,
     submitState,
     uploadPhotoState,

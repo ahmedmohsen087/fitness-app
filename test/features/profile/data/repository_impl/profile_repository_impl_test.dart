@@ -15,20 +15,17 @@ import 'package:fitness_app/features/profile/domain/entities/edit_profile_params
 import 'package:fitness_app/features/profile/domain/entities/profile_message_entity.dart';
 import 'package:fitness_app/features/profile/domain/entities/profile_response_entity.dart';
 import 'package:fitness_app/features/profile/domain/entities/upload_profile_photo_params.dart';
-import 'package:fitness_app/features/profile/domain/repository_contract/profile_image_compressor_contract.dart';
+import 'package:fitness_app/features/profile/domain/services/profile_image_compressor_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'profile_repository_impl_test.mocks.dart';
 
-@GenerateMocks([
-  ProfileRemoteDataSourceContract,
-  ProfileImageCompressorContract,
-])
+@GenerateMocks([ProfileRemoteDataSourceContract, ProfileImageCompressorService])
 void main() {
   late MockProfileRemoteDataSourceContract remoteDataSource;
-  late MockProfileImageCompressorContract imageCompressor;
+  late MockProfileImageCompressorService imageCompressor;
   late ProfileRepositoryImpl repository;
 
   setUpAll(() {
@@ -50,7 +47,7 @@ void main() {
 
   setUp(() {
     remoteDataSource = MockProfileRemoteDataSourceContract();
-    imageCompressor = MockProfileImageCompressorContract();
+    imageCompressor = MockProfileImageCompressorService();
     repository = ProfileRepositoryImpl(remoteDataSource, imageCompressor);
   });
 
@@ -108,6 +105,32 @@ void main() {
       expect(request.photo.length, 3);
     },
   );
+
+  test('converts mapper exceptions through the base repository', () async {
+    when(remoteDataSource.getProfileData()).thenAnswer(
+      (_) async => SuccessBaseResponse(data: _ThrowingProfileResponseModel()),
+    );
+
+    final result = await repository.getProfileData();
+
+    expect(result, isA<ErrorBaseResponse<ProfileResponseEntity>>());
+  });
+
+  test('returns a stable code for image compression failures', () async {
+    when(imageCompressor.compress(_photoParams)).thenThrow(
+      const ProfileImageCompressionException(
+        ProfileImageCompressionFailure.photoTooLarge,
+      ),
+    );
+
+    final result = await repository.uploadProfilePhoto(_photoParams);
+
+    expect(
+      (result as ErrorBaseResponse<ProfileMessageEntity>).errorMessage,
+      ProfileImageCompressionFailure.photoTooLarge.name,
+    );
+    verifyNever(remoteDataSource.uploadProfilePhoto(any));
+  });
 }
 
 const _editParams = EditProfileParams(
@@ -125,3 +148,8 @@ const _photoParams = UploadProfilePhotoParams(
   path: 'photo.jpg',
   fileName: 'photo.jpg',
 );
+
+class _ThrowingProfileResponseModel extends ProfileResponseModel {
+  @override
+  ProfileResponseEntity toProfileEntity() => throw const FormatException();
+}
