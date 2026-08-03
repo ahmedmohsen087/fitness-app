@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../../../core/reusable_widgets/custom_network_image.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/values/app_strings.dart';
 
@@ -21,14 +22,6 @@ class EditableProfileAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localPath = localPhotoPath;
-    final ImageProvider<Object>? image =
-        localPath != null && localPath.isNotEmpty
-        ? FileImage(File(localPath))
-        : imageUrl.isNotEmpty
-        ? NetworkImage(imageUrl)
-        : null;
-
     return Semantics(
       button: true,
       label: AppStrings.selectProfilePhoto,
@@ -43,10 +36,12 @@ class EditableProfileAvatar extends StatelessWidget {
               CircleAvatar(
                 radius: 50,
                 backgroundColor: AppColors.lightBlack,
-                backgroundImage: image,
-                child: image == null
-                    ? const Icon(Icons.person, size: 50, color: AppColors.white)
-                    : null,
+                child: ClipOval(
+                  child: _ProfileImage(
+                    localPhotoPath: localPhotoPath,
+                    imageUrl: imageUrl,
+                  ),
+                ),
               ),
               if (isLoading)
                 const SizedBox.square(
@@ -72,6 +67,51 @@ class EditableProfileAvatar extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ProfileImage extends StatelessWidget {
+  final String? localPhotoPath;
+  final String imageUrl;
+
+  const _ProfileImage({required this.localPhotoPath, required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    final localPath = localPhotoPath?.trim();
+    if (localPath != null && localPath.isNotEmpty) {
+      return Image.file(
+        File(localPath),
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) => const _ProfilePlaceholder(),
+      );
+    }
+    if (imageUrl.trim().isNotEmpty) {
+      return CustomNetworkImage(
+        imageUrl: imageUrl.trim(),
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover,
+      );
+    }
+    return const _ProfilePlaceholder();
+  }
+}
+
+class _ProfilePlaceholder extends StatelessWidget {
+  const _ProfilePlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return const ColoredBox(
+      color: AppColors.lightBlack,
+      child: SizedBox.square(
+        dimension: 100,
+        child: Icon(Icons.person, size: 50, color: AppColors.white),
       ),
     );
   }

@@ -2,13 +2,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/entities/upload_profile_photo_params.dart';
-import '../../domain/repository_contract/profile_photo_picker_contract.dart';
+import '../../domain/services/profile_photo_picker_service.dart';
 
-@Injectable(as: ProfilePhotoPickerContract)
-class ProfilePhotoPickerImpl implements ProfilePhotoPickerContract {
+@Injectable(as: ProfilePhotoPickerService)
+class ProfilePhotoPickerServiceImpl implements ProfilePhotoPickerService {
   final ImagePicker _imagePicker;
 
-  ProfilePhotoPickerImpl(this._imagePicker);
+  ProfilePhotoPickerServiceImpl(this._imagePicker);
 
   @override
   Future<UploadProfilePhotoParams?> pick() async {

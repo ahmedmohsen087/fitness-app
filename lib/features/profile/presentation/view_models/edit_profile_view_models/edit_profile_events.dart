@@ -29,12 +29,6 @@ class SelectEditActivityLevelEvent extends EditProfileEvents {
   const SelectEditActivityLevelEvent({required this.activityLevel});
 }
 
-class ChangeEditProfilePageEvent extends EditProfileEvents {
-  final EditProfilePage page;
-
-  const ChangeEditProfilePageEvent({required this.page});
-}
-
 class SubmitEditProfileEvent extends EditProfileEvents {
   final String firstName;
   final String lastName;
@@ -50,5 +44,3 @@ class SubmitEditProfileEvent extends EditProfileEvents {
 class SelectEditProfilePhotoEvent extends EditProfileEvents {
   const SelectEditProfilePhotoEvent();
 }
-
-enum EditProfilePage { details, weight, goal, activity }
