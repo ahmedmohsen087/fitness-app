@@ -5,6 +5,7 @@ import 'package:fitness_app/features/fitness/domain/entities/muscle_entity.dart'
 import 'package:fitness_app/features/fitness/domain/entities/muscle_group_entity.dart';
 import 'package:fitness_app/features/fitness/domain/repository_contract/fitness_repository_contract.dart';
 import 'package:fitness_app/features/food/domain/entities/category_food/recommendation_food_entity.dart';
+import 'package:fitness_app/features/food/domain/entities/food/meal_entity.dart';
 import 'package:fitness_app/features/food/domain/entities/food/meals_entity.dart';
 import 'package:fitness_app/features/food/domain/repository_contract/food_repository_contract.dart';
 import 'package:fitness_app/features/profile/domain/entities/profile_entity.dart';
@@ -44,6 +45,108 @@ class SmartCoachRepositoryImpl implements SmartCoachRepositoryContract {
   static final RegExp _rawUrlRegex = RegExp(r'https?://\S+');
   static final RegExp _objectIdRegex = RegExp(r'[a-fA-F0-9]{24}');
 
+  static const Map<String, String> _keywordToCategory = {
+    'سمك': 'Seafood',
+    'سلمون': 'Seafood',
+    'سالمون': 'Seafood',
+    'جمبري': 'Seafood',
+    'بحرية': 'Seafood',
+    'سي فود': 'Seafood',
+    'تونة': 'Seafood',
+    'سبيط': 'Seafood',
+    'روبيان': 'Seafood',
+    'seafood': 'Seafood',
+    'fish': 'Seafood',
+    'salmon': 'Seafood',
+    'shrimp': 'Seafood',
+    'prawn': 'Seafood',
+    'tuna': 'Seafood',
+    'بقري': 'Beef',
+    'استيك': 'Beef',
+    'ستيك': 'Beef',
+    'كفتة': 'Beef',
+    'برجر': 'Beef',
+    'beef': 'Beef',
+    'steak': 'Beef',
+    'meatball': 'Beef',
+    'ضاني': 'Lamb',
+    'خروف': 'Lamb',
+    'ضأن': 'Lamb',
+    'lamb': 'Lamb',
+    'دجاج': 'Chicken',
+    'فراخ': 'Chicken',
+    'طيور': 'Chicken',
+    'chicken': 'Chicken',
+    'باستا': 'Pasta',
+    'مكرونة': 'Pasta',
+    'pasta': 'Pasta',
+    'نباتي': 'Vegetarian',
+    'خضار': 'Vegetarian',
+    'سلطة': 'Vegetarian',
+    'vegetarian': 'Vegetarian',
+    'vegan': 'Vegetarian',
+    'حلو': 'Dessert',
+    'حلويات': 'Dessert',
+    'كيك': 'Dessert',
+    'dessert': 'Dessert',
+    'cake': 'Dessert',
+    'لحم': 'Beef',
+    'meat': 'Beef',
+  };
+
+  static const Map<String, List<String>> _keywordToTerms = {
+    'سلمون': ['salmon'],
+    'سالمون': ['salmon'],
+    'salmon': ['salmon'],
+    'استيك': ['steak', 'roast', 'brisket', 'beef'],
+    'ستيك': ['steak', 'roast', 'brisket', 'beef'],
+    'steak': ['steak', 'roast', 'brisket', 'beef'],
+    'جمبري': ['shrimp', 'prawn', 'gambas'],
+    'روبيان': ['shrimp', 'prawn', 'gambas'],
+    'shrimp': ['shrimp', 'prawn', 'gambas'],
+    'prawn': ['shrimp', 'prawn', 'gambas'],
+    'تونة': ['tuna'],
+    'tuna': ['tuna'],
+    'كفتة': ['kefta', 'meatball', 'kofta'],
+    'kefta': ['kefta', 'meatball', 'kofta'],
+    'meatball': ['kefta', 'meatball', 'kofta'],
+    'سمك': ['fish', 'cod', 'salmon', 'hake'],
+    'fish': ['fish', 'cod', 'salmon', 'hake'],
+  };
+
+  static const Map<String, String> _keywordToMuscleGroup = {
+    'صدر': 'Chest',
+    'بنش': 'Chest',
+    'chest': 'Chest',
+    'ظهر': 'Back',
+    'لاتس': 'Back',
+    'back': 'Back',
+    'باي': 'Biceps',
+    'بايسبس': 'Biceps',
+    'biceps': 'Biceps',
+    'تراي': 'Triceps',
+    'ترايسبس': 'Triceps',
+    'triceps': 'Triceps',
+    'كتف': 'Shoulders',
+    'أكتاف': 'Shoulders',
+    'اكتاف': 'Shoulders',
+    'shoulders': 'Shoulders',
+    'رجل': 'Quadriceps',
+    'أرجل': 'Quadriceps',
+    'افخاذ': 'Quadriceps',
+    'quads': 'Quadriceps',
+    'quadriceps': 'Quadriceps',
+    'بطن': 'Abdominals',
+    'abs': 'Abdominals',
+    'abdominals': 'Abdominals',
+    'ترابيس': 'Trapezius',
+    'trapezius': 'Trapezius',
+    'سواعد': 'Forearms',
+    'forearms': 'Forearms',
+    'سمانة': 'Calves',
+    'calves': 'Calves',
+  };
+
   SmartCoachRepositoryImpl(
     this._remoteDataSource,
     this._localDataSource,
@@ -60,7 +163,11 @@ class SmartCoachRepositoryImpl implements SmartCoachRepositoryContract {
     String? imagePath,
     List<ChatMessageEntity> history = const [],
   }) async {
-    final promptResult = await _buildSystemPrompt(profile, languageCode);
+    final promptResult = await _buildSystemPrompt(
+      profile,
+      languageCode,
+      messageContent,
+    );
     final payloadMessages = _buildPayloadMessages(
       systemPrompt: promptResult.systemPrompt,
       history: history,
@@ -104,101 +211,228 @@ class SmartCoachRepositoryImpl implements SmartCoachRepositoryContract {
   Future<_PromptResult> _buildSystemPrompt(
     ProfileEntity? profile,
     String languageCode,
+    String? userMessage,
   ) async {
-    final isAr = languageCode == 'ar';
-
-    final name = profile?.firstName ?? '';
-    final gender = profile?.gender ?? '';
-    final age = profile?.age != null ? '${profile!.age}' : '';
-    final weight = profile?.weight != null ? '${profile!.weight}kg' : '';
-    final height = profile?.height != null ? '${profile!.height}cm' : '';
-    final goal = profile?.goal ?? '';
-
-    final langInstruction = isAr
-        ? 'Respond strictly in natural ARABIC (باللغة العربية).'
-        : 'Respond strictly in natural ENGLISH.';
-
-    final profileDetails = [
-      if (name.isNotEmpty) 'Name: $name',
-      if (gender.isNotEmpty) 'Gender: $gender',
-      if (age.isNotEmpty) 'Age: $age',
-      if (weight.isNotEmpty) 'Weight: $weight',
-      if (height.isNotEmpty) 'Height: $height',
-      if (goal.isNotEmpty) 'Goal: $goal',
-    ].join(', ');
-
     final mealBuffer = StringBuffer();
     final muscleBuffer = StringBuffer();
     final catalogMealsMap = <String, String>{};
     final catalogMusclesMap = <String, MuscleEntity>{};
 
-    try {
-      final recRes = await _foodRepository.getRecommendationFood();
-      if (recRes is SuccessBaseResponse<RecommendationFoodEntity>) {
-        final categoryNames = recRes.data.categories
-            .map((c) => c.strCategory)
-            .where((name) => name.isNotEmpty)
-            .toList();
+    await _populateMealCatalog(userMessage, mealBuffer, catalogMealsMap);
+    await _populateMuscleCatalog(userMessage, muscleBuffer, catalogMusclesMap);
 
-        final responses = await Future.wait(
-          categoryNames.take(6).map((c) => _foodRepository.getMealsByCategory(c)),
-        );
-        for (final res in responses) {
-          if (res is SuccessBaseResponse<MealsEntity>) {
-            for (final m in res.data.meals.take(4)) {
-              if (m.id.isNotEmpty && m.name.isNotEmpty) {
-                mealBuffer.writeln('- Meal ID "${m.id}": ${m.name}');
-                catalogMealsMap[m.id] = m.name;
-              }
-            }
-          }
-        }
-      }
-    } catch (_) {}
-
-    try {
-      final groupsRes = await _fitnessRepository.getMuscleGroups();
-      if (groupsRes is SuccessBaseResponse<List<MuscleGroupEntity>>) {
-        final groups = groupsRes.data;
-        final musclesResponses = await Future.wait(
-          groups.take(6).map((g) => _fitnessRepository.getMusclesByGroupId(g.id)),
-        );
-
-        for (int i = 0; i < musclesResponses.length; i++) {
-          final groupName = groups[i].name;
-          final res = musclesResponses[i];
-          if (res is SuccessBaseResponse<List<MuscleEntity>>) {
-            for (final m in res.data) {
-              if (m.id.isNotEmpty && m.name.isNotEmpty) {
-                muscleBuffer.writeln(
-                  '- Muscle Group "$groupName" -> Muscle ID "${m.id}": ${m.name}${m.image.isNotEmpty ? ' (Image: ${m.image})' : ''}',
-                );
-                catalogMusclesMap[m.id] = m;
-              }
-            }
-          }
-        }
-      }
-    } catch (_) {}
-
-    final promptText =
-        'You are Smart Coach, an expert AI fitness & nutrition coach in our Fitness App. '
-        '${profileDetails.isNotEmpty ? "User Profile Data: $profileDetails." : ""} '
-        '$langInstruction '
-        'FORBIDDEN: NEVER output external website URLs or http/https links. '
-        'CRITICAL RULE FOR EXERCISE ACTIONS: exerciseId MUST BE A SINGLE 24-character hexadecimal ID (e.g. 69d982ef85f6bfa972bf224e). NEVER COMBINE OR JOIN MULTIPLE IDs WITH COMMAS OR SPACES. '
-        'GUIDELINES: '
-        '1. For general chat (asking weight, height, greetings, general advice), answer naturally in plain text ONLY. DO NOT append any action or JSON. '
-        '2. ONLY IF the user explicitly asks for a meal or recipe recommendation, analyze their request intelligently, select a matching meal from the live catalog below, explain why naturally, and append a JSON action at the end: '
-        '{"action": {"type": "navigateFoodDetails", "title": "<Meal Name>", "params": {"mealId": "<Meal ID>"}}} '
-        '3. ONLY IF the user explicitly asks for exercise suggestions, workout routines, or to view exercises (e.g. "انقلني لصفحة التمارين"), analyze their request intelligently, select a SINGLE matching muscle from the live muscles catalog below, explain the exercise/routine naturally, and append a JSON action at the end: '
-        '{"action": {"type": "navigateExercise", "title": "تمرين <Muscle Name>", "params": {"exerciseId": "<SINGLE Muscle ID>", "muscleName": "<Muscle Name>", "image": "<Muscle Image URL>"}}} '
-        'LIVE APP MEALS CATALOG FROM API: '
-        '${mealBuffer.toString()} '
-        'LIVE APP MUSCLES CATALOG FROM API: '
-        '${muscleBuffer.toString()}';
+    final promptText = _composePromptText(
+      profile: profile,
+      languageCode: languageCode,
+      mealCatalog: mealBuffer.toString(),
+      muscleCatalog: muscleBuffer.toString(),
+    );
 
     return _PromptResult(promptText, catalogMealsMap, catalogMusclesMap);
+  }
+
+  Future<void> _populateMealCatalog(
+    String? userMessage,
+    StringBuffer buffer,
+    Map<String, String> catalogMap,
+  ) async {
+    try {
+      final recRes = await _foodRepository.getRecommendationFood();
+      if (recRes is! SuccessBaseResponse<RecommendationFoodEntity>) return;
+      final categories = recRes.data.categories
+          .map((c) => c.strCategory)
+          .where((name) => name.isNotEmpty && name != 'Pork')
+          .toList();
+      final requestedCat = _detectRequestedCategory(userMessage);
+      final targetCategories = _prepareTargetCategories(categories, requestedCat);
+      final responses = await Future.wait(
+        targetCategories.map((c) => _foodRepository.getMealsByCategory(c)),
+      );
+      _processMealResponses(
+        targetCategories,
+        responses,
+        requestedCat,
+        _extractSearchTerms(userMessage),
+        buffer,
+        catalogMap,
+      );
+    } catch (_) {}
+  }
+
+  List<String> _prepareTargetCategories(List<String> categories, String? requested) {
+    final list = List<String>.from(categories);
+    if (requested != null && list.contains(requested)) {
+      list.remove(requested);
+      list.insert(0, requested);
+    }
+    return list.take(8).toList();
+  }
+
+  void _processMealResponses(
+    List<String> categories,
+    List<BaseResponse<MealsEntity>> responses,
+    String? requestedCat,
+    List<String> searchTerms,
+    StringBuffer buffer,
+    Map<String, String> catalogMap,
+  ) {
+    for (var i = 0; i < responses.length; i++) {
+      final res = responses[i];
+      if (res is! SuccessBaseResponse<MealsEntity>) continue;
+      final catName = categories[i];
+      final meals = res.data.meals
+          .where((m) => m.id.isNotEmpty && m.name.isNotEmpty)
+          .toList();
+      _sortMealsByTerms(meals, searchTerms);
+      final limit = (catName == requestedCat) ? 10 : 4;
+      _writeMealsToBuffer(catName, meals.take(limit), buffer, catalogMap);
+    }
+  }
+
+  void _sortMealsByTerms(List<MealEntity> meals, List<String> searchTerms) {
+    if (searchTerms.isEmpty) return;
+    meals.sort((a, b) {
+      final aMatch = searchTerms.any((t) => a.name.toLowerCase().contains(t));
+      final bMatch = searchTerms.any((t) => b.name.toLowerCase().contains(t));
+      if (aMatch && !bMatch) return -1;
+      if (!aMatch && bMatch) return 1;
+      return 0;
+    });
+  }
+
+  void _writeMealsToBuffer(
+    String catName,
+    Iterable<MealEntity> meals,
+    StringBuffer buffer,
+    Map<String, String> catalogMap,
+  ) {
+    for (final m in meals) {
+      buffer.writeln('- Category "$catName" -> Meal ID "${m.id}": ${m.name}');
+      catalogMap[m.id] = m.name;
+    }
+  }
+
+  Future<void> _populateMuscleCatalog(
+    String? userMessage,
+    StringBuffer buffer,
+    Map<String, MuscleEntity> catalogMap,
+  ) async {
+    try {
+      final groupsRes = await _fitnessRepository.getMuscleGroups();
+      if (groupsRes is! SuccessBaseResponse<List<MuscleGroupEntity>>) return;
+      final requestedGroup = _detectRequestedMuscleGroup(userMessage);
+      final groups = _prepareTargetMuscleGroups(groupsRes.data, requestedGroup);
+      final responses = await Future.wait(
+        groups.map((g) => _fitnessRepository.getMusclesByGroupId(g.id)),
+      );
+      for (var i = 0; i < responses.length; i++) {
+        final res = responses[i];
+        if (res is! SuccessBaseResponse<List<MuscleEntity>>) continue;
+        _writeMusclesToBuffer(groups[i].name, res.data, buffer, catalogMap);
+      }
+    } catch (_) {}
+  }
+
+  List<MuscleGroupEntity> _prepareTargetMuscleGroups(
+    List<MuscleGroupEntity> groups,
+    String? requested,
+  ) {
+    final list = List<MuscleGroupEntity>.from(groups);
+    if (requested != null) {
+      final index = list.indexWhere(
+        (g) => g.name.toLowerCase() == requested.toLowerCase(),
+      );
+      if (index > 0) {
+        final matched = list.removeAt(index);
+        list.insert(0, matched);
+      }
+    }
+    return list.take(10).toList();
+  }
+
+  void _writeMusclesToBuffer(
+    String groupName,
+    List<MuscleEntity> muscles,
+    StringBuffer buffer,
+    Map<String, MuscleEntity> catalogMap,
+  ) {
+    for (final m in muscles) {
+      if (m.id.isEmpty || m.name.isEmpty) continue;
+      final img = m.image.isNotEmpty ? ' (Image: ${m.image})' : '';
+      buffer.writeln('- Muscle Group "$groupName" -> Muscle ID "${m.id}": ${m.name}$img');
+      catalogMap[m.id] = m;
+    }
+  }
+
+  String _buildUserProfileSection(ProfileEntity? profile) {
+    if (profile == null) return '';
+    final details = [
+      if (profile.firstName.isNotEmpty) 'Name: ${profile.firstName}',
+      if (profile.gender.isNotEmpty) 'Gender: ${profile.gender}',
+      if (profile.age > 0) 'Age: ${profile.age}',
+      if (profile.weight > 0) 'Weight: ${profile.weight}kg',
+      if (profile.height > 0) 'Height: ${profile.height}cm',
+      if (profile.goal.isNotEmpty) 'Goal: ${profile.goal}',
+    ].join(', ');
+    return details.isNotEmpty ? 'User Profile Data: $details.' : '';
+  }
+
+  String _composePromptText({
+    required ProfileEntity? profile,
+    required String languageCode,
+    required String mealCatalog,
+    required String muscleCatalog,
+  }) {
+    final profileDetails = _buildUserProfileSection(profile);
+    final langInst = languageCode == 'ar'
+        ? 'Respond strictly in natural ARABIC (باللغة العربية).'
+        : 'Respond strictly in natural ENGLISH.';
+
+    return 'You are Smart Coach, an expert AI fitness & nutrition coach in our Fitness App. '
+        '$profileDetails '
+        '$langInst '
+        'FORBIDDEN: NEVER output external website URLs or http/https links. '
+        'CRITICAL EXERCISE RULE: exerciseId MUST BE A SINGLE 24-character hexadecimal ID. NEVER JOIN MULTIPLE IDs. '
+        'STRICT CATEGORY MATCHING: '
+        '1. Select ONLY a meal matching the user requested food type (e.g. seafood, beef, chicken, pasta, vegetarian). Never recommend chicken or lamb for seafood, or chicken/fish for beef. '
+        '2. NEVER hallucinate ingredients. Dish names define the protein type. '
+        '3. Pick actual dishes matching requested terms from the catalog. '
+        'GUIDELINES: '
+        '1. For general chat, answer naturally in plain text ONLY. DO NOT append JSON. '
+        '2. IF user asks for meal/recipe recommendation, select a matching meal from catalog below, explain naturally, and append JSON action: '
+        '{"action": {"type": "navigateFoodDetails", "title": "<Meal Name>", "params": {"mealId": "<Meal ID>"}}} '
+        '3. IF user asks for exercise suggestions/workout, select a SINGLE matching muscle from catalog below, explain naturally, and append JSON action: '
+        '{"action": {"type": "navigateExercise", "title": "تمرين <Muscle Name>", "params": {"exerciseId": "<SINGLE Muscle ID>", "muscleName": "<Muscle Name>", "image": "<Muscle Image URL>"}}} '
+        'LIVE MEALS CATALOG: $mealCatalog '
+        'LIVE MUSCLES CATALOG: $muscleCatalog';
+  }
+
+  String? _detectRequestedCategory(String? userMessage) {
+    if (userMessage == null || userMessage.isEmpty) return null;
+    final msg = userMessage.toLowerCase();
+    for (final entry in _keywordToCategory.entries) {
+      if (msg.contains(entry.key)) return entry.value;
+    }
+    return null;
+  }
+
+  String? _detectRequestedMuscleGroup(String? userMessage) {
+    if (userMessage == null || userMessage.isEmpty) return null;
+    final msg = userMessage.toLowerCase();
+    for (final entry in _keywordToMuscleGroup.entries) {
+      if (msg.contains(entry.key)) return entry.value;
+    }
+    return null;
+  }
+
+  List<String> _extractSearchTerms(String? userMessage) {
+    if (userMessage == null || userMessage.isEmpty) return const [];
+    final msg = userMessage.toLowerCase();
+    final terms = <String>{};
+    for (final entry in _keywordToTerms.entries) {
+      if (msg.contains(entry.key)) terms.addAll(entry.value);
+    }
+    return terms.toList();
   }
 
   List<OllamaChatMessagePayload> _buildPayloadMessages({
@@ -210,7 +444,6 @@ class SmartCoachRepositoryImpl implements SmartCoachRepositoryContract {
     final list = <OllamaChatMessagePayload>[
       OllamaChatMessagePayload(role: 'system', content: systemPrompt),
     ];
-
     final recentHistory = history.length > 6
         ? history.sublist(history.length - 6)
         : history;
@@ -224,14 +457,7 @@ class SmartCoachRepositoryImpl implements SmartCoachRepositoryContract {
       );
     }
 
-    List<String>? base64Images;
-    if (imagePath != null && imagePath.isNotEmpty) {
-      try {
-        final bytes = File(imagePath).readAsBytesSync();
-        base64Images = [base64Encode(bytes)];
-      } catch (_) {}
-    }
-
+    final base64Images = _encodeImage(imagePath);
     list.add(
       OllamaChatMessagePayload(
         role: 'user',
@@ -239,8 +465,17 @@ class SmartCoachRepositoryImpl implements SmartCoachRepositoryContract {
         images: base64Images,
       ),
     );
-
     return list;
+  }
+
+  List<String>? _encodeImage(String? imagePath) {
+    if (imagePath == null || imagePath.isEmpty) return null;
+    try {
+      final bytes = File(imagePath).readAsBytesSync();
+      return [base64Encode(bytes)];
+    } catch (_) {
+      return null;
+    }
   }
 
   BaseResponse<ChatMessageEntity> _handleRemoteResponse(
@@ -248,101 +483,124 @@ class SmartCoachRepositoryImpl implements SmartCoachRepositoryContract {
     Map<String, String> catalogMeals,
     Map<String, MuscleEntity> catalogMuscles,
   ) {
-    if (response is SuccessBaseResponse) {
-      final resModel = response.data;
-      var content = resModel.contentMessage as String;
-      ChatActionEntity? actionEntity = resModel.actionModel?.toEntity();
-
-      content = content
-          .replaceAll(_markdownUrlRegex, '')
-          .replaceAll(_rawUrlRegex, '')
-          .trim();
-
-      if (actionEntity == null) {
-        final contentLower = content.toLowerCase();
-        if (catalogMeals.isNotEmpty) {
-          for (final entry in catalogMeals.entries) {
-            final mealId = entry.key;
-            final mealName = entry.value;
-            if (contentLower.contains(mealId.toLowerCase()) ||
-                contentLower.contains(mealName.toLowerCase())) {
-              actionEntity = ChatActionEntity(
-                type: SmartCoachActionType.navigateFoodDetails,
-                title: mealName,
-                params: ChatActionParamsEntity(mealId: mealId),
-              );
-              break;
-            }
-          }
-        }
-        if (actionEntity == null && catalogMuscles.isNotEmpty) {
-          for (final entry in catalogMuscles.entries) {
-            final muscle = entry.value;
-            if (contentLower.contains(muscle.id.toLowerCase()) ||
-                contentLower.contains(muscle.name.toLowerCase())) {
-              actionEntity = ChatActionEntity(
-                type: SmartCoachActionType.navigateExercise,
-                title: 'تمرين ${muscle.name}',
-                params: ChatActionParamsEntity(
-                  exerciseId: muscle.id,
-                  muscleName: muscle.name,
-                  image: muscle.image,
-                ),
-              );
-              break;
-            }
-          }
-        }
-        if (actionEntity == null &&
-            catalogMuscles.isNotEmpty &&
-            (contentLower.contains('تمرين') ||
-                contentLower.contains('تمارين') ||
-                contentLower.contains('workout') ||
-                contentLower.contains('exercise') ||
-                contentLower.contains('انقلني') ||
-                contentLower.contains('ريفرنس'))) {
-          final targetMuscle = catalogMuscles.values.first;
-          actionEntity = ChatActionEntity(
-            type: SmartCoachActionType.navigateExercise,
-            title: 'تمرين ${targetMuscle.name}',
-            params: ChatActionParamsEntity(
-              exerciseId: targetMuscle.id,
-              muscleName: targetMuscle.name,
-              image: targetMuscle.image,
-            ),
-          );
-        }
-      }
-
-      if (actionEntity != null &&
-          actionEntity.type == SmartCoachActionType.navigateExercise) {
-        final rawId = actionEntity.params.exerciseId ?? '';
-        final match = _objectIdRegex.firstMatch(rawId);
-        if (match != null) {
-          final cleanId = match.group(0)!;
-          actionEntity = ChatActionEntity(
-            type: actionEntity.type,
-            title: actionEntity.title,
-            params: ChatActionParamsEntity(
-              exerciseId: cleanId,
-              muscleName: actionEntity.params.muscleName,
-              image: actionEntity.params.image,
-            ),
-          );
-        }
-      }
-
-      final entity = ChatMessageEntity(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        content: content,
-        sender: MessageSender.ai,
-        timestamp: DateTime.now(),
-        action: actionEntity,
-      );
-      return SuccessBaseResponse(data: entity);
-    } else if (response is ErrorBaseResponse) {
+    if (response is ErrorBaseResponse) {
       return ErrorBaseResponse(errorMessage: response.errorMessage);
     }
-    return ErrorBaseResponse(errorMessage: 'Unknown error occurred');
+    if (response is! SuccessBaseResponse) {
+      return ErrorBaseResponse(errorMessage: 'Unknown error occurred');
+    }
+    final resModel = response.data;
+    final content = _cleanContent(resModel.contentMessage as String);
+    final action = _resolveAction(
+      initialAction: resModel.actionModel?.toEntity(),
+      content: content,
+      catalogMeals: catalogMeals,
+      catalogMuscles: catalogMuscles,
+    );
+
+    final entity = ChatMessageEntity(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      content: content,
+      sender: MessageSender.ai,
+      timestamp: DateTime.now(),
+      action: action,
+    );
+    return SuccessBaseResponse(data: entity);
+  }
+
+  String _cleanContent(String content) {
+    return content
+        .replaceAll(_markdownUrlRegex, '')
+        .replaceAll(_rawUrlRegex, '')
+        .trim();
+  }
+
+  ChatActionEntity? _resolveAction({
+    required ChatActionEntity? initialAction,
+    required String content,
+    required Map<String, String> catalogMeals,
+    required Map<String, MuscleEntity> catalogMuscles,
+  }) {
+    var action = _validateMealAction(initialAction, catalogMeals);
+    action ??= _fallbackMealAction(content, catalogMeals);
+    action ??= _fallbackExerciseAction(content, catalogMuscles);
+    return _sanitizeExerciseAction(action);
+  }
+
+  ChatActionEntity? _validateMealAction(
+    ChatActionEntity? action,
+    Map<String, String> catalogMeals,
+  ) {
+    if (action == null || action.type != SmartCoachActionType.navigateFoodDetails) {
+      return action;
+    }
+    final title = action.title.toLowerCase();
+    for (final entry in catalogMeals.entries) {
+      if (entry.value.toLowerCase() == title || title.contains(entry.value.toLowerCase())) {
+        return ChatActionEntity(
+          type: action.type,
+          title: entry.value,
+          params: ChatActionParamsEntity(mealId: entry.key),
+        );
+      }
+    }
+    return action;
+  }
+
+  ChatActionEntity? _fallbackMealAction(
+    String content,
+    Map<String, String> catalogMeals,
+  ) {
+    final lower = content.toLowerCase();
+    for (final entry in catalogMeals.entries) {
+      if (entry.value.length >= 3 && lower.contains(entry.value.toLowerCase())) {
+        return ChatActionEntity(
+          type: SmartCoachActionType.navigateFoodDetails,
+          title: entry.value,
+          params: ChatActionParamsEntity(mealId: entry.key),
+        );
+      }
+    }
+    return null;
+  }
+
+  ChatActionEntity? _fallbackExerciseAction(
+    String content,
+    Map<String, MuscleEntity> catalogMuscles,
+  ) {
+    final lower = content.toLowerCase();
+    for (final entry in catalogMuscles.entries) {
+      final muscle = entry.value;
+      if (muscle.name.length >= 3 && lower.contains(muscle.name.toLowerCase())) {
+        return ChatActionEntity(
+          type: SmartCoachActionType.navigateExercise,
+          title: 'تمرين ${muscle.name}',
+          params: ChatActionParamsEntity(
+            exerciseId: muscle.id,
+            muscleName: muscle.name,
+            image: muscle.image,
+          ),
+        );
+      }
+    }
+    return null;
+  }
+
+  ChatActionEntity? _sanitizeExerciseAction(ChatActionEntity? action) {
+    if (action == null || action.type != SmartCoachActionType.navigateExercise) {
+      return action;
+    }
+    final rawId = action.params.exerciseId ?? '';
+    final match = _objectIdRegex.firstMatch(rawId);
+    if (match == null) return action;
+    return ChatActionEntity(
+      type: action.type,
+      title: action.title,
+      params: ChatActionParamsEntity(
+        exerciseId: match.group(0)!,
+        muscleName: action.params.muscleName,
+        image: action.params.image,
+      ),
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fitness_app/config/base_response/base_response.dart';
 import 'package:fitness_app/config/base_state/base_state.dart';
 import 'package:fitness_app/config/di/di.dart';
@@ -46,7 +47,9 @@ final dummyProfile = ProfileEntity(
   GetProfileDataUseCase,
 ])
 void main() {
-  setUpAll(() {
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    EasyLocalization.logger.enableLevels = [];
     provideDummy<BaseResponse<ChatMessageEntity>>(
       SuccessBaseResponse(
         data: ChatMessageEntity(
@@ -118,21 +121,34 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.lightTheme,
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider<GetProfileViewModel>.value(
-              value: mockProfileViewModel,
-            ),
-            BlocProvider(create: (_) => SectionTabCubit()),
-          ],
-          child: const SmartCoachScreen(),
+      EasyLocalization(
+        supportedLocales: const [Locale('en')],
+        path: 'assets/translations',
+        fallbackLocale: const Locale('en'),
+        startLocale: const Locale('en'),
+        child: Builder(
+          builder: (context) {
+            return MaterialApp(
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              theme: AppTheme.lightTheme,
+              home: MultiBlocProvider(
+                providers: [
+                  BlocProvider<GetProfileViewModel>.value(
+                    value: mockProfileViewModel,
+                  ),
+                  BlocProvider(create: (_) => SectionTabCubit()),
+                ],
+                child: const SmartCoachScreen(),
+              ),
+            );
+          },
         ),
       ),
     );
 
-    await tester.pumpAndSettle();
+    await tester.pump();
     expect(find.byType(SmartCoachScreen), findsOneWidget);
   });
 }
