@@ -92,7 +92,7 @@ To use the AI Smart Coach feature, you must have Ollama running locally on your 
 1. **Download & Install Ollama** from [ollama.com](https://ollama.com).
 2. **Start Local Ollama Server & Pull Model:**
    ```bash
-   ollama run gemma:2b
+   ollama run gemma3
    ```
 3. Ensure the local Ollama instance is active and listening on port `11434` (`http://localhost:11434` or `http://10.0.2.2:11434` for Android Emulator).
 
