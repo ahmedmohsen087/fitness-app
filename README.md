@@ -83,7 +83,18 @@ lib/
 * Flutter SDK `^3.12.1` or higher
 * Dart SDK `^3.x`
 * Android Studio or VS Code with Flutter extension
-* Ollama LLM server instance running (for AI Smart Coach feature)
+* **Local Machine Ollama Instance**: [Ollama](https://ollama.com) must be installed and running locally on your machine (`http://localhost:11434` or `http://10.0.2.2:11434` for Android Emulator) to power the AI Smart Coach feature.
+
+### 🤖 Local Ollama Setup (Required for AI Smart Coach)
+
+To use the AI Smart Coach feature, you must have Ollama running locally on your machine:
+
+1. **Download & Install Ollama** from [ollama.com](https://ollama.com).
+2. **Start Local Ollama Server & Pull Model:**
+   ```bash
+   ollama run gemma:2b
+   ```
+3. Ensure the local Ollama instance is active and listening on port `11434` (`http://localhost:11434` or `http://10.0.2.2:11434` for Android Emulator).
 
 ### Installation
 
