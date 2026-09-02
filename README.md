@@ -66,7 +66,7 @@ lib/
 | Category | Technology / Package |
 | :--- | :--- |
 | **Framework** | [Flutter](https://flutter.dev) (Dart 3.x) |
-| **State Management** | [flutter_bloc](https://pub.dev/packages/flutter_bloc) & [RxDart](https://pub.dev/packages/rxdart) |
+| **State Management** | [flutter_bloc](https://pub.dev/packages/flutter_bloc) |
 | **Dependency Injection** | [get_it](https://pub.dev/packages/get_it) & [injectable](https://pub.dev/packages/injectable) |
 | **Networking & APIs** | [dio](https://pub.dev/packages/dio), [retrofit](https://pub.dev/packages/retrofit), [pretty_dio_logger](https://pub.dev/packages/pretty_dio_logger) |
 | **Local Storage & Cache** | [hive](https://pub.dev/packages/hive), [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage), [shared_preferences](https://pub.dev/packages/shared_preferences) |
