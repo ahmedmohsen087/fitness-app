@@ -14,11 +14,11 @@ class SectionApp extends StatelessWidget {
   const SectionApp({super.key});
 
   List<Widget> get _pages => const [
-        HomeScreen(),
-        SmartCoachScreen(),
-        UpcomingWorkoutsScreen(),
-        ProfileScreen(),
-      ];
+    HomeScreen(),
+    SmartCoachScreen(),
+    UpcomingWorkoutsScreen(),
+    ProfileScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +37,23 @@ class SectionApp extends StatelessWidget {
                 AppTab.values[index],
               ),
               items: [
-                AppBottomNavItem(icon: Assets.homeIcon, label: AppStrings.home),
-                AppBottomNavItem(icon: Assets.chatIcon, label: AppStrings.chat),
                 AppBottomNavItem(
-                  icon: Assets.workoutsIcon,
+                  icon: Assets.assetsIconsHome,
+                  label: AppStrings.home,
+                ),
+                AppBottomNavItem(
+                  icon: Assets.assetsIconsChat,
+                  label: AppStrings.chat,
+                ),
+                AppBottomNavItem(
+                  icon: Assets.assetsIconsWorkouts,
                   label: AppStrings.workouts,
                 ),
                 AppBottomNavItem(
-                  icon: Assets.profileIcon,
+                  icon: Assets.assetsIconsProfile,
                   label: AppStrings.profile,
+                  iconHeight: 14,
+                  iconWidth: 14,
                 ),
               ],
             ),

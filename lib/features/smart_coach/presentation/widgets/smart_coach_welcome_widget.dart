@@ -19,7 +19,7 @@ class SmartCoachWelcomeWidget extends StatelessWidget {
         Expanded(
           child: Center(
             child: Image.asset(
-              Assets.botAvatar,
+              Assets.assetsAvatarsBotAvatar,
               height: 280,
               fit: BoxFit.contain,
               errorBuilder: (_, _, _) => const SizedBox.shrink(),

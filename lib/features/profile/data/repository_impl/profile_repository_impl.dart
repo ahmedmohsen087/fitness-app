@@ -5,9 +5,7 @@ import 'package:fitness_app/features/profile/data/data_sources_contract/profile_
 import 'package:fitness_app/features/profile/domain/entities/profile_response_entity.dart';
 import 'package:fitness_app/features/profile/domain/repository_contract/profile_repository_contract.dart';
 import 'package:injectable/injectable.dart';
-
 import '../models/change_password_response_model.dart';
-import '../../api/models/profile_message_model.dart';
 import '../../api/request_models/change_password_request_model.dart';
 import '../../api/request_models/edit_profile_request_model.dart';
 import '../../api/request_models/upload_profile_photo_request_model.dart';

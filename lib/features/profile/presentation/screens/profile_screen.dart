@@ -100,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final _ = context.locale;
 
     return AppBackgroundScaffold(
-      imagePath: Assets.mainBackground,
+      imagePath: Assets.assetsImagesMainBackground,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: BlocConsumer<GetProfileViewModel, GetProfileState>(
@@ -161,64 +161,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     userName: '${user.firstName} ${user.lastName}',
                   ),
                   Material(
-                    color: Colors.transparent,
+                    color: AppColors.lightBlack.withAlpha(160),
+                    borderRadius: BorderRadius.circular(24),
                     clipBehavior: Clip.antiAlias,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.lightBlack,
-                        borderRadius: BorderRadius.circular(16),
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      itemCount: 7,
+                      separatorBuilder: (context, index) => const Divider(
+                        color: AppColors.dividerColor,
+                        height: 1,
+                        indent: 16,
+                        endIndent: 16,
                       ),
-                      child: Column(
-                        children: [
-                          ProfileTileItem(
-                            leadingIcon: Icons.person_outline,
-                            title: AppStrings.editProfile,
-                            onTap: () => _openEditProfile(user),
-                          ),
-                          ProfileTileItem(
-                            leadingIcon: Icons.lock_outline,
-                            title: AppStrings.changePassword,
-                            onTap: () {},
-                          ),
-                          ProfileTileItem(
-                            leadingIcon: Icons.language,
-                            title: AppStrings.language,
-                            trailing: Text(
-                              context.locale.languageCode == 'ar'
-                                  ? AppStrings.arabic
-                                  : AppStrings.english,
-                              style: TextStyles.bodyRegular14.copyWith(
-                                color: AppColors.orange,
-                                fontWeight: FontWeight.w500,
+                      itemBuilder: (context, index) {
+                        switch (index) {
+                          case 0:
+                            return ProfileTileItem(
+                              leadingIcon: Assets.assetsIconsProfile,
+                              title: AppStrings.editProfile,
+                              onTap: () => _openEditProfile(user),
+                            );
+                          case 1:
+                            return ProfileTileItem(
+                              leadingIcon: Assets.assetsIconsCycleArrow,
+                              title: AppStrings.changePassword,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutsName.changePasswordScreen,
+                                );
+                              },
+                            );
+                          case 2:
+                            return ProfileTileItem(
+                              leadingIcon: Assets.assetsIconsLanguage,
+                              title: AppStrings.language,
+                              titleWidget: RichText(
+                                text: TextSpan(
+                                  style: TextStyles.bodyRegular14.copyWith(
+                                    color: AppColors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  children: [
+                                    TextSpan(text: '${AppStrings.language} ('),
+                                    TextSpan(
+                                      text: context.locale.languageCode == 'ar'
+                                          ? AppStrings.arabic
+                                          : AppStrings.english,
+                                      style: const TextStyle(
+                                        color: AppColors.orange,
+                                      ),
+                                    ),
+                                    const TextSpan(text: ')'),
+                                  ],
+                                ),
                               ),
-                            ),
-                            onTap: () => _showLanguageBottomSheet(context),
-                          ),
-                          ProfileTileItem(
-                            leadingIcon: Icons.security,
-                            title: AppStrings.security,
-                            onTap: () => _launchUrl(AppStrings.securityUrl),
-                          ),
-                          ProfileTileItem(
-                            leadingIcon: Icons.privacy_tip_outlined,
-                            title: AppStrings.privacyPolicy,
-                            onTap: () =>
-                                _launchUrl(AppStrings.privacyPolicyUrl),
-                          ),
-                          ProfileTileItem(
-                            leadingIcon: Icons.help_outline,
-                            title: AppStrings.help,
-                            onTap: () => _launchUrl(AppStrings.helpUrl),
-                          ),
-                          ProfileTileItem(
-                            leadingIcon: Icons.logout,
-                            title: AppStrings.logout,
-                            textColor: AppColors.orange,
-                            iconColor: AppColors.orange,
-                            onTap: () {},
-                          ),
-                        ],
-                      ),
+                              onTap: () => _showLanguageBottomSheet(context),
+                            );
+                          case 3:
+                            return ProfileTileItem(
+                              leadingIcon: Assets.assetsIconsLockSetting,
+                              title: AppStrings.security,
+                              onTap: () => _launchUrl(AppStrings.securityUrl),
+                            );
+                          case 4:
+                            return ProfileTileItem(
+                              leadingIcon: Assets.assetsIconsSecurityWarning,
+                              title: AppStrings.privacyPolicy,
+                              onTap: () =>
+                                  _launchUrl(AppStrings.privacyPolicyUrl),
+                            );
+                          case 5:
+                            return ProfileTileItem(
+                              leadingIcon: Assets.assetsIconsHelp,
+                              title: AppStrings.help,
+                              onTap: () => _launchUrl(AppStrings.helpUrl),
+                            );
+                          case 6:
+                          default:
+                            return ProfileTileItem(
+                              leadingIcon: Assets.assetsIconsLogout,
+                              title: AppStrings.logout,
+                              textColor: AppColors.orange,
+                              onTap: () {},
+                            );
+                        }
+                      },
                     ),
                   ),
                 ],

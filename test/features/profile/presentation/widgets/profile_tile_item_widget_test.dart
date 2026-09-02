@@ -1,5 +1,6 @@
 import 'package:fitness_app/core/theme/app_colors.dart';
 import 'package:fitness_app/core/theme/app_theme.dart';
+import 'package:fitness_app/core/values/assets.dart';
 import 'package:fitness_app/features/profile/presentation/widgets/profile_tile_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,14 +14,13 @@ void main() {
       await _pumpWidget(
         tester,
         ProfileTileItem(
-          leadingIcon: Icons.person,
+          leadingIcon: Assets.assetsIconsProfile,
           title: 'Personal Info',
           onTap: () => tapped = true,
         ),
       );
 
       expect(find.text('Personal Info'), findsOneWidget);
-      expect(find.byIcon(Icons.person), findsOneWidget);
       expect(find.byIcon(Icons.arrow_forward_ios), findsOneWidget);
 
       await tester.tap(find.byType(ListTile));
@@ -35,7 +35,7 @@ void main() {
       await _pumpWidget(
         tester,
         ProfileTileItem(
-          leadingIcon: Icons.logout,
+          leadingIcon: Assets.assetsIconsLogout,
           title: 'Logout',
           trailing: const Icon(Icons.check_circle, color: AppColors.success),
           textColor: AppColors.red,
@@ -45,7 +45,6 @@ void main() {
       );
 
       expect(find.text('Logout'), findsOneWidget);
-      expect(find.byIcon(Icons.logout), findsOneWidget);
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
       expect(find.byIcon(Icons.arrow_forward_ios), findsNothing);
       expect(tester.takeException(), isNull);

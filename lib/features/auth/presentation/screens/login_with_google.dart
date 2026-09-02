@@ -12,9 +12,9 @@ class LoginWithGoogle extends StatelessWidget {
       spacing: 15,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SvgPicture.asset(Assets.facebookLogo),
-        SvgPicture.asset(Assets.googleLogo),
-        SvgPicture.asset(Assets.appleLogo),
+        SvgPicture.asset(Assets.assetsIconsFacebook),
+        SvgPicture.asset(Assets.assetsIconsGoogle),
+        SvgPicture.asset(Assets.assetsIconsApple),
       ],
     );
   }

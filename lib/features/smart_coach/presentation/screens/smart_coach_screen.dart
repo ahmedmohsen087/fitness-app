@@ -23,8 +23,8 @@ class SmartCoachScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SmartCoachViewModel>(
-      create: (_) => getIt<SmartCoachViewModel>()
-        ..add(const LoadSmartCoachHistoryEvent()),
+      create: (_) =>
+          getIt<SmartCoachViewModel>()..add(const LoadSmartCoachHistoryEvent()),
       child: const _SmartCoachScreenContent(),
     );
   }
@@ -35,6 +35,7 @@ class _SmartCoachScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _ = context.locale;
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     return BlocListener<SmartCoachViewModel, SmartCoachState>(
@@ -53,12 +54,15 @@ class _SmartCoachScreenContent extends StatelessWidget {
       },
       child: BlocBuilder<SmartCoachViewModel, SmartCoachState>(
         builder: (context, state) {
-          final profile =
-              context.watch<GetProfileViewModel>().state.getProfileState.data;
+          final profile = context
+              .watch<GetProfileViewModel>()
+              .state
+              .getProfileState
+              .data;
           final firstName = profile?.firstName ?? '';
 
           return AppBackgroundScaffold(
-            imagePath: Assets.chatBackground,
+            imagePath: Assets.assetsImagesChatBackground,
             child: Scaffold(
               key: scaffoldKey,
               backgroundColor: Colors.transparent,
@@ -67,22 +71,26 @@ class _SmartCoachScreenContent extends StatelessWidget {
                 activeSessionId: state.activeSessionId,
                 onSessionSelected: (sessionId) {
                   Navigator.pop(context);
-                  context
-                      .read<SmartCoachViewModel>()
-                      .add(SelectChatSessionEvent(sessionId));
+                  context.read<SmartCoachViewModel>().add(
+                    SelectChatSessionEvent(sessionId),
+                  );
                 },
                 onNewChatTap: () {
                   Navigator.pop(context);
-                  context
-                      .read<SmartCoachViewModel>()
-                      .add(const StartNewChatSessionEvent());
+                  context.read<SmartCoachViewModel>().add(
+                    const StartNewChatSessionEvent(),
+                  );
                 },
               ),
               body: SafeArea(
                 child: Column(
                   children: [
                     _buildHeader(
-                        context, scaffoldKey, state.viewMode, firstName),
+                      context,
+                      scaffoldKey,
+                      state.viewMode,
+                      firstName,
+                    ),
                     Expanded(child: _buildBody(context, state, profile?.photo)),
                   ],
                 ),
@@ -163,7 +171,9 @@ class _SmartCoachScreenContent extends StatelessWidget {
         context.read<SmartCoachViewModel>().add(AttachImageEvent(path));
       },
       onClearImage: () {
-        context.read<SmartCoachViewModel>().add(const ClearAttachedImageEvent());
+        context.read<SmartCoachViewModel>().add(
+          const ClearAttachedImageEvent(),
+        );
       },
     );
   }

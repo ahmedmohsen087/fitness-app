@@ -43,7 +43,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return AppBackgroundScaffold(
-      imagePath: Assets.mainBackground,
+      imagePath: Assets.assetsImagesMainBackground,
       child: BlocConsumer<ChangePasswordViewModel, ChangePasswordState>(
         listener: _handleStateListener,
         builder: _buildContent,
@@ -104,7 +104,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 24),
-        child: Image.asset(Assets.appLogo, height: 60),
+        child: Image.asset(Assets.assetsImagesAppLogo, height: 60),
       ),
     );
   }

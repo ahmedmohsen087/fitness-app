@@ -102,7 +102,7 @@ class _SmartCoachActiveWidgetState extends State<SmartCoachActiveWidget> {
           const CircleAvatar(
             radius: 16,
             backgroundColor: AppColors.lightBlack,
-            backgroundImage: AssetImage(Assets.botAvatar),
+            backgroundImage: AssetImage(Assets.assetsAvatarsBotAvatar),
           ),
           const SizedBox(width: 8),
           Container(

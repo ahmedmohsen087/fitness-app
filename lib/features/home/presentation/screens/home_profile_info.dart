@@ -56,7 +56,7 @@ class HomeProfileInfo extends StatelessWidget {
                   child: CustomNetworkImage(
                     imageUrl: (image != null && image.isNotEmpty)
                         ? image
-                        : Assets.defaultExerciseImage,
+                        : Assets.assetsImagesDefaultExercise,
                     fit: BoxFit.cover,
                   ),
                 ),

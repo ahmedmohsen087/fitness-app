@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
     context.locale;
 
     return AppBackgroundScaffold(
-      imagePath: Assets.mainBackground,
+      imagePath: Assets.assetsImagesMainBackground,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(

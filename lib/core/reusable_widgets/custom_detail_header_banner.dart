@@ -55,7 +55,7 @@ class CustomDetailHeaderBanner extends StatelessWidget {
                     radius: 18,
                     backgroundColor: AppColors.orange,
                     child: SvgPicture.asset(
-                      Assets.backArrowIcon,
+                      Assets.assetsIconsBackArrow,
                       width: 16,
                       height: 16,
                       matchTextDirection: true,

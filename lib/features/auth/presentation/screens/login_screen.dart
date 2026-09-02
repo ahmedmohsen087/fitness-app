@@ -13,7 +13,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBackgroundScaffold(
-      imagePath: Assets.authBackground,
+      imagePath: Assets.assetsImagesAuthBackground,
       child: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: Image.asset(
-                  Assets.appLogo,
+                  Assets.assetsImagesAppLogo,
                   height: 60,
                   fit: BoxFit.contain,
                 ),

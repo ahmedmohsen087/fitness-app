@@ -10,6 +10,7 @@ abstract class AppColors {
   static const Color placeHolder = Color(0xffa6a6a6);
   static const Color red = Color(0xffCC1010);
 
+  static const Color dividerColor = Color(0x1AFFFFFF);
   static const Color success = Color(0xff16A34A);
   static const Color warning = Color(0xffF59E0B);
   static const Color info = Color(0xff2563EB);

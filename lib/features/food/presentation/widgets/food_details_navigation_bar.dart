@@ -46,7 +46,7 @@ class FoodDetailsNavigationBar extends StatelessWidget {
                         radius: 14,
                         backgroundColor: AppColors.orange,
                         child: SvgPicture.asset(
-                          Assets.backArrowIcon,
+                          Assets.assetsIconsBackArrow,
                           width: 14,
                           height: 14,
                           matchTextDirection: true,

@@ -70,6 +70,11 @@ flutter:
     - assets/icons/
     - assets/avatars/
     - assets/translations/
+
+flutter_assets:
+  assets_path: assets/
+  output_path: lib/core/values
+  filename: assets.dart
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true

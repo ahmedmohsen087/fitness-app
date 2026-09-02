@@ -26,17 +26,17 @@ class _OnBoardingState extends State<OnBoarding> {
 
   final List<({String image, String title, String description})> items = [
     (
-      image: Assets.onBoarding1,
+      image: Assets.assetsImagesOnboarding1,
       title: AppStrings.titleOnBoarding1,
       description: AppStrings.titleOnBoarding,
     ),
     (
-      image: Assets.onBoarding2,
+      image: Assets.assetsImagesOnboarding2,
       title: AppStrings.titleOnBoarding2,
       description: AppStrings.titleOnBoarding,
     ),
     (
-      image: Assets.onBoarding3,
+      image: Assets.assetsImagesOnboarding3,
       title: AppStrings.titleOnBoarding3,
       description: AppStrings.titleOnBoarding,
     ),

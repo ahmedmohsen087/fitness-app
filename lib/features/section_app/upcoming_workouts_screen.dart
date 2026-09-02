@@ -50,7 +50,7 @@ class _UpcomingWorkoutsScreenState extends State<UpcomingWorkoutsScreen> {
 
   Widget _buildContent() {
     return AppBackgroundScaffold(
-      imagePath: Assets.mainBackground,
+      imagePath: Assets.assetsImagesMainBackground,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(

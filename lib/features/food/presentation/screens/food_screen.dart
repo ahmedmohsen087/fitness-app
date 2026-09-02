@@ -51,7 +51,7 @@ class _FoodView extends StatelessWidget {
         if (message != null) AppToast.error(context, message);
       },
       child: AppBackgroundScaffold(
-        imagePath: Assets.mainBackground,
+        imagePath: Assets.assetsImagesMainBackground,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
           child: Column(
@@ -99,7 +99,7 @@ class _FoodHeader extends StatelessWidget {
                   radius: 14,
                   backgroundColor: AppColors.orange,
                   child: SvgPicture.asset(
-                    Assets.backArrowIcon,
+                    Assets.assetsIconsBackArrow,
                     width: 14,
                     height: 14,
                     matchTextDirection: true,

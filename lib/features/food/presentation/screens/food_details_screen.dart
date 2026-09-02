@@ -40,7 +40,7 @@ class _FoodDetailsView extends StatelessWidget {
         if (message != null) AppToast.error(context, message);
       },
       child: AppBackgroundScaffold(
-        imagePath: Assets.mainBackground,
+        imagePath: Assets.assetsImagesMainBackground,
         child: BlocBuilder<FoodViewModel, FoodState>(
           buildWhen: (previous, current) =>
               previous.mealDetailsState != current.mealDetailsState,

@@ -198,7 +198,7 @@ class _EditProfileDetails extends StatelessWidget {
     >(
       selector: _selectViewData,
       builder: (context, data) => AppBackgroundScaffold(
-        imagePath: Assets.mainBackground,
+        imagePath: Assets.assetsImagesMainBackground,
         child: Column(
           children: [
             EditProfileHeader(onBack: onBack),

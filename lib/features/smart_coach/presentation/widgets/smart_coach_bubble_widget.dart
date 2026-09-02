@@ -44,7 +44,7 @@ class SmartCoachBubbleWidget extends StatelessWidget {
     return const CircleAvatar(
       radius: 18,
       backgroundColor: AppColors.lightBlack,
-      backgroundImage: AssetImage(Assets.botAvatar),
+      backgroundImage: AssetImage(Assets.assetsAvatarsBotAvatar),
     );
   }
 

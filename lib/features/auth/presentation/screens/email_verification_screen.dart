@@ -10,7 +10,7 @@ class EmailVerificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBackgroundScaffold(
-      imagePath: Assets.authBackground,
+      imagePath: Assets.assetsImagesAuthBackground,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -20,7 +20,7 @@ class EmailVerificationScreen extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: Image.asset(
-                Assets.appLogo,
+                Assets.assetsImagesAppLogo,
                 height: 60,
                 fit: BoxFit.contain,
               ),

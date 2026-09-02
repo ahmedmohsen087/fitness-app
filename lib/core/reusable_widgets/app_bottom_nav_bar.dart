@@ -7,8 +7,10 @@ import '../theme/text_styles.dart';
 class AppBottomNavItem {
   final String icon;
   final String label;
+  final double iconWidth;
+  final double iconHeight;
 
-  const AppBottomNavItem({required this.icon, required this.label});
+  const AppBottomNavItem({required this.icon, required this.label, this.iconWidth = 24, this.iconHeight = 24});
 }
 
 class AppBottomNavBar extends StatelessWidget {
@@ -91,8 +93,8 @@ class _NavButton extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 item.icon,
-                width: 24,
-                height: 24,
+                width: item.iconWidth,
+                height: item.iconHeight,
                 colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
               ),
               if (selected) ...[

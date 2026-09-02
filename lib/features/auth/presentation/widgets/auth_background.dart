@@ -11,7 +11,7 @@ class AuthBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBackgroundScaffold(
-      imagePath: Assets.authBackground,
+      imagePath: Assets.assetsImagesAuthBackground,
       child: child,
     );
   }

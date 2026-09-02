@@ -25,7 +25,7 @@ class FoodDetailsMessageState extends StatelessWidget {
               tooltip: AppStrings.back,
               onPressed: () => Navigator.maybePop(context),
               icon: SvgPicture.asset(
-                Assets.backArrowIcon,
+                Assets.assetsIconsBackArrow,
                 width: 20,
                 height: 20,
                 colorFilter: const ColorFilter.mode(

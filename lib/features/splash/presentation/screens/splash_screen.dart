@@ -65,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: AppColors.black,
       body: Center(
         child: Lottie.asset(
-          Assets.logo,
+          Assets.assetsImagesBurpeeAndJumpExercise,
           delegates: LottieDelegates(
             values: [
               ValueDelegate.color(const ['*'], value: AppColors.black),

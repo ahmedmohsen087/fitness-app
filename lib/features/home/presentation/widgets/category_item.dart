@@ -14,11 +14,11 @@ class CategoryItem extends StatelessWidget {
     context.locale;
 
     final categories = [
-      CategoryModel(image: Assets.gymAvatar, title: AppStrings.gym),
-      CategoryModel(image: Assets.fitnessAvatar, title: AppStrings.fitness),
-      CategoryModel(image: Assets.yogaAvatar, title: AppStrings.yoga),
-      CategoryModel(image: Assets.aerobicsAvatar, title: AppStrings.aerobics),
-      CategoryModel(image: Assets.trainerAvatar, title: AppStrings.trainer),
+      CategoryModel(image: Assets.assetsAvatarsGymAvatar, title: AppStrings.gym),
+      CategoryModel(image: Assets.assetsAvatarsFitnessAvatar, title: AppStrings.fitness),
+      CategoryModel(image: Assets.assetsAvatarsYogaAvatar, title: AppStrings.yoga),
+      CategoryModel(image: Assets.assetsAvatarsAerobicsAvatar, title: AppStrings.aerobics),
+      CategoryModel(image: Assets.assetsAvatarsTrainerAvatar, title: AppStrings.trainer),
     ];
 
     return Container(

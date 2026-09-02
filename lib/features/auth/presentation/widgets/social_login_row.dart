@@ -12,9 +12,9 @@ class SocialLoginRow extends StatelessWidget {
       spacing: 15,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SvgPicture.asset(Assets.facebookLogo, width: 32, height: 32),
-        SvgPicture.asset(Assets.googleLogo, width: 32, height: 32),
-        SvgPicture.asset(Assets.appleLogo, width: 32, height: 32),
+        SvgPicture.asset(Assets.assetsIconsFacebook, width: 32, height: 32),
+        SvgPicture.asset(Assets.assetsIconsGoogle, width: 32, height: 32),
+        SvgPicture.asset(Assets.assetsIconsApple, width: 32, height: 32),
       ],
     );
   }

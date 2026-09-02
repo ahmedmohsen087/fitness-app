@@ -39,7 +39,7 @@ class ExerciseScreen extends StatelessWidget {
   String _getYoutubeThumbnail(String videoUrl) {
     return YoutubeVideoIdParser.getThumbnail(
       videoUrl,
-      fallback: Assets.defaultExerciseImage,
+      fallback: Assets.assetsImagesDefaultExercise,
     );
   }
 
@@ -50,7 +50,7 @@ class ExerciseScreen extends StatelessWidget {
     return BlocProvider<FitnessViewModel>(
       create: (_) => _createViewModel(),
       child: AppBackgroundScaffold(
-        imagePath: Assets.mainBackground,
+        imagePath: Assets.assetsImagesMainBackground,
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -91,7 +91,7 @@ class ExerciseScreen extends StatelessWidget {
 
   Widget _buildHeaderBackground() {
     final imageUrl =
-        args.image.isNotEmpty ? args.image : Assets.defaultExerciseImage;
+        args.image.isNotEmpty ? args.image : Assets.assetsImagesDefaultExercise;
 
     return Container(
       height: 240,
@@ -140,7 +140,7 @@ class ExerciseScreen extends StatelessWidget {
             radius: 18,
             backgroundColor: AppColors.orange,
             child: SvgPicture.asset(
-              Assets.backArrowIcon,
+              Assets.assetsIconsBackArrow,
               width: 16,
               height: 16,
               matchTextDirection: true,
@@ -310,7 +310,7 @@ class ExerciseScreen extends StatelessWidget {
   Widget _buildExerciseCard(BuildContext context, ExerciseEntity exercise) {
     final image = exercise.videoUrl.isNotEmpty
         ? _getYoutubeThumbnail(exercise.videoUrl)
-        : (args.image.isNotEmpty ? args.image : Assets.defaultExerciseImage);
+        : (args.image.isNotEmpty ? args.image : Assets.assetsImagesDefaultExercise);
 
     return Container(
       decoration: BoxDecoration(
